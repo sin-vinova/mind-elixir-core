@@ -14,6 +14,7 @@ export let createGroup = function (node) {
   grp.appendChild(top)
   if (node.children && node.children.length > 0) {
     top.appendChild(createExpander(node.expanded))
+    // top.appendChild(createAddNode())
     if (node.expanded !== false) {
       let children = createChildren(node.children)
       grp.appendChild(children)
@@ -139,6 +140,13 @@ export let createExpander = function (expanded) {
   return expander
 }
 
+export let createAddNode = function () {
+  let addNode = $d.createElement('add')
+  addNode.innerHTML = "+"
+  addNode.className = "add"
+  return addNode
+}
+
 /**
  * traversal data and generate dom structure of mind map
  * @ignore
@@ -171,13 +179,16 @@ export function createChildren(data, first, direction) {
     let top = createTop(nodeObj)
     if (nodeObj.children && nodeObj.children.length > 0) {
       top.appendChild(createExpander(nodeObj.expanded))
+      // top.appendChild(createAddNode())
       grp.appendChild(top)
       if (nodeObj.expanded !== false) {
         let children = createChildren(nodeObj.children)
         grp.appendChild(children)
       }
     } else {
+      // top.appendChild(createAddNode())
       grp.appendChild(top)
+      // .appendChild(createAddNode())
     }
     chldr.appendChild(grp)
   }

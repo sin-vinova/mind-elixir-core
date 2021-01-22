@@ -186,6 +186,7 @@ export let addChild = function (el, node) {
   let { grp, top: newTop } = createGroup(newNodeObj)
 
   if (top.tagName === 'T') {
+    // if (top.children[2]) {
     if (top.children[1]) {
       top.nextSibling.appendChild(grp)
     } else {

@@ -58,6 +58,7 @@ import {
 import { LEFT, RIGHT, SIDE } from './const'
 import example from './exampleData/1'
 import example2 from './exampleData/2'
+import example3 from './exampleData/1.cn'
 import linkDiv from './linkDiv'
 import initMouseEvent from './mouse'
 
@@ -410,6 +411,7 @@ MindElixir.E = findEle
  */
 MindElixir.example = example
 MindElixir.example2 = example2
+MindElixir.example3 = example3
 /**
  * @function new
  * @memberof MindElixir

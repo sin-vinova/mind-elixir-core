@@ -193,15 +193,16 @@ export default function linkDiv(primaryNode) {
           if (first) {
             y1 = parentOT + parentOH / 2
           } else {
-            y1 = parentOT + parentOH
+            y1 = parentOT + parentOH / 2
           }
-          let y2 = childTOT + childTOH
+          let y2 = childTOT + childTOH - (childTOH / 2)
           let x1, x2, xMiddle
           let direction = child.offsetParent.className
           if (direction === 'lhs') {
             x1 = parentOL + GAP
             xMiddle = parentOL
-            x2 = parentOL - childT.offsetWidth
+            // x2 = parentOL - childT.offsetWidth
+            x2 = parentOL -  15 // padding-left : 15
             // console.log('x1,y1,x2,y2,child',x1,y1,x2,y2,child)
             if (
               childTOT + childTOH < parentOT + parentOH / 2 + 50 &&
@@ -229,7 +230,8 @@ export default function linkDiv(primaryNode) {
           } else if (direction === 'rhs') {
             x1 = parentOL + parentOW - GAP
             xMiddle = parentOL + parentOW
-            x2 = parentOL + parentOW + childT.offsetWidth
+            // x2 = parentOL + parentOW + childT.offsetWidth
+            x2 = parentOL + parentOW + 15
 
             if (
               childTOT + childTOH < parentOT + parentOH / 2 + 50 &&

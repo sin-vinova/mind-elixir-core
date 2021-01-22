@@ -104,6 +104,7 @@
         position: relative;
         display: block;
         padding: 5px;
+        border: 1px solid rgb(68, 68, 68);
         border-radius: 3px;
         color: rgb(102, 102, 102);
         pointer-events: all;
@@ -183,6 +184,28 @@
             opacity: 1;
           }
         }
+      }
+      add {
+        position: absolute;
+        height: 18px;
+        width: 18px;
+        top: -9px !important;
+        left: 50% !important;
+        text-align: center;
+        transform: translateX(-50%);
+        background: #0070C9;
+        border-radius: 50%;
+        color: white;
+        &.add {
+          transition: all 0.3s;
+          opacity: 0;
+        }
+        &:hover .add {
+          opacity: 1;
+        }
+      }
+      &:hover .add {
+        opacity: 1;
       }
     }
   }
