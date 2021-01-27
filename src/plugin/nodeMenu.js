@@ -139,6 +139,7 @@ export default function(mind) {
       })
   )
   bold.onclick = e => {
+    console.log('bold', mind.currentNode)
     if (!mind.currentNode.nodeObj.style) mind.currentNode.nodeObj.style = {}
     if (mind.currentNode.nodeObj.style.fontWeight === 'bold') {
       delete mind.currentNode.nodeObj.style.fontWeight
@@ -151,6 +152,7 @@ export default function(mind) {
     }
   }
   tagInput.onchange = e => {
+    console.log('tagInput', mind.currentNode)
     if (!mind.currentNode) return
     if (!e.target.value) {
       mind.currentNode.nodeObj.tags = []
