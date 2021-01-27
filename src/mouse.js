@@ -4,7 +4,19 @@ export default function (mind) {
     // if (dragMoveHelper.afterMoving) return
     e.preventDefault()
     if (e.target.nodeName === 'EPD') {
-      mind.expandNode(e.target.previousSibling)
+      // W1
+      // e.target.parentElement.children.forEach(element => {
+      //   if (element.nodeName === 'TPC') {
+      //     mind.expandNode(element)
+      //   }
+      // });
+      // W2
+      mind.expandNode(e.target.parentElement.children[0])
+      // mind.expandNode(e.target.previousSibling)
+    } else if (
+      e.target.nodeName === 'ADD'
+    ) {
+      mind.addChild()
     } else if (
       e.target.parentElement.nodeName === 'T' ||
       e.target.parentElement.nodeName === 'ROOT'

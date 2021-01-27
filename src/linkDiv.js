@@ -21,9 +21,8 @@ export default function linkDiv(primaryNode) {
   var primaryNodeVerticalGap = this.primaryNodeVerticalGap || PRIMARY_NODE_VERTICAL_GAP
   console.time('linkDiv')
   let root = this.root
-  root.style.cssText = `top:${10000 - root.offsetHeight / 2}px;left:${
-    10000 - root.offsetWidth / 2
-  }px;`
+  root.style.cssText = `top:${10000 - root.offsetHeight / 2}px;left:${10000 - root.offsetWidth / 2
+    }px;`
   let primaryNodeList = this.box.children
   this.svg2nd.innerHTML = ''
 
@@ -91,7 +90,7 @@ export default function linkDiv(primaryNode) {
 
       let LEFT = 10000
       if (this.primaryLinkStyle === 2) {
-        if(this.direction === SIDE){
+        if (this.direction === SIDE) {
           LEFT = 10000 - root.offsetWidth / 6
         }
         if (y2 < 10000)
@@ -105,9 +104,8 @@ export default function linkDiv(primaryNode) {
         C ${LEFT} ${y2} ${LEFT} ${y2} ${LEFT - 20} ${y2} 
           L ${x2} ${y2}`
       } else {
-        path += `M ${10000} ${10000} C 10000 10000 ${
-          10000 + 2 * primaryNodeHorizontalGap * 0.03
-        } ${y2} ${x2} ${y2}`
+        path += `M ${10000} ${10000} C 10000 10000 ${10000 + 2 * primaryNodeHorizontalGap * 0.03
+          } ${y2} ${x2} ${y2}`
       }
 
       if (shortSide === 'l') {
@@ -124,7 +122,7 @@ export default function linkDiv(primaryNode) {
 
       let LEFT = 10000
       if (this.primaryLinkStyle === 2) {
-        if(this.direction === SIDE){
+        if (this.direction === SIDE) {
           LEFT = 10000 + root.offsetWidth / 6
         }
         if (y2 < 10000)
@@ -138,9 +136,8 @@ export default function linkDiv(primaryNode) {
         C ${LEFT} ${y2} ${LEFT} ${y2} ${LEFT + 20} ${y2} 
           L ${x2} ${y2}`
       } else {
-        path += `M ${10000} ${10000} C 10000 10000 ${
-          10000 + 2 * primaryNodeHorizontalGap * 0.03
-        } ${y2} ${x2} ${y2}`
+        path += `M ${10000} ${10000} C 10000 10000 ${10000 + 2 * primaryNodeHorizontalGap * 0.03
+          } ${y2} ${x2} ${y2}`
       }
       if (shortSide === 'r') {
         currentOffsetR += elOffsetH + shortSideGap
@@ -149,7 +146,13 @@ export default function linkDiv(primaryNode) {
       }
     }
     // set position of expander
-    let expander = el.children[0].children[1]
+    let expander
+    el.children[0].children.forEach(element => {
+      if (element.tagName === 'EPD') {
+        expander = element
+      }
+    });
+    // let expander = el.children[0].children[1]
     if (expander) {
       expander.style.top =
         (expander.parentNode.offsetHeight - expander.offsetHeight) / 2 + 'px'
@@ -202,7 +205,7 @@ export default function linkDiv(primaryNode) {
             x1 = parentOL + GAP
             xMiddle = parentOL
             // x2 = parentOL - childT.offsetWidth
-            x2 = parentOL -  15 // padding-left : 15
+            x2 = parentOL - 15 // padding-left : 15
             // console.log('x1,y1,x2,y2,child',x1,y1,x2,y2,child)
             if (
               childTOT + childTOH < parentOT + parentOH / 2 + 50 &&
@@ -242,22 +245,26 @@ export default function linkDiv(primaryNode) {
               path += `M ${x1} ${y1} 
             L ${xMiddle} ${y1} 
             L ${xMiddle} ${y2 - TURNPOINT_R} 
-            A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 0 ${
-                xMiddle + TURNPOINT_R
-              },${y2} 
+            A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 0 ${xMiddle + TURNPOINT_R
+                },${y2} 
             L ${x2} ${y2}`
             } else {
               path += `M ${x1} ${y1} 
             L ${xMiddle} ${y1} 
             L ${xMiddle} ${y2 + TURNPOINT_R} 
-            A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 1 ${
-                xMiddle + TURNPOINT_R
-              },${y2} 
+            A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 1 ${xMiddle + TURNPOINT_R
+                },${y2} 
             L ${x2} ${y2}`
             }
           }
 
-          let expander = childT.children[1]
+          // let expander = childT.children[1]
+          let expander
+          childT.children.forEach(element => {
+            if (element.tagName === 'EPD') {
+              expander = element
+            }
+          });
           if (expander) {
             expander.style.top =
               (childT.offsetHeight - expander.offsetHeight) / 2 + 'px'

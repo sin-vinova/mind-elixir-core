@@ -186,15 +186,29 @@ export let addChild = function (el, node) {
   let { grp, top: newTop } = createGroup(newNodeObj)
 
   if (top.tagName === 'T') {
-    // if (top.children[2]) {
-    if (top.children[1]) {
-      top.nextSibling.appendChild(grp)
-    } else {
+    let flag = false;
+    top.children.forEach(element => {
+      if (element.tagName === 'EPD') {
+        flag = true
+        top.nextSibling.appendChild(grp)
+        return
+      }
+    });
+    if (!flag) {
       let c = $d.createElement('children')
       c.appendChild(grp)
       top.appendChild(createExpander(true))
       top.parentElement.insertBefore(c, top.nextSibling)
     }
+    // if (top.children[2]) {
+    // // if (top.children[1]) {
+    //   top.nextSibling.appendChild(grp)
+    // } else {
+    //   let c = $d.createElement('children')
+    //   c.appendChild(grp)
+    //   top.appendChild(createExpander(true))
+    //   top.parentElement.insertBefore(c, top.nextSibling)
+    // }
     this.linkDiv(grp.offsetParent)
   } else if (top.tagName === 'ROOT') {
     this.processPrimaryNode(grp, newNodeObj)
@@ -370,16 +384,31 @@ export let moveNode = function (from, to) {
       // clear direaction class of primary node
       fromTop.parentNode.className = ''
     }
-    if (toTop.children[1]) {
-      // expander exist
-      toTop.nextSibling.appendChild(fromTop.parentNode)
-    } else {
-      // expander not exist, no child
+    let flag = false;
+    toTop.children.forEach(element => {
+      if (element.tagName === 'EPD') {
+        flag = true
+        toTop.nextSibling.appendChild(fromTop.parentNode)
+        return
+      }
+    });
+    if (!flag) {
       let c = $d.createElement('children')
       c.appendChild(fromTop.parentNode)
       toTop.appendChild(createExpander(true))
       toTop.parentElement.insertBefore(c, toTop.nextSibling)
     }
+
+    // if (toTop.children[1]) {
+    //   // expander exist
+    //   toTop.nextSibling.appendChild(fromTop.parentNode)
+    // } else {
+    //   // expander not exist, no child
+    //   let c = $d.createElement('children')
+    //   c.appendChild(fromTop.parentNode)
+    //   toTop.appendChild(createExpander(true))
+    //   toTop.parentElement.insertBefore(c, toTop.nextSibling)
+    // }
   } else if (toTop.tagName === 'ROOT') {
     this.processPrimaryNode(fromTop.parentNode, fromObj)
     toTop.nextSibling.appendChild(fromTop.parentNode)

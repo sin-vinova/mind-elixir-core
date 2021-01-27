@@ -14,12 +14,13 @@ export let createGroup = function (node) {
   grp.appendChild(top)
   if (node.children && node.children.length > 0) {
     top.appendChild(createExpander(node.expanded))
-    // top.appendChild(createAddNode())
+    top.appendChild(createAddNode())
     if (node.expanded !== false) {
       let children = createChildren(node.children)
       grp.appendChild(children)
     }
   }
+  top.appendChild(createAddNode())
   return { grp, top }
 }
 
@@ -179,7 +180,7 @@ export function createChildren(data, first, direction) {
     let top = createTop(nodeObj)
     if (nodeObj.children && nodeObj.children.length > 0) {
       top.appendChild(createExpander(nodeObj.expanded))
-      // top.appendChild(createAddNode())
+      top.appendChild(createAddNode())
       grp.appendChild(top)
       if (nodeObj.expanded !== false) {
         let children = createChildren(nodeObj.children)
@@ -188,7 +189,7 @@ export function createChildren(data, first, direction) {
     } else {
       // top.appendChild(createAddNode())
       grp.appendChild(top)
-      // .appendChild(createAddNode())
+      .appendChild(createAddNode())
     }
     chldr.appendChild(grp)
   }
