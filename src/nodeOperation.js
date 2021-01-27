@@ -187,7 +187,7 @@ export let addChild = function (el, node) {
 
   if (top.tagName === 'T') {
     let flag = false;
-    top.children.forEach(element => {
+    Array.prototype.forEach.call(top.children, (element) => {
       if (element.tagName === 'EPD') {
         flag = true
         top.nextSibling.appendChild(grp)
@@ -385,7 +385,7 @@ export let moveNode = function (from, to) {
       fromTop.parentNode.className = ''
     }
     let flag = false;
-    toTop.children.forEach(element => {
+    Array.prototype.forEach.call(toTop.children, (element) => {
       if (element.tagName === 'EPD') {
         flag = true
         toTop.nextSibling.appendChild(fromTop.parentNode)

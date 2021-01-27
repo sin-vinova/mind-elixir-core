@@ -146,12 +146,23 @@ export default function linkDiv(primaryNode) {
       }
     }
     // set position of expander
-    let expander
-    el.children[0].children.forEach(element => {
-      if (element.tagName === 'EPD') {
-        expander = element
-      }
-    });
+    let expander = null
+    console.log('check', el.children[0].children)
+    localStorage.setItem('check', el)
+    if (
+      el 
+      && el.children 
+      && el.children[0] 
+      && el.children[0].children 
+      && el.children[0].children.length !== 0 
+      // && 'push' in el.children[0].children
+    ) {
+      Array.prototype.forEach.call(el.children[0].children, (element) => {
+        if (element.tagName === 'EPD') {
+          expander = element
+        }
+      })
+    }
     // let expander = el.children[0].children[1]
     if (expander) {
       expander.style.top =
@@ -259,12 +270,14 @@ export default function linkDiv(primaryNode) {
           }
 
           // let expander = childT.children[1]
-          let expander
-          childT.children.forEach(element => {
-            if (element.tagName === 'EPD') {
-              expander = element
-            }
-          });
+          let expander = null;
+          if (childT && childT.children && childT.children.length !== 0) {
+            Array.prototype.forEach.call(childT.children, (element) => {
+              if (element.tagName === 'EPD') {
+                expander = element
+              }
+            })
+          }
           if (expander) {
             expander.style.top =
               (childT.offsetHeight - expander.offsetHeight) / 2 + 'px'
