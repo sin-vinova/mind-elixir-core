@@ -89,6 +89,7 @@ export default function linkDiv(primaryNode) {
       y2 = base + currentOffsetL + elOffsetH / 2
 
       let LEFT = 10000
+      
       if (this.primaryLinkStyle === 2) {
         if (this.direction === SIDE) {
           LEFT = 10000 - root.offsetWidth / 6
@@ -104,7 +105,7 @@ export default function linkDiv(primaryNode) {
         C ${LEFT} ${y2} ${LEFT} ${y2} ${LEFT - 20} ${y2} 
           L ${x2} ${y2}`
       } else {
-        path += `M ${10000} ${10000} C 10000 10000 ${10000 + 2 * primaryNodeHorizontalGap * 0.03
+        path = `M ${10000} ${10000} C 10000 10000 ${10000 + 2 * primaryNodeHorizontalGap * 0.03
           } ${y2} ${x2} ${y2}`
       }
 
@@ -136,7 +137,7 @@ export default function linkDiv(primaryNode) {
         C ${LEFT} ${y2} ${LEFT} ${y2} ${LEFT + 20} ${y2} 
           L ${x2} ${y2}`
       } else {
-        path += `M ${10000} ${10000} C 10000 10000 ${10000 + 2 * primaryNodeHorizontalGap * 0.03
+        path = `M ${10000} ${10000} C 10000 10000 ${10000 + 2 * primaryNodeHorizontalGap * 0.03
           } ${y2} ${x2} ${y2}`
       }
       if (shortSide === 'r') {
@@ -173,8 +174,11 @@ export default function linkDiv(primaryNode) {
         expander.style.left = expander.parentNode.offsetWidth - 10 + 'px'
       }
     }
+    const colorLine = el.children[0] && el.children[0].querySelector('t tpc') && el.children[0].querySelector('t tpc').getAttribute('data-color') || '#666'
+    this.svg2nd.appendChild(createMainPath(path, colorLine))
   }
-  this.svg2nd.appendChild(createMainPath(path))
+  
+  // this.svg2nd.appendChild(createMainPath(path, undefined))
 
   // 3. generate link inside primary node
   for (let i = 0; i < primaryNodeList.length; i++) {
@@ -189,10 +193,13 @@ export default function linkDiv(primaryNode) {
       el.appendChild(svg)
       let parent = el.children[0]
       let children = el.children[1].children
-      let path = ''
+      
       loopChildren(children, parent, true)
-      svg.appendChild(createPath(path))
+      // console.log(el, 'primaryNodeList')
+      // const colorLine = children[0] && children[0].querySelector('t tpc') && children[0].querySelector('t tpc').getAttribute('data-color') || '#555'
+      // svg.appendChild(createPath(path, colorLine))
       function loopChildren(children, parent, first) {
+        let path = '';
         // parent node of the child dom
         let parentOT = parent.offsetTop
         let parentOL = parent.offsetLeft
@@ -222,11 +229,22 @@ export default function linkDiv(primaryNode) {
               childTOT + childTOH < parentOT + parentOH / 2 + 50 &&
               childTOT + childTOH > parentOT + parentOH / 2 - 50
             ) {
-              // 相差+-50内直接直线
-              path += `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2} L ${x2} ${y2}`
+              if(children.length === 2){
+                if(!i){
+                  path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2 + TURNPOINT_R} A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 0 ${xMiddle - TURNPOINT_R},${y2}  L ${x2} ${y2}`
+                }else if(!!i){
+                  path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2 - TURNPOINT_R} A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 1 ${xMiddle - TURNPOINT_R},${y2}  L ${x2} ${y2}`
+                }
+              }else{
+                if(!i && children.length > 1){
+                  path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2 + TURNPOINT_R} A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 0 ${xMiddle - TURNPOINT_R},${y2}  L ${x2} ${y2}`
+                }else{
+                  path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2 } L ${x2} ${y2}`
+                }
+              }
             } else if (childTOT + childTOH >= parentOT + parentOH / 2) {
               // 子底部高于父中点
-              path += `M ${x1} ${y1} 
+              path = `M ${x1} ${y1} 
             L ${xMiddle} ${y1} 
             L ${xMiddle} ${y2 - TURNPOINT_R} 
             A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 1 
@@ -234,7 +252,7 @@ export default function linkDiv(primaryNode) {
             L ${x2} ${y2}`
             } else {
               // 子底部低于父中点
-              path += `M ${x1} ${y1} 
+              path = `M ${x1} ${y1} 
             L ${xMiddle} ${y1} 
             L ${xMiddle} ${y2 + TURNPOINT_R} 
             A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 0 
@@ -251,23 +269,38 @@ export default function linkDiv(primaryNode) {
               childTOT + childTOH < parentOT + parentOH / 2 + 50 &&
               childTOT + childTOH > parentOT + parentOH / 2 - 50
             ) {
-              path += `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2} L ${x2} ${y2}`
+              if(children.length === 2){
+                if(!i){
+                  path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2 + TURNPOINT_R} A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 1 ${xMiddle + TURNPOINT_R},${y2}  L ${x2} ${y2}`
+                }else if(!!i){
+                  path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2 - TURNPOINT_R} A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 0 ${xMiddle + TURNPOINT_R}, ${y2}   L ${x2} ${y2}`
+                }
+              }else{
+                if(!i && children.length > 1){
+                  path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2 - TURNPOINT_R} A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 1 ${xMiddle - TURNPOINT_R},${y2}  L ${x2} ${y2}`
+                }else{
+                  path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2} L ${x2} ${y2}`
+                }
+              }
             } else if (childTOT + childTOH >= parentOT + parentOH / 2) {
-              path += `M ${x1} ${y1} 
-            L ${xMiddle} ${y1} 
-            L ${xMiddle} ${y2 - TURNPOINT_R} 
-            A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 0 ${xMiddle + TURNPOINT_R
-                },${y2} 
-            L ${x2} ${y2}`
-            } else {
-              path += `M ${x1} ${y1} 
-            L ${xMiddle} ${y1} 
-            L ${xMiddle} ${y2 + TURNPOINT_R} 
-            A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 1 ${xMiddle + TURNPOINT_R
-                },${y2} 
-            L ${x2} ${y2}`
+              path = `M ${x1} ${y1} 
+              L ${xMiddle} ${y1} 
+              L ${xMiddle} ${y2 - TURNPOINT_R} 
+              A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 0 ${xMiddle + TURNPOINT_R
+                  },${y2} 
+              L ${x2} ${y2}`
+              } else {
+                path = `M ${x1} ${y1} 
+              L ${xMiddle} ${y1} 
+              L ${xMiddle} ${y2 + TURNPOINT_R} 
+              A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 1 ${xMiddle + TURNPOINT_R
+                  },${y2} 
+              L ${x2} ${y2}`
             }
           }
+
+          const colorLine = child && child.children[0] && child.children[0].querySelector('t tpc') && child.children[0].querySelector('t tpc').getAttribute('data-color') || '#555';
+          svg.appendChild(createPath(path, colorLine))
 
           // let expander = childT.children[1]
           let expander = null;

@@ -60,6 +60,12 @@ export let createTopic = function (nodeObj) {
   topic.innerHTML = nodeObj.topic
   topic.dataset.nodeid = 'me' + nodeObj.id
   topic.draggable = vari.mevar_draggable
+  
+  if(nodeObj.background){
+    topic.style.background = nodeObj.background;
+    topic.setAttribute('isBackground', 'true');
+    topic.setAttribute('data-color', nodeObj.background);
+  }
   return topic
 }
 
@@ -135,9 +141,9 @@ export function createInputDiv(tpc) {
 export let createExpander = function (expanded) {
   let expander = $d.createElement('epd')
   // 包含未定义 expanded 的情况，未定义视为展开
-  expander.innerHTML = expanded !== false ? '-' : '+'
+  expander.innerHTML = expanded !== false ? '' : ''
   expander.expanded = expanded !== false ? true : false
-  expander.className = expanded !== false ? 'minus' : ''
+  expander.className = expanded !== false ? 'minus' : 'plus'
   return expander
 }
 
