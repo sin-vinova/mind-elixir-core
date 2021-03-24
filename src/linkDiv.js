@@ -277,7 +277,7 @@ export default function linkDiv(primaryNode) {
                 }
               }else{
                 if(!i && children.length > 1){
-                  path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2 - TURNPOINT_R} A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 1 ${xMiddle - TURNPOINT_R},${y2}  L ${x2} ${y2}`
+                  path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2 + TURNPOINT_R} A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 1 ${xMiddle + TURNPOINT_R},${y2}  L ${x2} ${y2}`
                 }else{
                   path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2} L ${x2} ${y2}`
                 }
