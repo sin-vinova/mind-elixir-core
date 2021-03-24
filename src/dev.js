@@ -40,14 +40,15 @@ let mind = new MindElixir({
       return true
     },
   },
-  primaryLinkStyle: 2,
+  primaryLinkStyle: 1,
   primaryNodeVerticalGap: 15, // 25
   primaryNodeHorizontalGap: 15, // 65
 })
-mind.init()
+
+setTimeout(() => mind.init(), 1000)
 function sleep() {
   return new Promise((res, rej) => {
-    setTimeout(() => res(), 100)
+    setTimeout(() => res(), 1000)
   })
 }
 console.log('test E function', E('bd4313fbac40284b'))
