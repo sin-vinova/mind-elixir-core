@@ -126,6 +126,7 @@ function MindElixir({
   primaryNodeHorizontalGap,
   primaryNodeVerticalGap,
   mobileMenu,
+  onChangeText,
 }) {
   vari.newTopicName = newTopicName
   this.mindElixirBox = document.querySelector(el)
@@ -157,6 +158,7 @@ function MindElixir({
   this.overflowHidden = overflowHidden
   this.primaryNodeHorizontalGap = primaryNodeHorizontalGap
   this.primaryNodeVerticalGap = primaryNodeVerticalGap
+  this.onChangeText = onChangeText
 
   this.isUndo = false
   this.bus.addListener('operation', operation => {
@@ -203,6 +205,10 @@ MindElixir.prototype = {
   addParentLink,
   getObjById,
   // node operation
+  addPost: async function (...args) {
+    alert("addPost clicked");
+    console.log(args, 'addPost')
+  },
   insertSibling: async function (...args) {
     if (
       !this.before.insertSibling ||

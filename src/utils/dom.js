@@ -95,6 +95,14 @@ export function createInputDiv(tpc) {
   if (this.direction === LEFT) div.style.right = 0
   div.focus()
 
+  const sefl = this
+
+  div.addEventListener("input", function (e) {
+    if (sefl.onChangeText && typeof sefl.onChangeText == 'function') { 
+      sefl.onChangeText(e.target.textContent)
+    }
+  })
+
   selectText(div)
   this.inputDiv = div
 
