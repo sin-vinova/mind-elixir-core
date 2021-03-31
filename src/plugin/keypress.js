@@ -10,7 +10,9 @@ export default function (mind) {
     },
     113: () => {
       // f2
-      mind.beginEdit()
+      // define between edit and create --> edit
+      let isEdit = true
+      mind.beginEdit(null, isEdit)
     },
     38: () => {
       // up

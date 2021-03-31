@@ -225,6 +225,11 @@ export let addChild = function (el, node) {
     name: 'addChild',
     obj: newNodeObj,
   })
+  // if call API create node fail
+  if (true) {
+    // this.removeNode(newTop.children[0])
+    // this.removeNode(E(newNodeObj.id))
+  }
 }
 // uncertain link disappear sometimes??
 // TODO while direction = SIDE, move up won't change the direction of primary node
@@ -314,7 +319,12 @@ export let removeNode = function (el) {
     let parentT = t.parentNode.parentNode.previousSibling
     if (parentT.tagName !== 'ROOT')
       // root doesn't have epd
-      parentT.children[1].remove()
+      Array.prototype.forEach.call(parentT.children, (element) => {
+        if (element.tagName === 'EPD') {
+          element.remove()
+        }
+      });
+      // parentT.children[1].remove()
     this.selectParent()
   } else {
     // select sibling automatically
@@ -469,10 +479,10 @@ export let moveNodeAfter = function (from, to) {
  * @example
  * beginEdit(E('bd4313fbac40284b'))
  */
-export let beginEdit = function (el) {
+export let beginEdit = function (el, isEdit) {
   let nodeEle = el || this.currentNode
   if (!nodeEle) return
-  this.createInputDiv(nodeEle)
+  this.createInputDiv(nodeEle, isEdit)
 }
 
 export let setNodeTopic = function (tpc, topic) {
