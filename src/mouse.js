@@ -36,12 +36,15 @@ export default function (mind) {
 
   mind.map.addEventListener('dblclick', e => {
     e.preventDefault()
+
+    // define between edit and create --> edit
+    let isEdit = true
     if (!mind.editable) return
     if (
       e.target.parentElement.nodeName === 'T' ||
       e.target.parentElement.nodeName === 'ROOT'
     ) {
-      mind.beginEdit(e.target)
+      mind.beginEdit(e.target, isEdit)
     }
   })
 

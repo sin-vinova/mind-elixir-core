@@ -1,20 +1,24 @@
 import i18n from '../i18n'
 
 export default function (mind, option) {
-  let createLi = (id, name, keyname) => {
+  let createLi = (id, name, keyname, icon) => {
     let li = document.createElement('li')
     li.id = id
-    li.innerHTML = `<span>${name}</span><span>${keyname}</span>`
+    // li.innerHTML = `<span>${name}</span><span>${keyname}</span>`
+    li.innerHTML = `<span>${name}</span>`;
+    if(icon) li.innerHTML = `<i class="${icon}"></i>` + li.innerHTML;
     return li
   }
   let locale = i18n[mind.locale] ? mind.locale : 'en'
 
-  let add_child = createLi('cm-add_child', i18n[locale].addChild, 'tab')
-  let add_sibling = createLi('cm-add_sibling', i18n[locale].addSibling, 'enter')
+  let add_child = createLi('cm-add_child', 'Add Node', 'tab', 'iconAdd')
+  let add_sibling = createLi('cm-add_sibling', 'Add Post', 'enter', 'iconEdit')
+  let add_post = createLi('cm-add_post', 'Add Post', 'enter', 'iconEdit')
   let remove_child = createLi(
     'cm-remove_child',
-    i18n[locale].removeNode,
-    'delete'
+    'Delete',
+    'delete',
+    'iconDelete'
   )
   let focus = createLi('cm-fucus', i18n[locale].focus, '')
   let unfocus = createLi('cm-unfucus', i18n[locale].cancelFocus, '')
@@ -25,17 +29,18 @@ export default function (mind, option) {
   let menuUl = document.createElement('ul')
   menuUl.className = 'menu-list'
   menuUl.appendChild(add_child)
-  menuUl.appendChild(add_sibling)
+  menuUl.appendChild(add_post)
+  // menuUl.appendChild(add_sibling)
   menuUl.appendChild(remove_child)
   if (!option || option.focus) {
     menuUl.appendChild(focus)
     menuUl.appendChild(unfocus)
   }
-  menuUl.appendChild(up)
-  menuUl.appendChild(down)
-  if (!option || option.link) {
-    menuUl.appendChild(link)
-  }
+  // menuUl.appendChild(up)
+  // menuUl.appendChild(down)
+  // if (!option || option.link) {
+  //   menuUl.appendChild(link)
+  // }
   if (option && option.extend) {
     for (let i = 0; i < option.extend.length; i++) {
       let item = option.extend[i]
@@ -46,6 +51,7 @@ export default function (mind, option) {
       }
     }
   }
+
   let menuContainer = document.createElement('cmenu')
   menuContainer.appendChild(menuUl)
   menuContainer.hidden = true
@@ -102,6 +108,10 @@ export default function (mind, option) {
 
   add_child.onclick = e => {
     mind.addChild()
+    menuContainer.hidden = true
+  }
+  add_post.onclick = e => {
+    mind.addPost();
     menuContainer.hidden = true
   }
   add_sibling.onclick = e => {

@@ -20,7 +20,9 @@ export default function linkDiv(primaryNode) {
   var primaryNodeHorizontalGap = this.primaryNodeHorizontalGap || PRIMARY_NODE_HORIZONTAL_GAP
   var primaryNodeVerticalGap = this.primaryNodeVerticalGap || PRIMARY_NODE_VERTICAL_GAP
   console.time('linkDiv')
-  let root = this.root
+  let root = this.root;
+  const widthRoot = root.offsetWidth - 30;
+
   root.style.cssText = `top:${10000 - root.offsetHeight / 2}px;left:${10000 - root.offsetWidth / 2
     }px;`
   let primaryNodeList = this.box.children
@@ -72,12 +74,14 @@ export default function linkDiv(primaryNode) {
 
   // 2. layout primary node, generate primary link
   let path = ''
+  
   for (let i = 0; i < primaryNodeList.length; i++) {
     let x2, y2
     let el = primaryNodeList[i]
     let elOffsetH = el.offsetHeight
-    let Cy
-    if (el.className === 'lhs') {
+    let Cy;
+
+    if (el.className === 'lhs') { 
       el.style.top = base + currentOffsetL + 'px'
       el.style.left =
         10000 -
@@ -105,7 +109,18 @@ export default function linkDiv(primaryNode) {
         C ${LEFT} ${y2} ${LEFT} ${y2} ${LEFT - 20} ${y2} 
           L ${x2} ${y2}`
       } else {
-        path = `M ${10000} ${10000} C 10000 10000 ${10000 + 2 * primaryNodeHorizontalGap * 0.03
+        let positionX = 10000;
+        if(x2 < positionX) positionX += (widthRoot / 2);
+        const minLeft = positionX - (widthRoot / 2);
+
+        let xLine = positionX - Math.random() * widthRoot ;//10000 - (i * 10);
+        
+        do{
+          xLine = positionX - Math.random() * widthRoot ;
+        }while(xLine < minLeft)
+
+
+        path = `M ${xLine} ${10000} C ${10000} ${10000} ${10000 + 2 * primaryNodeHorizontalGap * 0.03
           } ${y2} ${x2} ${y2}`
       }
 
@@ -137,8 +152,19 @@ export default function linkDiv(primaryNode) {
         C ${LEFT} ${y2} ${LEFT} ${y2} ${LEFT + 20} ${y2} 
           L ${x2} ${y2}`
       } else {
-        path = `M ${10000} ${10000} C 10000 10000 ${10000 + 2 * primaryNodeHorizontalGap * 0.03
-          } ${y2} ${x2} ${y2}`
+
+        let positionX = 10000;
+        if(x2 > positionX) positionX -= (widthRoot / 2);
+        const minLeft = positionX - (widthRoot / 2);
+
+        const minRight = positionX + (widthRoot / 2);
+        let xLine = positionX + Math.random() * widthRoot ;//10000 - (i * 10);
+        
+        do{
+          xLine = positionX + Math.random() * widthRoot ;
+        }while(xLine > minRight)
+        
+        path = `M ${xLine} ${10000} C ${xLine} 10000 ${10000 + 2 * primaryNodeHorizontalGap * 0.03} ${y2} ${x2} ${y2}`
       }
       if (shortSide === 'r') {
         currentOffsetR += elOffsetH + shortSideGap
@@ -148,7 +174,7 @@ export default function linkDiv(primaryNode) {
     }
     // set position of expander
     let expander = null
-    console.log('check', el.children[0].children)
+    console.log('check', el.children[0].children, )
     localStorage.setItem('check', el)
     if (
       el 
@@ -205,6 +231,7 @@ export default function linkDiv(primaryNode) {
         let parentOL = parent.offsetLeft
         let parentOW = parent.offsetWidth
         let parentOH = parent.offsetHeight
+
         for (let i = 0; i < children.length; i++) {
           let child = children[i]
           let childT = child.children[0] // t tag inside the child dom
@@ -229,35 +256,40 @@ export default function linkDiv(primaryNode) {
               childTOT + childTOH < parentOT + parentOH / 2 + 50 &&
               childTOT + childTOH > parentOT + parentOH / 2 - 50
             ) {
-              if(children.length === 2){
-                if(!i){
-                  path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2 + TURNPOINT_R} A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 0 ${xMiddle - TURNPOINT_R},${y2}  L ${x2} ${y2}`
-                }else if(!!i){
-                  path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2 - TURNPOINT_R} A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 1 ${xMiddle - TURNPOINT_R},${y2}  L ${x2} ${y2}`
-                }
-              }else{
-                if(!i && children.length > 1){
-                  path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2 + TURNPOINT_R} A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 0 ${xMiddle - TURNPOINT_R},${y2}  L ${x2} ${y2}`
-                }else{
-                  path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2 } L ${x2} ${y2}`
-                }
-              }
+              // if(children.length === 2){
+              //   if(!i){
+              //     // path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2 + TURNPOINT_R} A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 0 ${xMiddle - TURNPOINT_R},${y2}  L ${x2} ${y2}`
+              //   }else if(!!i){
+              //     // path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2 - TURNPOINT_R} A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 1 ${xMiddle - TURNPOINT_R},${y2}  L ${x2} ${y2}`
+              //   }
+              // }else{
+              //   if(!i && children.length > 1){
+              //     // path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2 + TURNPOINT_R} A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 0 ${xMiddle - TURNPOINT_R},${y2}  L ${x2} ${y2}`
+              //   }else{
+              //     path = `M ${x1} ${y1} C ${x1 + 200} ${y1} ${x1 + 2 * 15 * 0.03} ${y2} ${x2} ${y2}`
+              //     // path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2 } L ${x2} ${y2}`
+              //   }
+              // }
+              path = `M ${x1} ${y1} C ${x1} ${y1} ${x1 + 2 * 15 * 0.03} ${y2} ${x2} ${y2}`
             } else if (childTOT + childTOH >= parentOT + parentOH / 2) {
+              path = `M ${x1} ${y1} C ${x1} ${y1} ${x1 + 2 * 15 * 0.03} ${y2} ${x2} ${y2}`
               // 子底部高于父中点
-              path = `M ${x1} ${y1} 
-            L ${xMiddle} ${y1} 
-            L ${xMiddle} ${y2 - TURNPOINT_R} 
-            A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 1 
-            ${xMiddle - TURNPOINT_R},${y2} 
-            L ${x2} ${y2}`
+              // path = `M ${x1} ${y1} 
+              //   L ${xMiddle} ${y1} 
+              //   L ${xMiddle} ${y2 - TURNPOINT_R} 
+              //   A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 1 
+              //   ${xMiddle - TURNPOINT_R},${y2} 
+              //   L ${x2} ${y2}`
             } else {
               // 子底部低于父中点
-              path = `M ${x1} ${y1} 
-            L ${xMiddle} ${y1} 
-            L ${xMiddle} ${y2 + TURNPOINT_R} 
-            A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 0 
-            ${xMiddle - TURNPOINT_R},${y2} 
-            L ${x2} ${y2}`
+              // path = `M ${x1} ${y1} 
+              // L ${xMiddle} ${y1} 
+              // L ${xMiddle} ${y2 + TURNPOINT_R} 
+              // A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 0 
+              // ${xMiddle - TURNPOINT_R},${y2} 
+              // L ${x2} ${y2}`
+
+              path = `M ${x1} ${y1} C ${x1} ${y1} ${x1 + 2 * 15 * 0.03} ${y2} ${x2} ${y2}`
             }
           } else if (direction === 'rhs') {
             x1 = parentOL + parentOW - GAP
@@ -269,33 +301,37 @@ export default function linkDiv(primaryNode) {
               childTOT + childTOH < parentOT + parentOH / 2 + 50 &&
               childTOT + childTOH > parentOT + parentOH / 2 - 50
             ) {
-              if(children.length === 2){
-                if(!i){
-                  path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2 + TURNPOINT_R} A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 1 ${xMiddle + TURNPOINT_R},${y2}  L ${x2} ${y2}`
-                }else if(!!i){
-                  path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2 - TURNPOINT_R} A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 0 ${xMiddle + TURNPOINT_R}, ${y2}   L ${x2} ${y2}`
-                }
-              }else{
-                if(!i && children.length > 1){
-                  path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2 - TURNPOINT_R} A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 1 ${xMiddle - TURNPOINT_R},${y2}  L ${x2} ${y2}`
-                }else{
-                  path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2} L ${x2} ${y2}`
-                }
-              }
+              // if(children.length === 2){
+              //   if(!i){
+              //     path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2 + TURNPOINT_R} A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 1 ${xMiddle + TURNPOINT_R},${y2}  L ${x2} ${y2}`
+              //   }else if(!!i){
+              //     path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2 - TURNPOINT_R} A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 0 ${xMiddle + TURNPOINT_R}, ${y2}   L ${x2} ${y2}`
+              //   }
+              // }else{
+              //   if(!i && children.length > 1){
+              //     path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2 + TURNPOINT_R} A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 1 ${xMiddle + TURNPOINT_R},${y2}  L ${x2} ${y2}`
+              //   }else{
+              //     path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2} L ${x2} ${y2}`
+              //   }
+              // }
+              path = `M ${x1} ${y1} C ${x1} ${y1} ${x1 + 2 * 15 * 0.03} ${y2} ${x2} ${y2}`
             } else if (childTOT + childTOH >= parentOT + parentOH / 2) {
-              path = `M ${x1} ${y1} 
-              L ${xMiddle} ${y1} 
-              L ${xMiddle} ${y2 - TURNPOINT_R} 
-              A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 0 ${xMiddle + TURNPOINT_R
-                  },${y2} 
-              L ${x2} ${y2}`
+              // path = `M ${x1} ${y1} 
+              //   L ${xMiddle} ${y1} 
+              //   L ${xMiddle} ${y2 - TURNPOINT_R} 
+              //   A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 0 ${xMiddle + TURNPOINT_R
+              //       },${y2} 
+              //   L ${x2} ${y2}`
+                path = `M ${x1} ${y1} C ${x1} ${y1} ${x1 + 2 * 15 * 0.03} ${y2} ${x2} ${y2}`
               } else {
-                path = `M ${x1} ${y1} 
-              L ${xMiddle} ${y1} 
-              L ${xMiddle} ${y2 + TURNPOINT_R} 
-              A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 1 ${xMiddle + TURNPOINT_R
-                  },${y2} 
-              L ${x2} ${y2}`
+                // path = `M ${x1} ${y1} 
+                // L ${xMiddle} ${y1} 
+                // L ${xMiddle} ${y2 + TURNPOINT_R} 
+                // A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 1 ${xMiddle + TURNPOINT_R
+                //     },${y2} 
+                // L ${x2} ${y2}`
+
+                path = `M ${x1} ${y1} C ${x1} ${y1} ${x1 + 2 * 15 * 0.03} ${y2} ${x2} ${y2}`
             }
           }
 
