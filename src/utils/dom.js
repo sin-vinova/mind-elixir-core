@@ -76,7 +76,7 @@ export function selectText(div) {
   }
 }
 
-export function createInputDiv(tpc) {
+export function createInputDiv(tpc, isEdit) {
   console.time('createInputDiv')
   if (!tpc) return
   let div = $d.createElement('div')
@@ -126,6 +126,17 @@ export function createInputDiv(tpc) {
     let topic = div.textContent.trim()
     if (topic === '') node.topic = origin
     else node.topic = topic
+
+    console.log('this.editable', this, this.editable)
+    
+    // request API Node
+    if (!isEdit && this.onCreateNodeRequest) {
+      this.onCreateNodeRequest(topic)
+    }
+    if (isEdit && this.onEditNodeRequest) {
+      this.onEditNodeRequest(topic)
+    }
+
     div.remove()
     this.inputDiv = div = null
     this.bus.fire('operation', {

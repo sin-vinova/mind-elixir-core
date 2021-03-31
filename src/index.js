@@ -127,6 +127,9 @@ function MindElixir({
   primaryNodeVerticalGap,
   mobileMenu,
   onChangeText,
+  onCreateNodeRequest,
+  onEditNodeRequest,
+  onDeleteNodeRequest,
 }) {
   vari.newTopicName = newTopicName
   this.mindElixirBox = document.querySelector(el)
@@ -158,7 +161,10 @@ function MindElixir({
   this.overflowHidden = overflowHidden
   this.primaryNodeHorizontalGap = primaryNodeHorizontalGap
   this.primaryNodeVerticalGap = primaryNodeVerticalGap
-  this.onChangeText = onChangeText
+  this.onChangeText = onChangeText || null
+  this.onCreateNodeRequest = onCreateNodeRequest || null
+  this.onEditNodeRequest = onEditNodeRequest || null
+  this.onDeleteNodeRequest = onDeleteNodeRequest || null
 
   this.isUndo = false
   this.bus.addListener('operation', operation => {
