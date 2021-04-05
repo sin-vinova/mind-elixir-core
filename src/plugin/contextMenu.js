@@ -74,12 +74,14 @@ export default function (mind, option) {
         down.className = 'disabled'
         add_sibling.className = 'disabled'
         remove_child.className = 'disabled'
+        add_post.className = 'disabled'
       } else {
         focus.className = ''
         up.className = ''
         down.className = ''
         add_sibling.className = ''
         remove_child.className = ''
+        add_post.className = ''
       }
       mind.selectNode(target)
       menuContainer.hidden = false
@@ -111,7 +113,10 @@ export default function (mind, option) {
     menuContainer.hidden = true
   }
   add_post.onclick = e => {
-    mind.addPost();
+    // mind.addPost();
+    if (mind.onRedirectRoutePost) {
+      mind.onRedirectRoutePost()
+    }
     menuContainer.hidden = true
   }
   add_sibling.onclick = e => {
@@ -121,7 +126,10 @@ export default function (mind, option) {
   }
   remove_child.onclick = e => {
     if (isRoot) return
-    mind.removeNode()
+    if (mind.onDeleteNodeRequest()) {
+      mind.onDeleteNodeRequest()
+    }
+    // mind.removeNode()
     menuContainer.hidden = true
   }
   focus.onclick = e => {

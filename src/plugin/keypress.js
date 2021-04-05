@@ -76,7 +76,12 @@ export default function (mind) {
     if (e.keyCode === 8 || e.keyCode === 46) {
       // del,backspace
       if (mind.currentLink) mind.removeLink()
-      else mind.removeNode()
+      // else mind.removeNode()
+      else {
+        if (mind.onDeleteNodeRequest()) {
+          mind.onDeleteNodeRequest()
+        }
+      }
     } else {
       key2func[e.keyCode] && key2func[e.keyCode](e)
     }

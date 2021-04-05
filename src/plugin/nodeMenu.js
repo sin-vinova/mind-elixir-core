@@ -188,6 +188,9 @@ export default function(mind) {
   mind.bus.addListener('selectNode', function(nodeObj) {
     menuContainer.hidden = false
     // E(nodeObj.id).scrollIntoView({ behavior: "smooth", block: "center", inline: "center" })
+    if (mind.onRedirectPath && mind.isRedirectPath) {
+      mind.onRedirectPath(nodeObj)
+    }
     clearSelect('.palette', 'nmenu-selected')
     clearSelect('.size', 'size-selected')
     clearSelect('.bold', 'size-selected')
