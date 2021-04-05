@@ -118,8 +118,8 @@ export default function linkDiv(primaryNode) {
         do{
           xLine = positionX - Math.random() * widthRoot ;
         }while(xLine < minLeft)
-
-
+        
+        xLine = 10000;
         path = `M ${xLine} ${10000} C ${10000} ${10000} ${10000 + 2 * primaryNodeHorizontalGap * 0.03
           } ${y2} ${x2} ${y2}`
       }
@@ -163,7 +163,8 @@ export default function linkDiv(primaryNode) {
         do{
           xLine = positionX + Math.random() * widthRoot ;
         }while(xLine > minRight)
-        
+
+        xLine = 10000;
         path = `M ${xLine} ${10000} C ${xLine} 10000 ${10000 + 2 * primaryNodeHorizontalGap * 0.03} ${y2} ${x2} ${y2}`
       }
       if (shortSide === 'r') {

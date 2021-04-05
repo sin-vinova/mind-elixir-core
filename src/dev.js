@@ -41,8 +41,8 @@ let mind = new MindElixir({
     },
   },
   primaryLinkStyle: 1,
-  primaryNodeVerticalGap: 15, // 25
-  primaryNodeHorizontalGap: 15, // 65
+  primaryNodeVerticalGap: 25, // 25
+  primaryNodeHorizontalGap: 100, // 65
 })
 
 setTimeout(() => mind.init(), 1000)
