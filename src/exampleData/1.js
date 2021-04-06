@@ -9,7 +9,12 @@ export default {
         id: 'bd4313fbac40284b',
         direction: 0,
         expanded: true,
-        background: '#E21818',
+        // background: '#E21818',
+        style: {
+          color: '',
+          background: '#E21818',
+          fontSize: '40px',
+        },
         children: [
           { topic: 'A mind map core', id: 'beeb823afd6d2114', background: 'rgba(226, 24, 24, 0.7)' },
           { topic: 'Free', id: 'c1f068377de9f3a0', background: 'rgba(226, 24, 24, 0.7)' },
@@ -43,7 +48,12 @@ export default {
               {
                 topic: 'Use it like other mind map application',
                 id: 'c1f09612fd89920d',
-                background: 'rgba(226, 24, 24, 0.7)'
+                // background: 'rgba(226, 24, 24, 0.7)',
+                style: {
+                  color: '',
+                  background: 'green',
+                  fontSize: '20px',
+                },
               },
             ],
           },

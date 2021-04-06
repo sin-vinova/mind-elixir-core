@@ -66,6 +66,20 @@ export let createTopic = function (nodeObj) {
     topic.setAttribute('isBackground', 'true');
     topic.setAttribute('data-color', nodeObj.background);
   }
+  if (nodeObj.style) {
+    if (nodeObj.style.background) {
+      topic.style.background = nodeObj.style.background
+      topic.setAttribute('isBackground', 'true');
+      topic.setAttribute('data-color', nodeObj.style.background);
+    }
+    if (nodeObj.style.color) {
+      topic.setAttribute('isBackground', 'false');
+      topic.style.color = nodeObj.style.color
+    }
+    if (nodeObj.style.fontSize) {
+      topic.style.fontSize = nodeObj.style.fontSize
+    }
+  }
   return topic
 }
 

@@ -186,7 +186,12 @@ export default function(mind) {
     menuContainer.hidden = true
   })
   mind.bus.addListener('selectNode', function(nodeObj) {
-    menuContainer.hidden = false
+    if (nodeObj.parent && nodeObj.parent.root || nodeObj.root) {
+      menuContainer.hidden = false
+    } else {
+      menuContainer.hidden = true
+    }
+    // menuContainer.hidden = false
     // E(nodeObj.id).scrollIntoView({ behavior: "smooth", block: "center", inline: "center" })
     if (mind.onRedirectPath && mind.isRedirectPath) {
       mind.onRedirectPath(nodeObj)
