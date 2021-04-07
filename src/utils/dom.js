@@ -196,10 +196,12 @@ export let createAddNode = function () {
  * @return {ChildrenElement} children element.
  */
 export function createChildren(data, first, direction) {
+  console.log('createChildren', data, first, direction)
   let chldr = $d.createElement('children')
   if (first) {
     chldr = first
   }
+  let background
   for (let i = 0; i < data.length; i++) {
     let nodeObj = data[i]
     let grp = $d.createElement('GRP')
@@ -218,11 +220,21 @@ export function createChildren(data, first, direction) {
     }
     let top = createTop(nodeObj)
     if (nodeObj.children && nodeObj.children.length > 0) {
+      if (nodeObj.parent && nodeObj.parent.root ) {
+        console.log('cccccccccc', nodeObj)
+        if (nodeObj.style && nodeObj.style.background) {
+          background = nodeObj.style.background
+        }
+      } else {
+
+      }
+      console.log('backgroundbackground', background)
       top.appendChild(createExpander(nodeObj.expanded))
       top.appendChild(createAddNode())
       grp.appendChild(top)
       if (nodeObj.expanded !== false) {
         let children = createChildren(nodeObj.children)
+        console.log('childrenchildren', nodeObj)
         grp.appendChild(children)
       }
     } else {

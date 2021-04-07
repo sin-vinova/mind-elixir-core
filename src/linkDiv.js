@@ -176,7 +176,6 @@ export default function linkDiv(primaryNode) {
     // set position of expander
     let expander = null
     console.log('check', el.children[0].children, )
-    localStorage.setItem('check', el)
     if (
       el 
       && el.children 
@@ -202,6 +201,7 @@ export default function linkDiv(primaryNode) {
       }
     }
     const colorLine = el.children[0] && el.children[0].querySelector('t tpc') && el.children[0].querySelector('t tpc').getAttribute('data-color') || '#666'
+    console.log('colorLine', colorLine)
     this.svg2nd.appendChild(createMainPath(path, colorLine))
   }
   

@@ -102,6 +102,7 @@ export default function(mind) {
       clearSelect('.palette', 'nmenu-selected')
       e.target.className = 'palette nmenu-selected'
       if (bgOrFont === 'font') {
+        console.log('e.target.dataset', e.target)
         nodeObj.style.color = e.target.dataset.color
       } else if (bgOrFont === 'background') {
         nodeObj.style.background = e.target.dataset.color
@@ -113,9 +114,12 @@ export default function(mind) {
       e.target.className = 'background selected'
       e.target.previousElementSibling.className = 'font'
       if (nodeObj.style && nodeObj.style.background)
+      {
+        console.log('asasasasasasas', menuContainer)
         menuContainer.querySelector(
           '.palette[data-color="' + nodeObj.style.background + '"]'
         ).className = 'palette nmenu-selected'
+      }
     } else if (e.target.className === 'font') {
       clearSelect('.palette', 'nmenu-selected')
       bgOrFont = 'font'
@@ -196,6 +200,7 @@ export default function(mind) {
     if (mind.onRedirectPath && mind.isRedirectPath) {
       mind.onRedirectPath(nodeObj)
     }
+    console.log('nodeObj', nodeObj)
     clearSelect('.palette', 'nmenu-selected')
     clearSelect('.size', 'size-selected')
     clearSelect('.bold', 'size-selected')
