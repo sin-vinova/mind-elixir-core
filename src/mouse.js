@@ -34,19 +34,25 @@ export default function (mind) {
     }
   })
 
-  mind.map.addEventListener('dblclick', e => {
-    e.preventDefault()
+  /*
+    // #1.0.0
+    // Not allow edit when double click
+    // Change: Edit by show popup
+  */
 
-    // define between edit and create --> edit
-    let isEdit = true
-    if (!mind.editable) return
-    if (
-      e.target.parentElement.nodeName === 'T' ||
-      e.target.parentElement.nodeName === 'ROOT'
-    ) {
-      mind.beginEdit(e.target, isEdit)
-    }
-  })
+  // mind.map.addEventListener('dblclick', e => {
+  //   e.preventDefault()
+
+  //   // define between edit and create --> edit
+  //   let isEdit = true
+  //   if (!mind.editable) return
+  //   if (
+  //     e.target.parentElement.nodeName === 'T' ||
+  //     e.target.parentElement.nodeName === 'ROOT'
+  //   ) {
+  //     mind.beginEdit(e.target, isEdit)
+  //   }
+  // })
 
   /**
    * drag and move
