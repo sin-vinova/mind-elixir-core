@@ -14,7 +14,6 @@ export default function (mind, option) {
   let add_child = createLi('cm-add_child', 'Add Node', 'tab', 'iconAdd')
   let add_sibling = createLi('cm-add_sibling', 'Add Post', 'enter', 'iconEdit')
   let add_post = createLi('cm-add_post', 'Add Post', 'enter', 'iconEdit')
-  let edit_node = createLi('cm-edit_node', 'Edit Post', 'enter', 'iconEdit')
   let remove_child = createLi(
     'cm-remove_child',
     'Delete',
@@ -31,7 +30,6 @@ export default function (mind, option) {
   menuUl.className = 'menu-list'
   menuUl.appendChild(add_child)
   menuUl.appendChild(add_post)
-  menuUl.appendChild(edit_node)
   // menuUl.appendChild(add_sibling)
   menuUl.appendChild(remove_child)
   if (!option || option.focus) {
@@ -118,12 +116,6 @@ export default function (mind, option) {
     // mind.addPost();
     if (mind.onRedirectRoutePost) {
       mind.onRedirectRoutePost()
-    }
-    menuContainer.hidden = true
-  }
-  edit_node.onclick = e => {
-    if (mind.onShowPopupEditNode) {
-      mind.onShowPopupEditNode()
     }
     menuContainer.hidden = true
   }
