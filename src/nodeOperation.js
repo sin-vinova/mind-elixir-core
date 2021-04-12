@@ -12,7 +12,7 @@ import {
   moveNodeAfterObj,
 } from './utils/index'
 import { findEle, createExpander, createGroup } from './utils/dom'
-import { LEFT, RIGHT, SIDE } from './const'
+import { LEFT, RIGHT, RIGHT_TREE, SIDE } from './const'
 
 // todo copy node
 
@@ -182,8 +182,8 @@ export let addChild = function (el, node) {
   else nodeObj.children = [newNodeObj]
   addParentLink(this.nodeData)
   let top = nodeEle.parentElement
-
-  let { grp, top: newTop } = createGroup(newNodeObj)
+  console.log(this)
+  let { grp, top: newTop } = createGroup(newNodeObj,this.direction,nodeEle.tagName === 'ROOT')
 
   if (top.tagName === 'T') {
     let flag = false;
@@ -493,9 +493,10 @@ export let setNodeTopic = function (tpc, topic) {
 
 // Judge L or R
 export function processPrimaryNode(primaryNode, obj) {
+  console.log("cccc")
   if (this.direction === LEFT) {
     primaryNode.className = 'lhs'
-  } else if (this.direction === RIGHT) {
+  } else if (this.direction === RIGHT || this.direction === RIGHT_TREE) {
     primaryNode.className = 'rhs'
   } else if (this.direction === SIDE) {
     let l = $d.querySelectorAll('.lhs').length

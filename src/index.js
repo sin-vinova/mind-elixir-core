@@ -24,6 +24,7 @@ import {
   cancelFocus,
   initLeft,
   initRight,
+  initRightTree,
   initSide,
   setLocale,
   enableEdit,
@@ -55,7 +56,7 @@ import {
   hideLinkController,
   showLinkController,
 } from './linkOperation'
-import { LEFT, RIGHT, SIDE } from './const'
+import { LEFT, RIGHT, SIDE, RIGHT_TREE } from './const'
 import example from './exampleData/1'
 import example2 from './exampleData/2'
 import example3 from './exampleData/1.cn'
@@ -331,6 +332,7 @@ MindElixir.prototype = {
   initLeft,
   initRight,
   initSide,
+  initRightTree,
   setLocale,
   enableEdit,
   disableEdit,
@@ -414,6 +416,7 @@ MindElixir.prototype = {
 MindElixir.LEFT = LEFT
 MindElixir.RIGHT = RIGHT
 MindElixir.SIDE = SIDE
+MindElixir.RIGHT_TREE = RIGHT_TREE
 /**
  * @memberof MindElixir
  * @static

@@ -1,6 +1,7 @@
 export const LEFT = 0
 export const RIGHT = 1
 export const SIDE = 2
+export const RIGHT_TREE = 3
 export const DOWN = 3
 export const GAP = 15
 export const PRIMARY_NODE_HORIZONTAL_GAP = 65

@@ -3,6 +3,7 @@ import { findEle } from './utils/dom'
 import {
   SIDE,
   GAP,
+  RIGHT_TREE,
   TURNPOINT_R,
   PRIMARY_NODE_HORIZONTAL_GAP,
   PRIMARY_NODE_VERTICAL_GAP,
@@ -37,7 +38,8 @@ export default function linkDiv(primaryNode) {
   let totalHeightL = 0
   let totalHeightR = 0
   let base
-
+  const colorLineRoot = '#B5B5B5'
+  const rootDirection = this.direction
   if (this.direction === SIDE) {
     let countL = 0
     let countR = 0
@@ -130,27 +132,52 @@ export default function linkDiv(primaryNode) {
         currentOffsetL += elOffsetH + primaryNodeVerticalGap
       }
     } else {
-      el.style.top = base + currentOffsetR + 'px'
+      if(this.direction === RIGHT_TREE){
+        base =10000
+      }
+      if(this.direction === RIGHT_TREE ){
+        const topTree = i===0 ? elOffsetH/2 - el.children[0].offsetHeight +10 : - el.children[0].offsetHeight +10
+        el.style.top = base + currentOffsetR + topTree+ 'px'
+      }else
+        el.style.top = base + currentOffsetR + 'px'
       el.style.left =
         10000 + root.offsetWidth / 2 + primaryNodeHorizontalGap + 'px'
       x2 = 10000 + root.offsetWidth / 2 + primaryNodeHorizontalGap + 15 // padding
-      y2 = base + currentOffsetR + elOffsetH / 2
+      if(this.direction === RIGHT_TREE && i!==0){
+        y2 = base + currentOffsetR
+      }else
+        y2 = base + currentOffsetR + elOffsetH / 2
+      
 
       let LEFT = 10000
       if (this.primaryLinkStyle === 2) {
         if (this.direction === SIDE) {
           LEFT = 10000 + root.offsetWidth / 6
         }
-        if (y2 < 10000)
-          path += `M ${LEFT} 10000
-         L ${LEFT} ${y2 + 20} 
-        C ${LEFT} ${y2} ${LEFT} ${y2} ${LEFT + 20} ${y2} 
-          L ${x2} ${y2}`
-        else
-          path += `M ${LEFT} 10000
-         L ${LEFT} ${y2 - 20} 
-        C ${LEFT} ${y2} ${LEFT} ${y2} ${LEFT + 20} ${y2} 
-          L ${x2} ${y2}`
+        if (y2 < 10000){
+          if(this.direction === RIGHT_TREE)
+            path += `M ${LEFT} 10000
+            L ${LEFT} ${y2} 
+           
+            L ${x2} ${y2}`
+          else
+            path += `M ${LEFT} 10000
+            L ${LEFT} ${y2 + 20} 
+            C ${LEFT} ${y2} ${LEFT} ${y2} ${LEFT + 20} ${y2} 
+            L ${x2} ${y2}`
+        }
+        else{
+          if(this.direction === RIGHT_TREE)
+            path += `M ${LEFT} 10000
+            L ${LEFT} ${y2} 
+            L ${x2} ${y2}`
+          else
+            path += `M ${LEFT} 10000
+            L ${LEFT} ${y2 - 20} 
+            C ${LEFT} ${y2} ${LEFT} ${y2} ${LEFT + 20} ${y2} 
+            L ${x2} ${y2}`
+          
+        }
       } else {
 
         let positionX = 10000;
@@ -169,7 +196,10 @@ export default function linkDiv(primaryNode) {
       if (shortSide === 'r') {
         currentOffsetR += elOffsetH + shortSideGap
       } else {
-        currentOffsetR += elOffsetH + primaryNodeVerticalGap
+        if(this.direction === RIGHT_TREE && i ===0)
+          currentOffsetR += elOffsetH + primaryNodeVerticalGap +elOffsetH/2
+        else
+          currentOffsetR += elOffsetH + primaryNodeVerticalGap
       }
     }
     // set position of expander
@@ -201,7 +231,10 @@ export default function linkDiv(primaryNode) {
       }
     }
     const colorLine = el.children[0] && el.children[0].querySelector('t tpc') && el.children[0].querySelector('t tpc').getAttribute('data-color') || '#666'
-    this.svg2nd.appendChild(createMainPath(path, colorLine))
+    if(rootDirection === RIGHT_TREE)
+      this.svg2nd.appendChild(createMainPath(path, colorLineRoot))
+    else
+      this.svg2nd.appendChild(createMainPath(path, colorLine))
   }
   
   // this.svg2nd.appendChild(createMainPath(path, undefined))
@@ -295,48 +328,59 @@ export default function linkDiv(primaryNode) {
             x1 = parentOL + parentOW - GAP
             xMiddle = parentOL + parentOW
             // x2 = parentOL + parentOW + childT.offsetWidth
-            x2 = parentOL + parentOW + 15
+            if(rootDirection === RIGHT_TREE)
+              x2 = parentOL + parentOW + 75
+            else
+              x2 = parentOL + parentOW + 15 
 
-            if (
-              childTOT + childTOH < parentOT + parentOH / 2 + 50 &&
-              childTOT + childTOH > parentOT + parentOH / 2 - 50
-            ) {
-              // if(children.length === 2){
-              //   if(!i){
-              //     path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2 + TURNPOINT_R} A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 1 ${xMiddle + TURNPOINT_R},${y2}  L ${x2} ${y2}`
-              //   }else if(!!i){
-              //     path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2 - TURNPOINT_R} A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 0 ${xMiddle + TURNPOINT_R}, ${y2}   L ${x2} ${y2}`
-              //   }
-              // }else{
-              //   if(!i && children.length > 1){
-              //     path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2 + TURNPOINT_R} A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 1 ${xMiddle + TURNPOINT_R},${y2}  L ${x2} ${y2}`
-              //   }else{
-              //     path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2} L ${x2} ${y2}`
-              //   }
-              // }
-              path = `M ${x1} ${y1} C ${x1} ${y1} ${x1 + 2 * 15 * 0.03} ${y2} ${x2} ${y2}`
-            } else if (childTOT + childTOH >= parentOT + parentOH / 2) {
-              // path = `M ${x1} ${y1} 
-              //   L ${xMiddle} ${y1} 
-              //   L ${xMiddle} ${y2 - TURNPOINT_R} 
-              //   A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 0 ${xMiddle + TURNPOINT_R
-              //       },${y2} 
-              //   L ${x2} ${y2}`
+            //path for child node in RIGHT TREE MODE
+            if(rootDirection === RIGHT_TREE)
+              path = `M ${x1} ${y1} L ${(x1+x2)/2} ${y1} L ${(x1+x2)/2} ${y2} L ${x2} ${y2}`
+            else{
+              if (
+                childTOT + childTOH < parentOT + parentOH / 2 + 50 &&
+                childTOT + childTOH > parentOT + parentOH / 2 - 50
+              ) {
+                // if(children.length === 2){
+                //   if(!i){
+                //     path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2 + TURNPOINT_R} A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 1 ${xMiddle + TURNPOINT_R},${y2}  L ${x2} ${y2}`
+                //   }else if(!!i){
+                //     path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2 - TURNPOINT_R} A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 0 ${xMiddle + TURNPOINT_R}, ${y2}   L ${x2} ${y2}`
+                //   }
+                // }else{
+                //   if(!i && children.length > 1){
+                //     path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2 + TURNPOINT_R} A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 1 ${xMiddle + TURNPOINT_R},${y2}  L ${x2} ${y2}`
+                //   }else{
+                //     path = `M ${x1} ${y1} L ${xMiddle} ${y1} L ${xMiddle} ${y2} L ${x2} ${y2}`
+                //   }
+                // }
                 path = `M ${x1} ${y1} C ${x1} ${y1} ${x1 + 2 * 15 * 0.03} ${y2} ${x2} ${y2}`
-              } else {
+              } else if (childTOT + childTOH >= parentOT + parentOH / 2) {
                 // path = `M ${x1} ${y1} 
-                // L ${xMiddle} ${y1} 
-                // L ${xMiddle} ${y2 + TURNPOINT_R} 
-                // A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 1 ${xMiddle + TURNPOINT_R
-                //     },${y2} 
-                // L ${x2} ${y2}`
+                //   L ${xMiddle} ${y1} 
+                //   L ${xMiddle} ${y2 - TURNPOINT_R} 
+                //   A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 0 ${xMiddle + TURNPOINT_R
+                //       },${y2} 
+                //   L ${x2} ${y2}`
+                  path = `M ${x1} ${y1} C ${x1} ${y1} ${x1 + 2 * 15 * 0.03} ${y2} ${x2} ${y2}`
+                } else {
+                  // path = `M ${x1} ${y1} 
+                  // L ${xMiddle} ${y1} 
+                  // L ${xMiddle} ${y2 + TURNPOINT_R} 
+                  // A ${TURNPOINT_R} ${TURNPOINT_R} 0 0 1 ${xMiddle + TURNPOINT_R
+                  //     },${y2} 
+                  // L ${x2} ${y2}`
 
-                path = `M ${x1} ${y1} C ${x1} ${y1} ${x1 + 2 * 15 * 0.03} ${y2} ${x2} ${y2}`
+                  path = `M ${x1} ${y1} C ${x1} ${y1} ${x1 + 2 * 15 * 0.03} ${y2} ${x2} ${y2}`
+              }
             }
           }
 
           const colorLine = child && child.children[0] && child.children[0].querySelector('t tpc') && child.children[0].querySelector('t tpc').getAttribute('data-color') || '#555';
-          svg.appendChild(createPath(path, colorLine))
+          if(rootDirection)
+            svg.appendChild(createPath(path, colorLineRoot))
+          else
+            svg.appendChild(createPath(path, colorLine))
 
           // let expander = childT.children[1]
           let expander = null;

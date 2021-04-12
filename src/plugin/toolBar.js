@@ -42,10 +42,12 @@ function createToolBarLTContainer(mind) {
   let l = createButton('tbltl', 'left')
   let r = createButton('tbltr', 'right')
   let s = createButton('tblts', 'side')
+  let rightTree = createButton('tbltRT', 'right')
   
   toolBarLTContainer.appendChild(l)
   toolBarLTContainer.appendChild(r)
   toolBarLTContainer.appendChild(s)
+  toolBarLTContainer.appendChild(rightTree)
   toolBarLTContainer.className = 'lt'
   l.onclick = () => {
     mind.initLeft()
@@ -55,6 +57,9 @@ function createToolBarLTContainer(mind) {
   }
   s.onclick = () => {
     mind.initSide()
+  }
+  rightTree.onclick = () =>{
+    mind.initRightTree()
   }
   return toolBarLTContainer
 }

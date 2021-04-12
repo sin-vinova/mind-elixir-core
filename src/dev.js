@@ -4,7 +4,7 @@ import { exportSvg, exportPng } from '../painter/index'
 let mind = new MindElixir({
   el: '#map',
   newTopicName: '子节点',
-  direction: MindElixir.SIDE,
+  direction: MindElixir.RIGHT_TREE,
   // direction: MindElixir.RIGHT,
   // data: MindElixir.new('new topic'),
   data: MindElixir.example,
@@ -40,7 +40,7 @@ let mind = new MindElixir({
       return true
     },
   },
-  primaryLinkStyle: 1,
+  primaryLinkStyle: 2,
   primaryNodeVerticalGap: 15, // 25
   primaryNodeHorizontalGap: 15, // 65
 })

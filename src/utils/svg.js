@@ -4,7 +4,7 @@ export let createMainPath = function (d, colorLine='#666') {
   path.setAttribute('d', d)
   path.setAttribute('stroke', colorLine)
   path.setAttribute('fill', 'none')
-  path.setAttribute('stroke-width', '2')
+  path.setAttribute('stroke-width', '1.5')
   return path
 }
 
@@ -32,7 +32,7 @@ export let createPath = function (d, colorLine='#555') {
   path.setAttribute('stroke', colorLine)
   path.setAttribute('fill', 'none')
   path.setAttribute('stroke-linecap', 'square')
-  path.setAttribute('stroke-width', '2')
+  path.setAttribute('stroke-width', '1.5')
   path.setAttribute('transform', 'translate(0.5,-0.5)')
   // adding translate(0.5,-0.5) can fix render error on windows, but i still dunno why
   return path

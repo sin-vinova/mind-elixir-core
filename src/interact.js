@@ -290,6 +290,11 @@ export let initSide = function () {
   this.init()
 }
 
+export let initRightTree = function () {
+  this.direction = 3
+  this.init()
+}
+
 /**
  * @function
  * @instance

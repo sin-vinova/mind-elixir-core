@@ -1,4 +1,4 @@
-import { LEFT, RIGHT, SIDE } from '../const'
+import { LEFT, RIGHT, SIDE,RIGHT_TREE } from '../const'
 import vari from '../var'
 
 // DOM manipulation
@@ -8,9 +8,9 @@ export let findEle = (id, me) => {
   return scope.querySelector(`[data-nodeid=me${id}]`)
 }
 
-export let createGroup = function (node) {
+export let createGroup = function (node,direction,deepFirstChild) {
   let grp = $d.createElement('GRP')
-  let top = createTop(node)
+  let top = createTop(node,direction,deepFirstChild)
   grp.appendChild(top)
   if (node.children && node.children.length > 0) {
     top.appendChild(createExpander(node.expanded))
@@ -24,9 +24,19 @@ export let createGroup = function (node) {
   return { grp, top }
 }
 
-export let createTop = function (nodeObj) {
+export let createTop = function (nodeObj,direction,deepFirstChild) {
   let top = $d.createElement('t')
   let tpc = createTopic(nodeObj)
+  if(direction && direction ===RIGHT_TREE){
+    if(!deepFirstChild){
+      tpc.style.marginLeft = '60px'
+    }
+    top.style.verticalAlign = 'top'
+  }
+  else
+    top.style.verticalAlign = 'middle'
+  
+    
   // TODO allow to add online image
   if (nodeObj.style) {
     tpc.style.color = nodeObj.style.color
@@ -182,17 +192,21 @@ export let createAddNode = function () {
  * @return {ChildrenElement} children element.
  */
 export function createChildren(data, first, direction) {
-  let chldr = $d.createElement('children')
+  let chldr = $d.createElement('children') 
   if (first) {
     chldr = first
   }
+  if(direction && direction ===RIGHT_TREE)
+    chldr.style.verticalAlign  = 'top'
+  else
+    chldr.style.verticalAlign = 'middle'
   for (let i = 0; i < data.length; i++) {
     let nodeObj = data[i]
     let grp = $d.createElement('GRP')
     if (first) {
       if (direction === LEFT) {
         grp.className = 'lhs'
-      } else if (direction === RIGHT) {
+      } else if (direction === RIGHT || direction === RIGHT_TREE) {
         grp.className = 'rhs'
       } else if (direction === SIDE) {
         if (nodeObj.direction === LEFT) {
@@ -202,13 +216,13 @@ export function createChildren(data, first, direction) {
         }
       }
     }
-    let top = createTop(nodeObj)
+    let top = createTop(nodeObj,direction,first)
     if (nodeObj.children && nodeObj.children.length > 0) {
       top.appendChild(createExpander(nodeObj.expanded))
       top.appendChild(createAddNode())
       grp.appendChild(top)
       if (nodeObj.expanded !== false) {
-        let children = createChildren(nodeObj.children)
+        let children = createChildren(nodeObj.children,false,direction)
         grp.appendChild(children)
       }
     } else {
