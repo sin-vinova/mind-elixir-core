@@ -291,6 +291,7 @@ export let initSide = function () {
 }
 
 export let initRightTree = function () {
+  this.primaryLinkStyle =2
   this.direction = 3
   this.init()
 }

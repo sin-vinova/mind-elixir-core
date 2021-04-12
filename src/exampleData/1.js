@@ -9,7 +9,12 @@ export default {
         id: 'bd4313fbac40284b',
         direction: 0,
         expanded: true,
-        background: '#E21818',
+        // background: '#E21818',
+        style: {
+          color: '',
+          background: '#E21818',
+          fontSize: '40px',
+        },
         children: [
           { topic: 'A mind map core', id: 'beeb823afd6d2114', background: 'rgba(226, 24, 24, 0.7)' },
           { topic: 'Free', id: 'c1f068377de9f3a0', background: 'rgba(226, 24, 24, 0.7)' },
@@ -43,7 +48,12 @@ export default {
               {
                 topic: 'Use it like other mind map application',
                 id: 'c1f09612fd89920d',
-                background: 'rgba(226, 24, 24, 0.7)'
+                // background: 'rgba(226, 24, 24, 0.7)',
+                style: {
+                  color: '',
+                  background: 'green',
+                  fontSize: '20px',
+                },
               },
             ],
           },
@@ -56,7 +66,7 @@ export default {
         expanded: true,
         background: '#E25376',
         children: [
-          { topic: 'tab - Create a child node', id: 'bd1b6892bcab126a', background: '#4D9BD9' },
+          { topic: 'tab - Create a child node', id: 'bd1b6892bcab126a', background: '#4D9BD9',style:{fontSize: 40} },
           { topic: 'enter - Create a sibling node', id: 'bd1b6b632a434b27', background: '#4D9BD9' },
           { topic: 'del - Remove a node', id: 'bd1b983085187c0a', background: '#4D9BD9' },
         ],
@@ -200,7 +210,7 @@ export default {
         topic: 'Caution',
         id: 'bd42dad21aaf6bae',
         direction: 0,
-        style: { background: '#f1c40e' },
+        style: { background: '#f1c40e',fontSize: '20px' },
         expanded: true,
         children: [
           {

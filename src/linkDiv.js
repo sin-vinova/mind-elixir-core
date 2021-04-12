@@ -120,8 +120,8 @@ export default function linkDiv(primaryNode) {
         do{
           xLine = positionX - Math.random() * widthRoot ;
         }while(xLine < minLeft)
-
-
+        
+        xLine = 10000;
         path = `M ${xLine} ${10000} C ${10000} ${10000} ${10000 + 2 * primaryNodeHorizontalGap * 0.03
           } ${y2} ${x2} ${y2}`
       }
@@ -133,7 +133,7 @@ export default function linkDiv(primaryNode) {
       }
     } else {
       if(this.direction === RIGHT_TREE){
-        base =10000
+        base = 10000
       }
       if(this.direction === RIGHT_TREE ){
         const topTree = i===0 ? elOffsetH/2 - el.children[0].offsetHeight +10 : - el.children[0].offsetHeight +10
@@ -190,7 +190,8 @@ export default function linkDiv(primaryNode) {
         do{
           xLine = positionX + Math.random() * widthRoot ;
         }while(xLine > minRight)
-        
+
+        xLine = 10000;
         path = `M ${xLine} ${10000} C ${xLine} 10000 ${10000 + 2 * primaryNodeHorizontalGap * 0.03} ${y2} ${x2} ${y2}`
       }
       if (shortSide === 'r') {
