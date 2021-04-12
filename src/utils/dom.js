@@ -109,33 +109,36 @@ export function selectText(div) {
 export function createInputDiv(tpc, isEdit) {
   console.time('createInputDiv')
   if (!tpc) return
-  let div = $d.createElement('div')
+  // let div = $d.createElement('div')
   let origin = tpc.childNodes[0].textContent
-  tpc.appendChild(div)
-  div.innerHTML = origin
-  div.contentEditable = true
-  div.spellcheck = false
-  div.style.cssText = `min-width:${tpc.offsetWidth - 8}px;`
-  if (this.direction === LEFT) div.style.right = 0
-  div.focus()
-
+  // console.log(tpc.childNodes[0],"[[[[[[")
+  tpc.contentEditable =true
+  
+  // tpc.appendChild(div)
+  // div.innerHTML = origin
+  // div.contentEditable = true
+  tpc.spellcheck = false
+  // div.style.cssText = `min-width:${tpc.offsetWidth - 8}px;`
+  // if (this.direction === LEFT) div.style.right = 0
+  tpc.focus()
   const sefl = this
 
-  div.addEventListener("input", function (e) {
+  tpc.addEventListener("input", function (e) {
     if (sefl.onChangeText && typeof sefl.onChangeText == 'function') { 
       sefl.onChangeText(e.target.textContent)
     }
+    sefl.linkDiv()
   })
 
-  selectText(div)
-  this.inputDiv = div
+  selectText(tpc)
+  // this.inputDiv = tpc
 
   this.bus.fire('operation', {
     name: 'beginEdit',
     obj: tpc.nodeObj,
   })
 
-  div.addEventListener('keydown', e => {
+  tpc.addEventListener('keydown', e => {
     let key = e.keyCode
     if (key === 8) {
       // 不停止冒泡冒到document就把节点删了
@@ -146,18 +149,18 @@ export function createInputDiv(tpc, isEdit) {
       if (e.shiftKey) return
       
       e.preventDefault()
-      this.inputDiv.blur()
+      tpc.blur()
       this.map.focus()
     }
   })
-  div.addEventListener('blur', () => {
-    if (!div) return // 防止重复blur
+  tpc.addEventListener('blur', () => {
+    if (!tpc) return // 防止重复blur
     let node = tpc.nodeObj
-    let topic = div.textContent.trim()
+    let topic = tpc.textContent.trim()
     if (topic === '') node.topic = origin
     else node.topic = topic
 
-    console.log('this.editable', this, this.editable)
+    // console.log('this.editable', this, this.editable)
     
     // request API Node
     if (!isEdit && this.onCreateNodeRequest) {
@@ -167,8 +170,8 @@ export function createInputDiv(tpc, isEdit) {
       this.onEditNodeRequest(topic)
     }
 
-    div.remove()
-    this.inputDiv = div = null
+    // div.remove()
+    // this.inputDiv = null
     this.bus.fire('operation', {
       name: 'finishEdit',
       obj: node,
@@ -181,6 +184,74 @@ export function createInputDiv(tpc, isEdit) {
   console.timeEnd('createInputDiv')
 }
 
+
+
+
+// export function createInputDiv(tpc, isEdit) {
+//   console.time('createInputDiv')
+//   if (!tpc) return
+//   let div = $d.createElement('div')
+//   let origin = tpc.childNodes[0].textContent
+//   tpc.appendChild(div)
+//   div.innerHTML = origin
+//   div.contentEditable = true
+//   div.spellcheck = false
+//   div.style.cssText = `min-width:${tpc.offsetWidth - 8}px;`
+//   if (this.direction === LEFT) div.style.right = 0
+//   div.focus()
+//   const sefl = this
+//   div.addEventListener("input", function (e) {
+//     if (sefl.onChangeText && typeof sefl.onChangeText == 'function') { 
+//       sefl.onChangeText(e.target.textContent)
+//     }
+//   })
+//   selectText(div)
+//   this.inputDiv = div
+//   this.bus.fire('operation', {
+//     name: 'beginEdit',
+//     obj: tpc.nodeObj,
+//   })
+//   div.addEventListener('keydown', e => {
+//     let key = e.keyCode
+//     if (key === 8) {
+//       // 不停止冒泡冒到document就把节点删了
+//       e.stopPropagation()
+//     } else if (key === 13 || key === 9) {
+//       // enter & tab
+//       // keep wrap for shift enter
+//       if (e.shiftKey) return
+//       e.preventDefault()
+//       this.inputDiv.blur()
+//       this.map.focus()
+//     }
+//   })
+//   div.addEventListener('blur', () => {
+//     if (!div) return // 防止重复blur
+//     let node = tpc.nodeObj
+//     let topic = div.textContent.trim()
+//     if (topic === '') node.topic = origin
+//     else node.topic = topic
+//     console.log('this.editable', this, this.editable)
+//     // request API Node
+//     if (!isEdit && this.onCreateNodeRequest) {
+//       this.onCreateNodeRequest(topic)
+//     }
+//     if (isEdit && this.onEditNodeRequest) {
+//       this.onEditNodeRequest(topic)
+//     }
+//     div.remove()
+//     this.inputDiv = div = null
+//     this.bus.fire('operation', {
+//       name: 'finishEdit',
+//       obj: node,
+//       origin,
+//     })
+//     if (topic === origin) return // 没有修改不做处理
+//     tpc.childNodes[0].textContent = node.topic
+//     this.linkDiv()
+//   })
+//   console.timeEnd('createInputDiv')
+// }
 export let createExpander = function (expanded) {
   let expander = $d.createElement('epd')
   // 包含未定义 expanded 的情况，未定义视为展开

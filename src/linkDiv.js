@@ -136,7 +136,7 @@ export default function linkDiv(primaryNode) {
         base = 10000
       }
       if(this.direction === RIGHT_TREE ){
-        const topTree = i===0 ? elOffsetH/2 - el.children[0].offsetHeight +10 : - el.children[0].offsetHeight +10
+        const topTree = i===0 ? elOffsetH/2 -10 - el.children[0].offsetHeight/2 : -10  - el.children[0].offsetHeight/2
         el.style.top = base + currentOffsetR + topTree+ 'px'
       }else
         el.style.top = base + currentOffsetR + 'px'
