@@ -196,8 +196,12 @@ export let addChild = function (el, node) {
     });
     if (!flag) {
       let c = $d.createElement('children')
+      if(this.direction === RIGHT_TREE)
+        c.style.verticalAlign = 'top'
+      else
+        c.style.verticalAlign = 'middle'
       c.appendChild(grp)
-      top.appendChild(createExpander(true))
+      top.appendChild(createExpander(true, this.direction))
       top.parentElement.insertBefore(c, top.nextSibling)
     }
     // if (top.children[2]) {
@@ -404,8 +408,12 @@ export let moveNode = function (from, to) {
     });
     if (!flag) {
       let c = $d.createElement('children')
+      if(this.direction === RIGHT_TREE)
+        c.style.verticalAlign = 'top'
+      else
+        c.style.verticalAlign = 'middle'
       c.appendChild(fromTop.parentNode)
-      toTop.appendChild(createExpander(true))
+      toTop.appendChild(createExpander(true, this.direction))
       toTop.parentElement.insertBefore(c, toTop.nextSibling)
     }
 

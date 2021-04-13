@@ -14,13 +14,13 @@ export let createGroup = function (node,direction,deepFirstChild) {
   grp.appendChild(top)
   if (node.children && node.children.length > 0) {
     top.appendChild(createExpander(node.expanded))
-    top.appendChild(createAddNode())
+    top.appendChild(createAddNode(direction,deepFirstChild))
     if (node.expanded !== false) {
       let children = createChildren(node.children)
       grp.appendChild(children)
     }
   }
-  top.appendChild(createAddNode())
+  top.appendChild(createAddNode(direction,deepFirstChild))
   return { grp, top }
 }
 
@@ -262,10 +262,16 @@ export let createExpander = function (expanded) {
   return expander
 }
 
-export let createAddNode = function () {
+export let createAddNode = function (direction,first) {
+  console.log("hhhhhhh")
   let addNode = $d.createElement('add')
   addNode.innerHTML = "+"
   addNode.className = "add"
+  console.log(direction)
+  if(direction === RIGHT_TREE && !first)
+    addNode.style.left = 'calc(50% + 30px)'
+  else
+    addNode.style.left = '50%'
   return addNode
 }
 
@@ -305,7 +311,7 @@ export function createChildren(data, first, direction) {
     let top = createTop(nodeObj,direction,first)
     if (nodeObj.children && nodeObj.children.length > 0) {
       top.appendChild(createExpander(nodeObj.expanded))
-      top.appendChild(createAddNode())
+      top.appendChild(createAddNode(direction,first))
       grp.appendChild(top)
       if (nodeObj.expanded !== false) {
         let children = createChildren(nodeObj.children,false,direction)
@@ -314,7 +320,7 @@ export function createChildren(data, first, direction) {
     } else {
       // top.appendChild(createAddNode())
       grp.appendChild(top)
-      .appendChild(createAddNode())
+      .appendChild(createAddNode(direction,first))
     }
     chldr.appendChild(grp)
   }
@@ -354,6 +360,6 @@ export function layout() {
       }
     })
   }
-  createChildren(this.nodeData.children, this.box, this.direction)
+  createChildren(this.nodeData.children, this.box, this.direction )
   console.timeEnd('layout')
 }
