@@ -44,7 +44,8 @@
     .selected {
       outline: 2px solid #4dc4ff;
       & ~ .add {
-        opacity: 1;
+        // opacity: 1;
+        display: block;
       }
     }
     root {
@@ -245,7 +246,8 @@
         pointer-events: auto;
         &.add {
           // transition: all 0.3s;
-          opacity: 0;
+          // opacity: 0;
+          display: none;
         }
       }
       // &:hover .add {
