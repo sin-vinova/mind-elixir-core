@@ -169,6 +169,7 @@ export function createInputDiv(tpc, isEdit) {
     if (isEdit && this.onEditNodeRequest) {
       this.onEditNodeRequest(topic)
     }
+    tpc.contentEditable = false
 
     // div.remove()
     // this.inputDiv = null
