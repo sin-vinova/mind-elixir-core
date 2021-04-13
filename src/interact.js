@@ -286,6 +286,7 @@ export let initRight = function () {
  * @memberof MapInteraction
  */
 export let initSide = function () {
+  this.primaryLinkStyle = 1
   this.direction = 2
   this.init()
 }
