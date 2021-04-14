@@ -105,7 +105,30 @@ export default function(mind) {
         nodeObj.style.color = e.target.dataset.color
       } else if (bgOrFont === 'background') {
         nodeObj.style.background = e.target.dataset.color
+
+        const setBackgroundChild = (childNode) => {
+          if (childNode.children) {
+            childNode.children.map(child => {
+              child.style = { 
+                background: e.target.dataset.color
+              }
+              setBackgroundChild(child)
+              return child
+            })
+          }
+        }
+         
+        if (nodeObj.children && nodeObj.children.length !== 0) {
+          nodeObj.children = nodeObj.children.map(childNode => {
+            childNode.style = { 
+              background: e.target.dataset.color
+            }
+            setBackgroundChild(childNode)
+            return childNode
+          })
+        }
       }
+      console.log('nodeObj', nodeObj)
       mind.updateNodeStyle(nodeObj)
     } else if (e.target.className === 'background') {
       clearSelect('.palette', 'nmenu-selected')

@@ -16,15 +16,27 @@ export default {
           fontSize: '40px',
         },
         children: [
-          { topic: 'A mind map core', id: 'beeb823afd6d2114', background: 'rgba(226, 24, 24, 0.7)' },
-          { topic: 'Free', id: 'c1f068377de9f3a0', background: 'rgba(226, 24, 24, 0.7)' },
-          { topic: 'Open-Source', id: 'c1f06d38a09f23ca', background: 'rgba(226, 24, 24, 0.7)' },
+          {
+            topic: 'A mind map core',
+            id: 'beeb823afd6d2114',
+            background: 'rgba(226, 24, 24, 0.7)',
+          },
+          {
+            topic: 'Free',
+            id: 'c1f068377de9f3a0',
+            background: 'rgba(226, 24, 24, 0.7)',
+          },
+          {
+            topic: 'Open-Source',
+            id: 'c1f06d38a09f23ca',
+            background: 'rgba(226, 24, 24, 0.7)',
+          },
           {
             topic: 'Use without JavaScript framework',
             id: 'c1f06e4cbcf16463',
             expanded: true,
             children: [],
-            background: 'green'
+            background: 'green',
           },
           {
             topic: 'Use in your own project',
@@ -34,9 +46,13 @@ export default {
               {
                 topic: "import MindElixir from 'mind-elixir'",
                 id: 'c1f1e245b0a89f9b',
-                background: 'rgba(226, 24, 24, 0.7)'
+                background: 'rgba(226, 24, 24, 0.7)',
               },
-              { topic: 'new MindElixir({...}).init()', id: 'c1f1ebc7072c8928', background: 'rgba(226, 24, 24, 0.7)' },
+              {
+                topic: 'new MindElixir({...}).init()',
+                id: 'c1f1ebc7072c8928',
+                background: 'rgba(226, 24, 24, 0.7)',
+              },
             ],
           },
           {
@@ -66,9 +82,22 @@ export default {
         expanded: true,
         background: '#E25376',
         children: [
-          { topic: 'tab - Create a child node', id: 'bd1b6892bcab126a', background: '#4D9BD9',style:{fontSize: 40} },
-          { topic: 'enter - Create a sibling node', id: 'bd1b6b632a434b27', background: '#4D9BD9' },
-          { topic: 'del - Remove a node', id: 'bd1b983085187c0a', background: '#4D9BD9' },
+          {
+            topic: 'tab - Create a child node',
+            id: 'bd1b6892bcab126a',
+            background: '#4D9BD9',
+            style: { fontSize: 40 },
+          },
+          {
+            topic: 'enter - Create a sibling node',
+            id: 'bd1b6b632a434b27',
+            background: '#4D9BD9',
+          },
+          {
+            topic: 'del - Remove a node',
+            id: 'bd1b983085187c0a',
+            background: '#4D9BD9',
+          },
         ],
       },
       {
@@ -81,12 +110,12 @@ export default {
           {
             topic: 'Right click and select Focus Mode',
             id: 'bd1bb2ac4bbab458',
-            background: 'rgba(234, 143, 36, 0.7)'
+            background: 'rgba(234, 143, 36, 0.7)',
           },
           {
             topic: 'Right click and select Cancel Focus Mode',
             id: 'bd1bb4b14d6697c3',
-            background: '#000'
+            background: '#000',
           },
         ],
       },
@@ -105,7 +134,11 @@ export default {
             children: [
               { topic: 'Left', id: 'bd1c1cb51e6745d3', background: '#EA8F24' },
               { topic: 'Right', id: 'bd1c1e12fd603ff6', background: '#EA8F24' },
-              { topic: 'Both l & r', id: 'bd1c1f03def5c97b', background: '#EA8F24' },
+              {
+                topic: 'Both l & r',
+                id: 'bd1c1f03def5c97b',
+                background: '#EA8F24',
+              },
             ],
           },
         ],
@@ -117,10 +150,26 @@ export default {
         expanded: true,
         background: '#2BE07F',
         children: [
-          { topic: 'Full screen', id: 'bd1ba81d9bc95a7e', background: 'rgba(43, 224, 127, .7)', },
-          { topic: 'Return to Center', id: 'bd1babdd5c18a7a2', background: 'rgba(43, 224, 127, .7)', },
-          { topic: 'Zoom in', id: 'bd1bae68e0ab186e', background: 'rgba(43, 224, 127, .7)', },
-          { topic: 'Zoom out', id: 'bd1bb06377439977', background: 'rgba(43, 224, 127, .7)', },
+          {
+            topic: 'Full screen',
+            id: 'bd1ba81d9bc95a7e',
+            background: 'rgba(43, 224, 127, .7)',
+          },
+          {
+            topic: 'Return to Center',
+            id: 'bd1babdd5c18a7a2',
+            background: 'rgba(43, 224, 127, .7)',
+          },
+          {
+            topic: 'Zoom in',
+            id: 'bd1bae68e0ab186e',
+            background: 'rgba(43, 224, 127, .7)',
+          },
+          {
+            topic: 'Zoom out',
+            id: 'bd1bb06377439977',
+            background: 'rgba(43, 224, 127, .7)',
+          },
         ],
       },
       // {
@@ -173,7 +222,8 @@ export default {
       //   ],
       // },
       {
-        topic: 'Draggable ksnaknckjsbdcjsbvdsvbskdvsdvj ksnaknckjsbdcjsbvdsvbskdvsdvj ksnaknckjsbdcjsbvdsvbskdvsdvjksnaknckjsbdcjsbvdsvbskdvsdvj Draggable ksnaknckjsbdcjsbvdsvbskdvsdvj ksnaknckjsbdcjsbvdsvbskdvsdvj ksnaknckjsbdcjsbvdsvbskdvsdvjksnaknckjsbdcjsbvdsvbskdvsdvj Draggable ksnaknckjsbdcjsbvdsvbskdvsdvj ksnaknckjsbdcjsbvdsvbskdvsdvj ksnaknckjsbdcjsbvdsvbskdvsdvjksnaknckjsbdcjsbvdsvbskdvsdvj Draggable ksnaknckjsbdcjsbvdsvbskdvsdvj ksnaknckjsbdcjsbvdsvbskdvsdvj ksnaknckjsbdcjsbvdsvbskdvsdvjksnaknckjsbdcjsbvdsvbskdvsdvj',
+        topic:
+          'Draggable ksnaknckjsbdcjsbvdsvbskdvsdvj ksnaknckjsbdcjsbvdsvbskdvsdvj ksnaknckjsbdcjsbvdsvbskdvsdvjksnaknckjsbdcjsbvdsvbskdvsdvj Draggable ksnaknckjsbdcjsbvdsvbskdvsdvj ksnaknckjsbdcjsbvdsvbskdvsdvj ksnaknckjsbdcjsbvdsvbskdvsdvjksnaknckjsbdcjsbvdsvbskdvsdvj Draggable ksnaknckjsbdcjsbvdsvbskdvsdvj ksnaknckjsbdcjsbvdsvbskdvsdvj ksnaknckjsbdcjsbvdsvbskdvsdvjksnaknckjsbdcjsbvdsvbskdvsdvj Draggable ksnaknckjsbdcjsbvdsvbskdvsdvj ksnaknckjsbdcjsbvdsvbskdvsdvj ksnaknckjsbdcjsbvdsvbskdvsdvjksnaknckjsbdcjsbvdsvbskdvsdvj',
         id: 'bd1f03fee1f63bc6',
         direction: 1,
         expanded: true,
@@ -210,7 +260,7 @@ export default {
         topic: 'Caution',
         id: 'bd42dad21aaf6bae',
         direction: 0,
-        style: { background: '#f1c40e',fontSize: '20px' },
+        style: { background: '#f1c40e', fontSize: '20px' },
         expanded: true,
         children: [
           {
@@ -233,4 +283,112 @@ export default {
     expanded: true,
   },
   linkData: {},
+}
+
+export const aaa = {
+  nodeData: {
+    id: 935,
+    topic: 'Brian Edited 2',
+    root: true,
+    direction: 1,
+    expanded: true,
+    parentNodeId: null,
+    style: { color: '#3298db', background: '#3298db' },
+    icons: ['👌'],
+    mapId: 435,
+    children: [
+      {
+        id: 936,
+        topic: 'new node',
+        root: false,
+        direction: 0,
+        expanded: true,
+        parentNodeId: 935,
+        style: { color: null, background: null, fontSize: null },
+        icons: [],
+        mapId: 435,
+        children: [
+          {
+            id: 937,
+            topic: 'new node',
+            root: false,
+            direction: 0,
+            expanded: true,
+            parentNodeId: 936,
+            style: { color: null, background: null, fontSize: null },
+            icons: [],
+            mapId: 435,
+            children: [
+              {
+                id: 954,
+                topic: 'new node',
+                root: false,
+                direction: 0,
+                expanded: true,
+                parentNodeId: 937,
+                style: { color: null, background: null, fontSize: null },
+                icons: [],
+                mapId: 435,
+                children: [
+                  {
+                    id: 955,
+                    topic: 'new node',
+                    root: false,
+                    direction: 0,
+                    expanded: true,
+                    parentNodeId: 954,
+                    style: { color: null, background: null, fontSize: null },
+                    icons: [],
+                    mapId: 435,
+                    children: [
+                      {
+                        id: 956,
+                        topic: 'new node',
+                        root: false,
+                        direction: 0,
+                        expanded: true,
+                        parentNodeId: 955,
+                        style: {
+                          color: null,
+                          background: null,
+                          fontSize: null,
+                        },
+                        icons: [],
+                        mapId: 435,
+                        children: [
+                          {
+                            id: 968,
+                            topic: 'new node',
+                            root: false,
+                            direction: 0,
+                            expanded: true,
+                            parentNodeId: 956,
+                            style: {
+                              color: null,
+                              background: null,
+                              fontSize: null,
+                            },
+                            icons: [],
+                            mapId: 435,
+                            children: [],
+                            type: 'Node',
+                          },
+                        ],
+                        type: 'Node',
+                      },
+                    ],
+                    type: 'Node',
+                  },
+                ],
+                type: 'Node',
+              },
+            ],
+            type: 'Node',
+          },
+        ],
+        type: 'Node',
+      },
+    ],
+    type: 'Node',
+  },
 }
