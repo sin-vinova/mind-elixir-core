@@ -52,15 +52,18 @@ export let updateNodeStyle = function (object) {
   let nodeEle = findEle(object.id, this)
 
   const updateBackgroundNode = (item) => {
+    let nodeEle = findEle(item.id, this)
+    nodeEle.setAttribute('data-color', item.style.background);
+    nodeEle.style.background = item.style.background
     if (item.children) {
-      let nodeEle = findEle(item.id, this)
-      nodeEle.setAttribute('data-color', item.style.background);
-      nodeEle.style.background = item.style.background
+      item.children.map((item) => {
+        updateBackgroundNode(item)
+      })
     }
   }
 
   if (object.children) {
-    object.children.map(item => {
+      object.children.map(item => {
       let nodeEle = findEle(item.id, this)
       console.log('nodeEle', nodeEle)
       nodeEle.setAttribute('data-color', item.style.background);
