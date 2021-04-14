@@ -110,9 +110,11 @@ export function createInputDiv(tpc, isEdit) {
   console.time('createInputDiv')
   if (!tpc) return
   // let div = $d.createElement('div')
-  let origin = tpc.childNodes[0].textContent
+  let origin = tpc.textContent
   // console.log(tpc.childNodes[0],"[[[[[[")
   tpc.contentEditable =true
+
+  console.log('origin', tpc)
   
   // tpc.appendChild(div)
   // div.innerHTML = origin
@@ -158,7 +160,10 @@ export function createInputDiv(tpc, isEdit) {
     let node = tpc.nodeObj
     let topic = tpc.textContent.trim()
     if (topic === '') node.topic = origin
-    else node.topic = topic
+    else {
+      node.topic = topic
+      origin = topic
+    }
 
     // console.log('this.editable', this, this.editable)
     
