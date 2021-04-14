@@ -20,9 +20,58 @@ let $d = document
 /**
  * @namespace NodeOperation
  */
+// export let updateNodeStyle = function (object) {
+//   if (!object.style) return
+//   let nodeEle = findEle(object.id, this)
+//   console.log('object', object)
+
+//   // change color linkDiv
+//   nodeEle.setAttribute('data-color', object.style.background);
+
+//   nodeEle.style.color = object.style.color
+//   nodeEle.style.background = object.style.background
+//   nodeEle.style.fontSize = object.style.fontSize + 'px'
+//   nodeEle.style.fontWeight = object.style.fontWeight || 'normal'
+//   this.linkDiv()
+// }
+
 export let updateNodeStyle = function (object) {
   if (!object.style) return
+
+  // only set bg , not set link
+  if (object.root) {
+    let nodeEle = findEle(object.id, this)
+    nodeEle.style.color = object.style.color
+    nodeEle.style.background = object.style.background
+    nodeEle.style.fontSize = object.style.fontSize + 'px'
+    nodeEle.style.fontWeight = object.style.fontWeight || 'normal'
+    this.linkDiv()
+    return
+  }
+
   let nodeEle = findEle(object.id, this)
+
+  const updateBackgroundNode = (item) => {
+    if (item.children) {
+      let nodeEle = findEle(item.id, this)
+      nodeEle.setAttribute('data-color', item.style.background);
+      nodeEle.style.background = item.style.background
+    }
+  }
+
+  if (object.children) {
+    object.children.map(item => {
+      let nodeEle = findEle(item.id, this)
+      console.log('nodeEle', nodeEle)
+      nodeEle.setAttribute('data-color', item.style.background);
+      nodeEle.style.background = item.style.background
+      updateBackgroundNode(item)
+    })
+  }
+
+  // change color linkDiv
+  nodeEle.setAttribute('data-color', object.style.background);
+
   nodeEle.style.color = object.style.color
   nodeEle.style.background = object.style.background
   nodeEle.style.fontSize = object.style.fontSize + 'px'

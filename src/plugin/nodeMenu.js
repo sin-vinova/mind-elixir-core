@@ -106,6 +106,12 @@ export default function(mind) {
       } else if (bgOrFont === 'background') {
         nodeObj.style.background = e.target.dataset.color
 
+        // update background node
+        if (mind.onEditNodeRequest) {
+          mind.onEditNodeRequest(nodeObj.topic, e.target.dataset.color)
+        }
+
+        // if want change color font then write this function for case bgOrFont === 'font'
         const setBackgroundChild = (childNode) => {
           if (childNode.children) {
             childNode.children.map(child => {
@@ -128,7 +134,6 @@ export default function(mind) {
           })
         }
       }
-      console.log('nodeObj', nodeObj)
       mind.updateNodeStyle(nodeObj)
     } else if (e.target.className === 'background') {
       clearSelect('.palette', 'nmenu-selected')

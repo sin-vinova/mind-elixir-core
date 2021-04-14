@@ -379,7 +379,7 @@ export default function linkDiv(primaryNode) {
           }
 
           const colorLine = child && child.children[0] && child.children[0].querySelector('t tpc') && child.children[0].querySelector('t tpc').getAttribute('data-color') || '#555';
-          if(rootDirection)
+          if(rootDirection === RIGHT_TREE) 
             svg.appendChild(createPath(path, colorLineRoot))
           else
             svg.appendChild(createPath(path, colorLine))

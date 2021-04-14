@@ -179,7 +179,7 @@ export function createInputDiv(tpc, isEdit) {
       origin,
     })
     if (topic === origin) return // 没有修改不做处理
-    tpc.childNodes[0].textContent = node.topic
+    tpc.textContent = node.topic
     this.linkDiv()
   })
   console.timeEnd('createInputDiv')
@@ -288,6 +288,7 @@ export function createChildren(data, first, direction) {
   if (first) {
     chldr = first
   }
+  // let background
   if(direction && direction ===RIGHT_TREE)
     chldr.style.verticalAlign  = 'top'
   else
@@ -310,6 +311,15 @@ export function createChildren(data, first, direction) {
     }
     let top = createTop(nodeObj,direction,first)
     if (nodeObj.children && nodeObj.children.length > 0) {
+      // if (nodeObj.parent && nodeObj.parent.root ) {
+      //   console.log('cccccccccc', nodeObj)
+      //   if (nodeObj.style && nodeObj.style.background) {
+      //     background = nodeObj.style.background
+      //   }
+      // } else {
+
+      // }
+      // console.log('backgroundbackground', background)
       top.appendChild(createExpander(nodeObj.expanded))
       top.appendChild(createAddNode(direction,first))
       grp.appendChild(top)
