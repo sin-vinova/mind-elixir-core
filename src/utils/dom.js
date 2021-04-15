@@ -1,5 +1,7 @@
 import { LEFT, RIGHT, SIDE,RIGHT_TREE } from '../const'
 import vari from '../var'
+import { v4 as uuidv4 } from 'uuid'
+
 
 // DOM manipulation
 let $d = document
@@ -106,41 +108,131 @@ export function selectText(div) {
   }
 }
 
+// export function createInputDiv(tpc, isEdit) {
+//   console.time('createInputDiv')
+//   if (!tpc) return
+//   const fakeId = uuidv4()
+//   let clnTpc = tpc.cloneNode(true)
+//   clnTpc.dataset.nodeid = fakeId
+//   tpc.parentElement.prepend(clnTpc)
+//   // tpc.style.display = "none"
+//   // let div = $d.createElement('div')
+//   let origin = tpc.childNodes[0].textContent
+//   // console.log(tpc.childNodes[0],"[[[[[[")
+//   clnTpc.contentEditable =true
+
+  
+//   // tpc.appendChild(div)
+//   // div.innerHTML = origin
+//   // div.contentEditable = true
+//   clnTpc.spellcheck = false
+//   // div.style.cssText = `min-width:${tpc.offsetWidth - 8}px;`
+//   // if (this.direction === LEFT) div.style.right = 0
+//   clnTpc.focus()
+//   const sefl = this
+
+//   clnTpc.addEventListener("input", function (e) {
+//     if (sefl.onChangeText && typeof sefl.onChangeText == 'function') { 
+//       sefl.onChangeText(e.target.textContent)
+//     }
+//     // sefl.linkDiv()
+//   })
+
+//   selectText(clnTpc)
+//   // this.inputDiv = tpc
+
+//   this.bus.fire('operation', {
+//     name: 'beginEdit',
+//     obj: tpc.nodeObj,
+//   })
+
+//   clnTpc.addEventListener('keydown', e => {
+//     let key = e.keyCode
+//     if (key === 8) {
+//       // 不停止冒泡冒到document就把节点删了
+//       e.stopPropagation()
+//     } else if (key === 13 || key === 9) {
+//       // enter & tab
+//       // keep wrap for shift enter
+//       if (e.shiftKey) return
+      
+//       e.preventDefault()
+//       clnTpc.blur()
+//       this.map.focus()
+//     }
+//   })
+//   clnTpc.addEventListener('blur', () => {
+//     if (!clnTpc) return // 防止重复blur
+//     let node = tpc.nodeObj
+//     let topic = clnTpc.textContent.trim()
+//     console.log(topic,"kkkkkkkk")
+//     if (topic === '') node.topic = origin
+//     else {
+//       node.topic = topic
+//       origin = topic
+//     }
+
+//     // console.log('this.editable', this, this.editable)
+    
+//     // request API Node
+//     if (!isEdit && this.onCreateNodeRequest) {
+//       this.onCreateNodeRequest(topic)
+//     }
+//     if (isEdit && this.onEditNodeRequest) {
+//       this.onEditNodeRequest(topic === '' ? origin : topic)
+//     }
+//     clnTpc.contentEditable = false
+
+//     clnTpc.remove()
+//     this.inputDiv = clnTpc = null
+//     this.bus.fire('operation', {
+//       name: 'finishEdit',
+//       obj: node,
+//       origin,
+//     })
+//     if (topic === origin) return // 没有修改不做处理
+//     tpc.textContent = node.topic
+//     tpc.style.display = "block"
+//     this.linkDiv()
+//   })
+//   console.timeEnd('createInputDiv')
+// }
+
+
+
+
 export function createInputDiv(tpc, isEdit) {
   console.time('createInputDiv')
   if (!tpc) return
-  // let div = $d.createElement('div')
-  let origin = tpc.textContent
-  // console.log(tpc.childNodes[0],"[[[[[[")
-  tpc.contentEditable =true
-
-  console.log('origin', tpc)
   
+  // let div = $d.createElement('div')
+  let origin = tpc.childNodes[0].textContent
+  const fakeId = uuidv4()
+  let clnTpc = tpc.cloneNode(true)
+  tpc.style.display ='none'
+  clnTpc.dataset.nodeid = fakeId
+  tpc.parentElement.prepend(clnTpc)
   // tpc.appendChild(div)
   // div.innerHTML = origin
-  // div.contentEditable = true
-  tpc.spellcheck = false
+  clnTpc.contentEditable = true
+  clnTpc.spellcheck = false
   // div.style.cssText = `min-width:${tpc.offsetWidth - 8}px;`
   // if (this.direction === LEFT) div.style.right = 0
-  tpc.focus()
+  clnTpc.focus()
   const sefl = this
-
-  tpc.addEventListener("input", function (e) {
+  clnTpc.addEventListener("input", function (e) {
     if (sefl.onChangeText && typeof sefl.onChangeText == 'function') { 
       sefl.onChangeText(e.target.textContent)
     }
     sefl.linkDiv()
   })
-
-  selectText(tpc)
-  // this.inputDiv = tpc
-
+  selectText(clnTpc)
+  this.inputDiv = clnTpc
   this.bus.fire('operation', {
     name: 'beginEdit',
     obj: tpc.nodeObj,
   })
-
-  tpc.addEventListener('keydown', e => {
+  clnTpc.addEventListener('keydown', e => {
     let key = e.keyCode
     if (key === 8) {
       // 不停止冒泡冒到document就把节点删了
@@ -149,48 +241,39 @@ export function createInputDiv(tpc, isEdit) {
       // enter & tab
       // keep wrap for shift enter
       if (e.shiftKey) return
-      
       e.preventDefault()
-      tpc.blur()
+      this.inputDiv.blur()
       this.map.focus()
     }
   })
-  tpc.addEventListener('blur', () => {
-    if (!tpc) return // 防止重复blur
+  clnTpc.addEventListener('blur', () => {
+    tpc.style.display ='block'
+    if (!clnTpc) return // 防止重复blur
     let node = tpc.nodeObj
-    let topic = tpc.textContent.trim()
+    let topic = clnTpc.textContent.trim()
     if (topic === '') node.topic = origin
-    else {
-      node.topic = topic
-      origin = topic
-    }
-
-    // console.log('this.editable', this, this.editable)
-    
+    else node.topic = topic
     // request API Node
     if (!isEdit && this.onCreateNodeRequest) {
       this.onCreateNodeRequest(topic)
     }
     if (isEdit && this.onEditNodeRequest) {
-      this.onEditNodeRequest(topic === '' ? origin : topic)
+      this.onEditNodeRequest(topic)
     }
-    tpc.contentEditable = false
-
-    // div.remove()
-    // this.inputDiv = null
+    clnTpc.remove()
+    this.inputDiv = clnTpc = null
     this.bus.fire('operation', {
       name: 'finishEdit',
       obj: node,
       origin,
     })
     if (topic === origin) return // 没有修改不做处理
-    tpc.textContent = node.topic
+    tpc.childNodes[0].textContent = node.topic
+    
     this.linkDiv()
   })
   console.timeEnd('createInputDiv')
 }
-
-
 
 
 // export function createInputDiv(tpc, isEdit) {
