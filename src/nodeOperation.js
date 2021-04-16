@@ -63,7 +63,7 @@ export let updateNodeStyle = function (object) {
   }
 
   if (object.children) {
-      object.children.map(item => {
+    object.children.map(item => {
       let nodeEle = findEle(item.id, this)
       console.log('nodeEle', nodeEle)
       nodeEle.setAttribute('data-color', item.style.background);
