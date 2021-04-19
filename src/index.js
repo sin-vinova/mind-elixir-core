@@ -58,6 +58,7 @@ import {
 } from './linkOperation'
 import { LEFT, RIGHT, SIDE, RIGHT_TREE } from './const'
 import example from './exampleData/1'
+import nodeDataTagging from './exampleData/tagging'
 import example2 from './exampleData/2'
 import example3 from './exampleData/1.cn'
 import linkDiv from './linkDiv'
@@ -133,6 +134,7 @@ function MindElixir({
   onDeleteNodeRequest,
   onRedirectPath,
   onRedirectRoutePost,
+  isTagging
 }) {
   vari.newTopicName = newTopicName
   this.mindElixirBox = document.querySelector(el)
@@ -172,6 +174,7 @@ function MindElixir({
   this.onRedirectRoutePost = onRedirectRoutePost || null
 
   this.isUndo = false
+  this.isTagging = !!isTagging
   this.bus.addListener('operation', operation => {
     if (this.isUndo) {
       this.isUndo = false
@@ -362,6 +365,7 @@ MindElixir.prototype = {
 
     this.map = $d.createElement('div') // map-canvas Element
     this.map.className = 'map-canvas'
+    this.isTagging && this.map.classList.add('map-canvas-tag')
     this.map.setAttribute('tabindex', '0')
     this.container.appendChild(this.map)
     this.mindElixirBox.appendChild(this.container)
@@ -428,6 +432,8 @@ MindElixir.E = findEle
  * @static
  * @description Example data help you try Mind-elxir quickly.
  */
+// console.log(nodeData,"ppppppp  ")
+MindElixir.exampleTagging = nodeDataTagging
 MindElixir.example = example
 MindElixir.example2 = example2
 MindElixir.example3 = example3

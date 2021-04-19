@@ -10,7 +10,7 @@ let mind = new MindElixir({
   data: MindElixir.example,
   locale: 'en',
   draggable: true,
-  editable: true,
+  editable: false,
   contextMenu: true,
   contextMenuOption: {
     focus: true,
@@ -42,7 +42,8 @@ let mind = new MindElixir({
   },
   primaryLinkStyle: 1,
   primaryNodeVerticalGap: 25, // 25
-  primaryNodeHorizontalGap: 100, // 65
+  primaryNodeHorizontalGap: 100, // 65,
+  isTagging: false
 })
 
 setTimeout(() => mind.init(), 1000)

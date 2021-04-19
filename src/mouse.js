@@ -1,8 +1,23 @@
 import { dragMoveHelper } from './utils/index'
+
+
+function getParent(el,query) {
+  let result = [];
+  let parent
+  for (let p = el && el.parentElement; p; p = p.parentElement) {
+    result.push(p);
+  }
+  result.forEach(eleParent =>{
+    if(eleParent.matches(query))
+      parent = eleParent
+  })
+  return parent;
+}
 export default function (mind) {
   mind.map.addEventListener('click', e => {
     // if (dragMoveHelper.afterMoving) return
     e.preventDefault()
+    const nodeTopic =  getParent(e.target, 'T') ? getParent(e.target, 'T') : getParent(e.target, 'ROOT') ? getParent(e.target, 'ROOT') : null
     if (e.target.nodeName === 'EPD') {
       // W1
       // e.target.parentElement.children.forEach(element => {
@@ -18,10 +33,9 @@ export default function (mind) {
     ) {
       mind.addChild()
     } else if (
-      e.target.parentElement.nodeName === 'T' ||
-      e.target.parentElement.nodeName === 'ROOT'
+      nodeTopic
     ) {
-      mind.selectNode(e.target)
+      mind.selectNode(nodeTopic.firstChild)
     } else if (e.target.nodeName === 'path') {
       if (e.target.parentElement.nodeName === 'g') {
         mind.selectLink(e.target.parentElement)

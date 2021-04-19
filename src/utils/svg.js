@@ -1,10 +1,12 @@
 let $d = document
-export let createMainPath = function (d, colorLine='#666') {
+export let createMainPath = function (d, colorLine='#666', strokeWidth='1.5', strokeDasharray) {
   let path = $d.createElementNS('http://www.w3.org/2000/svg', 'path')
   path.setAttribute('d', d)
   path.setAttribute('stroke', colorLine)
   path.setAttribute('fill', 'none')
-  path.setAttribute('stroke-width', '1.5')
+  path.setAttribute('stroke-width', strokeWidth)
+  strokeDasharray && path.setAttribute('stroke-dasharray',strokeDasharray)
+
   return path
 }
 
@@ -26,14 +28,15 @@ export let createLine = function (x1, y1, x2, y2) {
   return line
 }
 
-export let createPath = function (d, colorLine='#555') {
+export let createPath = function (d, colorLine='#555', strokeWidth='1.5', strokeDasharray ) {
   let path = $d.createElementNS('http://www.w3.org/2000/svg', 'path')
   path.setAttribute('d', d)
   path.setAttribute('stroke', colorLine)
   path.setAttribute('fill', 'none')
   path.setAttribute('stroke-linecap', 'square')
-  path.setAttribute('stroke-width', '1.5')
+  path.setAttribute('stroke-width', strokeWidth)
   path.setAttribute('transform', 'translate(0.5,-0.5)')
+  strokeDasharray && path.setAttribute('stroke-dasharray',strokeDasharray)
   // adding translate(0.5,-0.5) can fix render error on windows, but i still dunno why
   return path
 }

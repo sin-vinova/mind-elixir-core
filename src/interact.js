@@ -11,13 +11,18 @@ import { findEle } from './utils/dom'
  * @param {TargetElement} el - Target element return by E('...'), default value: currentTarget.
  */
 export let selectNode = function (targetElement, isNewNode, isRedirectPath = true) {
+  console.log("okkkkkkk",this)
   if (!targetElement) return
   console.time('selectNode')
   if (typeof targetElement === 'string') {
     return this.selectNode(findEle(targetElement))
   }
-  if (this.currentNode) this.currentNode.className = ''
-  targetElement.className = 'selected'
+  if (this.currentNode) {
+    this.currentNode.classList.remove('selected')
+    this.isTagging && this.currentNode.classList.remove('tag-selected')
+  }
+  targetElement.classList.add('selected')
+  this.isTagging && targetElement.classList.add('tag-selected')
   this.currentNode = targetElement
   this.isRedirectPath = isRedirectPath;
   if (isNewNode) {
@@ -29,8 +34,10 @@ export let selectNode = function (targetElement, isNewNode, isRedirectPath = tru
 }
 export let unselectNode = function () {
   if (this.currentNode) {
-    this.currentNode.className = ''
+    this.currentNode.classList.remove('selected')
+    this.isTagging && this.currentNode.classList.remove('tag-selected')
   }
+  
   this.currentNode = null
   this.bus.fire('unselectNode')
 }
