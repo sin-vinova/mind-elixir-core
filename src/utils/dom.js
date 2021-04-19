@@ -86,9 +86,10 @@ export let createTopic = function (nodeObj, isTagging, first) {
       if(nodeObj.tag && nodeObj.length !== 0){
         nodeObj.tag.forEach((tagItem,idx) => {
           const tagEl = document.createElement('span')
-          tagEl.innerHTML = '#'+ tagItem
+          tagEl.innerHTML = '#'+ tagItem.name
           tagEl.classList.add('tag')
-          if(typeof nodeObj.indexActive ==='number'  && idx === nodeObj.indexActive)
+          tagEl.id = tagItem.id
+          if(typeof nodeObj.idActive ==='number'  && tagItem.id === nodeObj.idActive)
             tagEl.classList.add('active-tag')
           listTag.appendChild(tagEl)
         })
@@ -103,7 +104,7 @@ export let createTopic = function (nodeObj, isTagging, first) {
       if(nodeObj.tag && nodeObj.length !== 0){
         nodeObj.tag.forEach((tagItem,idx) => {
           const tagEl = document.createElement('span')
-          tagEl.innerHTML = '#'+ tagItem
+          tagEl.innerHTML = '#'+ tagItem.name
           tagEl.classList.add('tag-child')
           title.appendChild(tagEl)
         })
@@ -143,7 +144,20 @@ export let createTopic = function (nodeObj, isTagging, first) {
     }
   }
   else{
+    // console.log("yyyyy")
     topic.innerHTML = nodeObj.topic
+    const listTag = document.createElement("div")
+    if(nodeObj.tag && nodeObj.length !== 0){
+      nodeObj.tag.forEach((tagItem,idx) => {
+        const tagEl = document.createElement('span')
+        tagEl.innerHTML = '#'+ tagItem.name
+        tagEl.classList.add('tag')
+        tagEl.id = tagItem.id
+        listTag.appendChild(tagEl)
+      })
+    }
+    topic.appendChild(listTag)
+    
   }
   if(nodeObj.background){
     topic.style.background = nodeObj.background;

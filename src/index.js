@@ -134,7 +134,8 @@ function MindElixir({
   onDeleteNodeRequest,
   onRedirectPath,
   onRedirectRoutePost,
-  isTagging
+  onClickTag,
+  isTagging,
 }) {
   vari.newTopicName = newTopicName
   this.mindElixirBox = document.querySelector(el)
@@ -175,6 +176,7 @@ function MindElixir({
 
   this.isUndo = false
   this.isTagging = !!isTagging
+  this.onClickTag = onClickTag || null
   this.bus.addListener('operation', operation => {
     if (this.isUndo) {
       this.isUndo = false

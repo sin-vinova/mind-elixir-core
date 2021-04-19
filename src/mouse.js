@@ -35,6 +35,8 @@ export default function (mind) {
     } else if (
       nodeTopic
     ) {
+      if(e.target.classList.contains('tag'))
+      mind.onClickTag && mind.onClickTag(e.target.id)
       mind.selectNode(nodeTopic.firstChild)
     } else if (e.target.nodeName === 'path') {
       if (e.target.parentElement.nodeName === 'g') {

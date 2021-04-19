@@ -8,6 +8,7 @@ export default {
         topic: 'What is Minde Elixir',
         id: 'bd4313fbac40284b',
         direction: 0,
+        tag: [{id: 1, name: 'lunch'},{id: 2, name: 'cooking'}],
         expanded: true,
         // background: '#E21818',
         style: {
