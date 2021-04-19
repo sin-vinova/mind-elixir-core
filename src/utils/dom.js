@@ -54,7 +54,7 @@ export let createTop = function (nodeObj,direction,deepFirstChild,isTagging) {
       .join('')
     tpc.appendChild(iconsContainer)
   }
-  if (nodeObj.tags) {
+  if (nodeObj.tags && nodeObj.tags.length) {
     let tagsContainer = $d.createElement('div')
     tagsContainer.className = 'tags'
     tagsContainer.innerHTML = nodeObj.tags
