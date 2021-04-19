@@ -216,6 +216,8 @@ export default function(mind) {
   mind.bus.addListener('selectNode', function(nodeObj) {
     if (nodeObj.parent && nodeObj.parent.root || nodeObj.root) {
       menuContainer.hidden = false
+    } else if(nodeObj.level && (nodeObj.level === 1 || nodeObj.level === 0)) {
+      menuContainer.hidden = false
     } else {
       menuContainer.hidden = true
     }
