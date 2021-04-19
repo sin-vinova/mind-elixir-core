@@ -86,10 +86,10 @@ export let createTopic = function (nodeObj, isTagging, first) {
       if(nodeObj.tag && nodeObj.length !== 0){
         nodeObj.tag.forEach((tagItem,idx) => {
           const tagEl = document.createElement('span')
-          tagEl.innerHTML = '#'+ tagItem.name
+          tagEl.innerHTML = '#'+ tagItem
           tagEl.classList.add('tag')
-          tagEl.id = tagItem.id
-          if(typeof nodeObj.idActive ==='number'  && tagItem.id === nodeObj.idActive)
+          tagEl.id = idx
+          if(typeof nodeObj.idActive ==='number'  && idx === nodeObj.idActive)
             tagEl.classList.add('active-tag')
           listTag.appendChild(tagEl)
         })
@@ -104,7 +104,7 @@ export let createTopic = function (nodeObj, isTagging, first) {
       if(nodeObj.tag && nodeObj.length !== 0){
         nodeObj.tag.forEach((tagItem,idx) => {
           const tagEl = document.createElement('span')
-          tagEl.innerHTML = '#'+ tagItem.name
+          tagEl.innerHTML = '#'+ tagItem
           tagEl.classList.add('tag-child')
           title.appendChild(tagEl)
         })
@@ -150,9 +150,9 @@ export let createTopic = function (nodeObj, isTagging, first) {
     if(nodeObj.tag && nodeObj.length !== 0){
       nodeObj.tag.forEach((tagItem,idx) => {
         const tagEl = document.createElement('span')
-        tagEl.innerHTML = '#'+ tagItem.name
+        tagEl.innerHTML = '#'+ tagItem
         tagEl.classList.add('tag')
-        tagEl.id = tagItem.id
+        tagEl.id = idx
         listTag.appendChild(tagEl)
       })
     }
