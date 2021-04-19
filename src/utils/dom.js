@@ -46,7 +46,7 @@ export let createTop = function (nodeObj,direction,deepFirstChild,isTagging) {
     tpc.style.fontSize = nodeObj.style.fontSize + 'px'
     tpc.style.fontWeight = nodeObj.style.fontWeight || 'normal'
   }
-  if (nodeObj.icons) {
+  if (nodeObj.icons && nodeObj.icons.length) {
     let iconsContainer = $d.createElement('span')
     iconsContainer.className = 'icons'
     iconsContainer.innerHTML = nodeObj.icons
