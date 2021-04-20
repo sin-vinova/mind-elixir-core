@@ -38,9 +38,14 @@ export default function (mind) {
       if(e.target.classList.contains('tag')){
         const listElemnentTag =  e.target.parentElement.children
         const listTag = []
-        listElemnentTag.forEach(item => listTag.push(item.innerHTML.substring(1).trim()))
+        Array.from(listElemnentTag).forEach(item => listTag.push(item.innerHTML.substring(1).trim()))
         const curTag = e.target.innerHTML.substring(1).trim()
         const topic =e.target.parentElement.parentElement.firstElementChild.innerHTML
+        console.log({
+          listTag,
+          curTag,
+          topic
+        },"pppppp")
         mind.onClickTag && mind.onClickTag({
           listTag,
           curTag,
