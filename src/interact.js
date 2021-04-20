@@ -10,19 +10,15 @@ import { findEle } from './utils/dom'
  * @description Select a node and add solid border to it.
  * @param {TargetElement} el - Target element return by E('...'), default value: currentTarget.
  */
-export let selectNode = function (targetElement, isNewNode, isRedirectPath = true) {
+export let selectNode = function (targetElement, isNewNode) {
   if (!targetElement) return
   console.time('selectNode')
   if (typeof targetElement === 'string') {
     return this.selectNode(findEle(targetElement))
   }
-  if (this.onRedirectPath && this.isRedirectPath) {
-    this.onRedirectPath(targetElement.nodeObj)
-  }
   if (this.currentNode) this.currentNode.className = ''
   targetElement.className = 'selected'
   this.currentNode = targetElement
-  this.isRedirectPath = isRedirectPath;
   if (isNewNode) {
     this.bus.fire('selectNewNode', targetElement.nodeObj)
   } else {

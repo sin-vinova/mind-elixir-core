@@ -21,6 +21,9 @@ export default function (mind) {
       e.target.parentElement.nodeName === 'T' ||
       e.target.parentElement.nodeName === 'ROOT'
     ) {
+      if (mind.onRedirectPath) {
+        mind.onRedirectPath(e.target.nodeObj)
+      }
       mind.selectNode(e.target)
     } else if (e.target.nodeName === 'path') {
       if (e.target.parentElement.nodeName === 'g') {

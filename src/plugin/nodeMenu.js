@@ -219,7 +219,7 @@
 //     }
 //     // menuContainer.hidden = false
 //     // E(nodeObj.id).scrollIntoView({ behavior: "smooth", block: "center", inline: "center" })
-//     if (mind.onRedirectPath && mind.isRedirectPath) {
+//     if (mind.onRedirectPath) {
 //       mind.onRedirectPath(nodeObj)
 //     }
 //     clearSelect('.palette', 'nmenu-selected')
@@ -370,9 +370,6 @@ export default function (mind) {
     } else {
       menuContainer.hidden = true
     }
-    // if (mind.onRedirectPath && mind.isRedirectPath) {
-    //   mind.onRedirectPath(nodeObj)
-    // }
     clearSelect('.palette', 'nmenu-selected')
     clearSelect('.size', 'size-selected')
     clearSelect('.bold', 'size-selected')
