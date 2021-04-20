@@ -1,6 +1,6 @@
 import i18n from '../i18n'
 
-export default function(mind) {
+export default function (mind) {
   let locale = i18n[mind.locale] ? mind.locale : 'en'
   let createDiv = (id, name) => {
     let div = document.createElement('div')
@@ -59,14 +59,10 @@ export default function(mind) {
       </div>
   `
   tagDiv.innerHTML = `
-      ${i18n[locale].tag}<input class="nm-tag" tabindex="-1" placeholder="${
-    i18n[locale].tagsSeparate
-  }" /><br>
+      ${i18n[locale].tag}<input class="nm-tag" tabindex="-1" placeholder="${i18n[locale].tagsSeparate}" /><br>
   `
   iconDiv.innerHTML = `
-      ${i18n[locale].icon}<input class="nm-icon" tabindex="-1" placeholder="${
-    i18n[locale].iconsSeparate
-  }" /><br>
+      ${i18n[locale].icon}<input class="nm-icon" tabindex="-1" placeholder="${i18n[locale].iconsSeparate}" /><br>
   `
 
   let menuContainer = document.createElement('nmenu')
@@ -82,7 +78,7 @@ export default function(mind) {
 
   function clearSelect(klass, remove) {
     var elems = document.querySelectorAll(klass)
-    ;[].forEach.call(elems, function(el) {
+    ;[].forEach.call(elems, function (el) {
       el.classList.remove(remove)
     })
   }
@@ -112,22 +108,22 @@ export default function(mind) {
         }
 
         // if want change color font then write this function for case bgOrFont === 'font'
-        const setBackgroundChild = (childNode) => {
+        const setBackgroundChild = childNode => {
           if (childNode.children) {
             childNode.children.map(child => {
-              child.style = { 
-                background: e.target.dataset.color
+              child.style = {
+                background: e.target.dataset.color,
               }
               setBackgroundChild(child)
               return child
             })
           }
         }
-         
+
         if (nodeObj.children && nodeObj.children.length !== 0) {
           nodeObj.children = nodeObj.children.map(childNode => {
-            childNode.style = { 
-              background: e.target.dataset.color
+            childNode.style = {
+              background: e.target.dataset.color,
             }
             setBackgroundChild(childNode)
             return childNode
@@ -210,13 +206,13 @@ export default function(mind) {
     </svg>`
     }
   }
-  mind.bus.addListener('unselectNode', function() {
+  mind.bus.addListener('unselectNode', function () {
     menuContainer.hidden = true
   })
-  mind.bus.addListener('selectNode', function(nodeObj) {
-    if (nodeObj.parent && nodeObj.parent.root || nodeObj.root) {
+  mind.bus.addListener('selectNode', function (nodeObj) {
+    if ((nodeObj.parent && nodeObj.parent.root) || nodeObj.root) {
       menuContainer.hidden = false
-    } else if(nodeObj.level && (nodeObj.level === 1 || nodeObj.level === 0)) {
+    } else if (nodeObj.level && (nodeObj.level === 1 || nodeObj.level === 0)) {
       menuContainer.hidden = false
     } else {
       menuContainer.hidden = true
