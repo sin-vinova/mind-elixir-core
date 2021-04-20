@@ -35,8 +35,19 @@ export default function (mind) {
     } else if (
       nodeTopic
     ) {
-      if(e.target.classList.contains('tag'))
-      mind.onClickTag && mind.onClickTag(e.target.innerHTML.substring(1).trim())
+      if(e.target.classList.contains('tag')){
+        const listElemnentTag =  e.target.parentElement.children
+        const listTag = []
+        listElemnentTag.forEach(item => listTag.push(item.innerHTML.substring(1).trim()))
+        const curTag = e.target.innerHTML.substring(1).trim()
+        const topic =e.target.parentElement.parentElement.firstElementChild.innerHTML
+        mind.onClickTag && mind.onClickTag({
+          listTag,
+          curTag,
+          topic
+        })
+        // mind.onClickTag && mind.onClickTag(
+      }
       mind.selectNode(nodeTopic.firstChild)
     } else if (e.target.nodeName === 'path') {
       if (e.target.parentElement.nodeName === 'g') {

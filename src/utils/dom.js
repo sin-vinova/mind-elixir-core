@@ -145,7 +145,7 @@ export let createTopic = function (nodeObj, isTagging, first) {
   }
   else{
     // console.log("yyyyy")
-    topic.innerHTML = nodeObj.topic
+    topic.innerHTML = `<div>${nodeObj.topic}</div>`
     const listTag = document.createElement("div")
     if(nodeObj.tag && nodeObj.length !== 0){
       nodeObj.tag.forEach((tagItem,idx) => {
