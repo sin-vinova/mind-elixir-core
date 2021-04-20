@@ -11,38 +11,38 @@ let mind = new MindElixir({
   locale: 'en',
   draggable: true,
   editable: false,
-  contextMenu: true,
-  contextMenuOption: {
-    focus: true,
-    link: true,
-    extend: [
-      {
-        name: 'Node edit',
-        onclick: () => {
-          alert('extend menu')
-        },
-      },
-    ],
-  },
+  // contextMenu: true,
+  // contextMenuOption: {
+  //   focus: true,
+  //   link: true,
+  //   extend: [
+  //     {
+  //       name: 'Node edit',
+  //       onclick: () => {
+  //         alert('extend menu')
+  //       },
+  //     },
+  //   ],
+  // },
   toolBar: true,
   nodeMenu: true,
   keypress: true,
   allowUndo: false,
-  before: {
-    moveDownNode(){
-      return false
-    },
-    insertSibling(el, obj) {
-      return true
-    },
-    async addChild(el, obj) {
-      await sleep()
-      return true
-    },
-  },
-  primaryLinkStyle: 1,
-  primaryNodeVerticalGap: 25, // 25
-  primaryNodeHorizontalGap: 100, // 65,
+  // before: {
+  //   moveDownNode(){
+  //     return false
+  //   },
+  //   insertSibling(el, obj) {
+  //     return true
+  //   },
+  //   async addChild(el, obj) {
+  //     await sleep()
+  //     return true
+  //   },
+  // },
+  // primaryLinkStyle: 1,
+  // primaryNodeVerticalGap: 25, // 25
+  // primaryNodeHorizontalGap: 100, // 65,
   isTagging: true
 })
 

@@ -36,7 +36,7 @@ export default function (mind) {
       nodeTopic
     ) {
       if(e.target.classList.contains('tag'))
-      mind.onClickTag && mind.onClickTag(e.target.id)
+      mind.onClickTag && mind.onClickTag(e.target.innerHTML.substring(1).trim())
       mind.selectNode(nodeTopic.firstChild)
     } else if (e.target.nodeName === 'path') {
       if (e.target.parentElement.nodeName === 'g') {

@@ -134,7 +134,7 @@ export let createTopic = function (nodeObj, isTagging, first) {
       followNumWrapper.classList.add('follow-num-wrapper')
       const followNumImg = document.createElement("img")
       followNumImg.classList.add('follow-num-img')
-      followNumImg.src = 'src/assets/icon/ic-logo.svg'
+      followNumImg.src = './assets/icon/ic-logo.svg'
       const followNum = document.createElement("div")
       followNum.classList.add('follow-num')
       followNum.innerHTML= nodeObj.numFollow
@@ -453,10 +453,10 @@ export let createTagOption = function (){
   let disAgreeIcon = document.createElement('img')
   wrapperOption.classList.add('wrapper-option-tag')
   agreeIcon.classList.add('agree-icon')
-  agreeIcon.src = 'src/assets/icon/ic-agree.svg'
+  agreeIcon.src = './assets/icon/ic-agree.svg'
   agreeIcon.classList.add('tag-icon')
   disAgreeIcon.classList.add('disagree-icon')
-  disAgreeIcon.src = 'src/assets/icon/ic-not-agree.svg'
+  disAgreeIcon.src = './assets/icon/ic-not-agree.svg'
   disAgreeIcon.classList.add('tag-icon')
   wrapperOption.appendChild(agreeIcon)
   wrapperOption.appendChild(disAgreeIcon)
