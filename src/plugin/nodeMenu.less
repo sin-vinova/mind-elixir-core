@@ -1,3 +1,5 @@
+@heightToolbar: 61px;
+
 nmenu {
   position: absolute;
   right: 20px;
@@ -92,9 +94,9 @@ nmenu {
 }
 
 .nmenu-verion-2 {
-  top: 0;
+  top: @heightToolbar;
   right: 0;
-  height: 100%;
+  height: calc(100% - @heightToolbar);
   width: 104px;
   padding: 0;
   #nm-style {
