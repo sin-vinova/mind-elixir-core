@@ -79,7 +79,8 @@ export let updateNodeStyle = function (object) {
   nodeEle.style.background = object.style.background
   nodeEle.style.fontSize = object.style.fontSize + 'px'
   nodeEle.style.fontWeight = object.style.fontWeight || 'normal'
-  this.linkDiv()
+  // this.linkDiv()
+  this.refresh()
 }
 
 export let updateNodeTags = function (object) {

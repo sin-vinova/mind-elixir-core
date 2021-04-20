@@ -133,6 +133,7 @@ function MindElixir({
   onDeleteNodeRequest,
   onRedirectPath,
   onRedirectRoutePost,
+  colorList,
 }) {
   vari.newTopicName = newTopicName
   this.mindElixirBox = document.querySelector(el)
@@ -170,6 +171,7 @@ function MindElixir({
   this.onDeleteNodeRequest = onDeleteNodeRequest || null
   this.onRedirectPath = onRedirectPath || null
   this.onRedirectRoutePost = onRedirectRoutePost || null
+  this.colorList = colorList || null
 
   this.isUndo = false
   this.bus.addListener('operation', operation => {

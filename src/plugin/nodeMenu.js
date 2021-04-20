@@ -268,28 +268,33 @@ export default function (mind) {
   let styleDiv = createDiv('nm-style', 'style')
   // let tagDiv = createDiv('nm-tag', 'tag')
   // let iconDiv = createDiv('nm-icon', 'icon')
+  let colorList
+  if (mind.colorList) {
+    colorList = mind.colorList
+  } else {
+    colorList = [
+      '#2c3e50',
+      '#34495e',
+      '#7f8c8d',
+      '#94a5a6',
+      '#bdc3c7',
+      '#ecf0f1',
+      '#8e44ad',
+      '#9b59b6',
+      '#2980b9',
+      '#3298db',
+      '#c0392c',
+      '#e74c3c',
+      '#d35400',
+      '#f39c11',
+      '#f1c40e',
+      '#17a085',
+      '#27ae61',
+      '#2ecc71',
+      '#70a1ff',
+    ]
+  }
 
-  let colorList = [
-    '#2c3e50',
-    '#34495e',
-    '#7f8c8d',
-    '#94a5a6',
-    '#bdc3c7',
-    '#ecf0f1',
-    '#8e44ad',
-    '#9b59b6',
-    '#2980b9',
-    '#3298db',
-    '#c0392c',
-    '#e74c3c',
-    '#d35400',
-    '#f39c11',
-    '#f1c40e',
-    '#17a085',
-    '#27ae61',
-    '#2ecc71',
-    '#70a1ff',
-  ]
   styleDiv.innerHTML = `
       <div class="nm-fontcolor-container">
         ${colorList
