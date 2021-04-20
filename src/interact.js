@@ -16,6 +16,9 @@ export let selectNode = function (targetElement, isNewNode, isRedirectPath = tru
   if (typeof targetElement === 'string') {
     return this.selectNode(findEle(targetElement))
   }
+  if (this.onRedirectPath && this.isRedirectPath) {
+    this.onRedirectPath(targetElement.nodeObj)
+  }
   if (this.currentNode) this.currentNode.className = ''
   targetElement.className = 'selected'
   this.currentNode = targetElement

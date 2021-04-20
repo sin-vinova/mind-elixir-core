@@ -370,9 +370,9 @@ export default function (mind) {
     } else {
       menuContainer.hidden = true
     }
-    if (mind.onRedirectPath && mind.isRedirectPath) {
-      mind.onRedirectPath(nodeObj)
-    }
+    // if (mind.onRedirectPath && mind.isRedirectPath) {
+    //   mind.onRedirectPath(nodeObj)
+    // }
     clearSelect('.palette', 'nmenu-selected')
     clearSelect('.size', 'size-selected')
     clearSelect('.bold', 'size-selected')
