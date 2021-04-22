@@ -1,7 +1,9 @@
 import { LEFT, RIGHT, SIDE,RIGHT_TREE } from '../const'
 import vari from '../var'
 import { v4 as uuidv4 } from 'uuid'
-
+import iconfollowNumImg from '../assets/icon/ic-logo.svg'
+import iconAgree from '../assets/icon/ic-agree.svg'
+import iconNotAgree from '../assets/icon/ic-not-agree.svg'
 
 // DOM manipulation
 let $d = document
@@ -145,7 +147,7 @@ export let createTopic = function (nodeObj, isTagging, first) {
       followNumWrapper.classList.add('follow-num-wrapper')
       const followNumImg = document.createElement("img")
       followNumImg.classList.add('follow-num-img')
-      followNumImg.src = './src/assets/icon/ic-logo.svg'
+      followNumImg.src = iconfollowNumImg
       const followNum = document.createElement("div")
       followNum.classList.add('follow-num')
       followNum.innerHTML= nodeObj.numFollow
@@ -465,10 +467,10 @@ export let createTagOption = function (){
   let disAgreeIcon = document.createElement('img')
   wrapperOption.classList.add('wrapper-option-tag')
   agreeIcon.classList.add('agree-icon')
-  agreeIcon.src = './src/assets/icon/ic-agree.svg'
+  agreeIcon.src = iconAgree
   agreeIcon.classList.add('tag-icon')
   disAgreeIcon.classList.add('disagree-icon')
-  disAgreeIcon.src = './src/assets/icon/ic-not-agree.svg'
+  disAgreeIcon.src = iconNotAgree
   disAgreeIcon.classList.add('tag-icon')
   wrapperOption.appendChild(agreeIcon)
   wrapperOption.appendChild(disAgreeIcon)
