@@ -66,7 +66,12 @@ export default function (mind) {
 
   mind.map.addEventListener('dblclick', e => {
     e.preventDefault()
-    const nodeTopic =  getParent(e.target, 'T') ? getParent(e.target, 'T') : getParent(e.target, 'ROOT') ? getParent(e.target, 'ROOT') : null
+
+    // const nodeTopic =  getParent(e.target, 'T') ? getParent(e.target, 'T') : getParent(e.target, 'ROOT') ? getParent(e.target, 'ROOT') : null
+    
+    // no allow modify root node
+    const nodeTopic =  getParent(e.target, 'T') ? getParent(e.target, 'T') : null
+
     // define between edit and create --> edit
     let isEdit = true
     if (!mind.editable) return
