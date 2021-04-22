@@ -5,6 +5,14 @@ import { v4 as uuidv4 } from 'uuid'
 
 // DOM manipulation
 let $d = document
+const hashtagForrmat = (string,className='tag',activeTag) => {
+  return string.replace(/#(\w+)/g,  (g1) => {
+    if(activeTag && activeTag === g1)
+      return `<span class="${className} active-tag">${g1}</span>`
+    else
+      return `<span class="${className}">${g1}</span>`
+  })
+}
 export let findEle = (id, me) => {
   let scope = me ? me.mindElixirBox : $d
   return scope.querySelector(`[data-nodeid=me${id}]`)
@@ -79,36 +87,37 @@ export let createTopic = function (nodeObj, isTagging, first) {
     topic.classList.add('tag-topic')
     if(first){
       topic.classList.add('tag-topic-root')
-      const title = document.createElement("div")
-      title.classList.add('title-tag-root')
-      title.innerHTML = nodeObj.topic
-      const listTag = document.createElement("div")
-      if(nodeObj.tag && nodeObj.length !== 0){
-        nodeObj.tag.forEach((tagItem,idx) => {
-          const tagEl = document.createElement('span')
-          tagEl.innerHTML = '#'+ tagItem
-          tagEl.classList.add('tag')
-          tagEl.id = idx
-          if(typeof nodeObj.idActive ==='number'  && idx === nodeObj.idActive)
-            tagEl.classList.add('active-tag')
-          listTag.appendChild(tagEl)
-        })
-      }
-      topic.appendChild(title)
-      topic.appendChild(listTag)
+      // const title = document.createElement("div")
+      // title.classList.add('title-tag-root')
+      // title.innerHTML = nodeObj.topic
+      // const listTag = document.createElement("div")
+      topic.innerHTML  = hashtagForrmat(nodeObj.topic,'tag', nodeObj.tagActive)
+      // if(nodeObj.tag && nodeObj.length !== 0){
+      //   nodeObj.tag.forEach((tagItem,idx) => {
+      //     const tagEl = document.createElement('span')
+      //     tagEl.innerHTML = '#'+ tagItem
+      //     tagEl.classList.add('tag')
+      //     tagEl.id = idx
+      //     if(typeof nodeObj.idActive ==='number'  && idx === nodeObj.idActive)
+      //       tagEl.classList.add('active-tag')
+      //       topic.appendChild(tagEl)
+      //   })
+      // }
+      // topic.appendChild(title)
+      // topic.appendChild(listTag)
     }
     else{
-      const title = document.createElement("div")
-      title.classList.add('label-tag')
-      title.innerHTML= nodeObj.topic
-      if(nodeObj.tag && nodeObj.length !== 0){
-        nodeObj.tag.forEach((tagItem,idx) => {
-          const tagEl = document.createElement('span')
-          tagEl.innerHTML = '#'+ tagItem
-          tagEl.classList.add('tag-child')
-          title.appendChild(tagEl)
-        })
-      }
+      // const title = document.createElement("div")
+      // title.classList.add('label-tag')
+      topic.innerHTML= hashtagForrmat(nodeObj.topic,'tag-child')
+      // if(nodeObj.tag && nodeObj.length !== 0){
+      //   nodeObj.tag.forEach((tagItem,idx) => {
+      //     const tagEl = document.createElement('span')
+      //     tagEl.innerHTML = '#'+ tagItem
+      //     tagEl.classList.add('tag-child')
+      //     topic.appendChild(tagEl)
+      //   })
+      // }
       const personalInfo  = document.createElement("div")
       personalInfo.classList.add('personal-info')
       const avatarUser = document.createElement("img")
@@ -127,14 +136,14 @@ export let createTopic = function (nodeObj, isTagging, first) {
       }
       personalInfo.appendChild(avatarUser)
       personalInfo.appendChild(nameUser)
-      topic.appendChild(title)
+      // topic.appendChild(title)
       topic.appendChild(personalInfo)
 
       const followNumWrapper = document.createElement("div")
       followNumWrapper.classList.add('follow-num-wrapper')
       const followNumImg = document.createElement("img")
       followNumImg.classList.add('follow-num-img')
-      followNumImg.src = './assets/icon/ic-logo.svg'
+      followNumImg.src = './src/assets/icon/ic-logo.svg'
       const followNum = document.createElement("div")
       followNum.classList.add('follow-num')
       followNum.innerHTML= nodeObj.numFollow
@@ -145,18 +154,18 @@ export let createTopic = function (nodeObj, isTagging, first) {
   }
   else{
     // console.log("yyyyy")
-    topic.innerHTML = `<div>${nodeObj.topic}</div>`
-    const listTag = document.createElement("div")
-    if(nodeObj.tag && nodeObj.length !== 0){
-      nodeObj.tag.forEach((tagItem,idx) => {
-        const tagEl = document.createElement('span')
-        tagEl.innerHTML = '#'+ tagItem
-        tagEl.classList.add('tag')
-        tagEl.id = idx
-        listTag.appendChild(tagEl)
-      })
-    }
-    topic.appendChild(listTag)
+    topic.innerHTML = hashtagForrmat(nodeObj.topic)
+    // const listTag = document.createElement("div")
+    // if(nodeObj.tag && nodeObj.length !== 0){
+    //   nodeObj.tag.forEach((tagItem,idx) => {
+    //     const tagEl = document.createElement('span')
+    //     tagEl.innerHTML = '#'+ tagItem
+    //     tagEl.classList.add('tag')
+    //     tagEl.id = idx
+    //     topic.appendChild(tagEl)
+    //   })
+    // }
+    // topic.appendChild(listTag)
     
   }
   if(nodeObj.background){
@@ -295,6 +304,7 @@ export function createInputDiv(tpc, isEdit) {
   let origin = tpc.childNodes[0].textContent
   const fakeId = uuidv4()
   let clnTpc = tpc.cloneNode(true)
+  Array.from(clnTpc.querySelectorAll('.tag')).forEach(item => item.style.textDecoration ='unset')
   tpc.style.display ='none'
   clnTpc.dataset.nodeid = fakeId
   tpc.parentElement.prepend(clnTpc)
@@ -354,7 +364,7 @@ export function createInputDiv(tpc, isEdit) {
       origin,
     })
     if (topic === origin) return // 没有修改不做处理
-    tpc.childNodes[0].textContent = node.topic
+    tpc.innerHTML = hashtagForrmat(node.topic)
     
     this.linkDiv()
   })
