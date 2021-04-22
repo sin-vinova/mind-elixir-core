@@ -43,15 +43,9 @@ export default function (mind) {
         const listElemnentTag =  e.target.parentElement.children
         const listTag = []
         Array.from(listElemnentTag).forEach(item => listTag.push(item.innerHTML.substring(1).trim()))
-        const curTag = e.target.innerHTML.substring(1).trim()
-        const topic =e.target.parentElement.parentElement.firstElementChild.innerHTML
-        console.log({
-          listTag,
-          curTag,
-          topic
-        },"pppppp")
+        const curTag = e.target.innerHTML.trim()
+        const topic =e.target.parentElement.parentElement.firstElementChild.textContent
         mind.onClickTag && mind.onClickTag({
-          listTag,
           curTag,
           topic
         })

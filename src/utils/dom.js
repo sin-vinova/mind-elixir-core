@@ -463,10 +463,10 @@ export let createTagOption = function (){
   let disAgreeIcon = document.createElement('img')
   wrapperOption.classList.add('wrapper-option-tag')
   agreeIcon.classList.add('agree-icon')
-  agreeIcon.src = './assets/icon/ic-agree.svg'
+  agreeIcon.src = './src/assets/icon/ic-agree.svg'
   agreeIcon.classList.add('tag-icon')
   disAgreeIcon.classList.add('disagree-icon')
-  disAgreeIcon.src = './assets/icon/ic-not-agree.svg'
+  disAgreeIcon.src = './src/assets/icon/ic-not-agree.svg'
   disAgreeIcon.classList.add('tag-icon')
   wrapperOption.appendChild(agreeIcon)
   wrapperOption.appendChild(disAgreeIcon)
