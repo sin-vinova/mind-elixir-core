@@ -6,6 +6,8 @@ import { v4 as uuidv4 } from 'uuid'
 // DOM manipulation
 let $d = document
 const hashtagForrmat = (string,className='tag',activeTag) => {
+  if(!string)
+    return ''
   return string.replace(/#(\w+)/g,  (g1) => {
     if(activeTag && activeTag === g1)
       return `<span class="${className} active-tag">${g1}</span>`
