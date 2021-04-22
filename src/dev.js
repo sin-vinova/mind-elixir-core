@@ -10,39 +10,40 @@ let mind = new MindElixir({
   data: MindElixir.example,
   locale: 'en',
   draggable: true,
-  editable: true,
-  contextMenu: true,
-  contextMenuOption: {
-    focus: true,
-    link: true,
-    extend: [
-      {
-        name: 'Node edit',
-        onclick: () => {
-          alert('extend menu')
-        },
-      },
-    ],
-  },
+  editable: false,
+  // contextMenu: true,
+  // contextMenuOption: {
+  //   focus: true,
+  //   link: true,
+  //   extend: [
+  //     {
+  //       name: 'Node edit',
+  //       onclick: () => {
+  //         alert('extend menu')
+  //       },
+  //     },
+  //   ],
+  // },
   toolBar: true,
   nodeMenu: true,
   keypress: true,
   allowUndo: false,
-  before: {
-    moveDownNode(){
-      return false
-    },
-    insertSibling(el, obj) {
-      return true
-    },
-    async addChild(el, obj) {
-      await sleep()
-      return true
-    },
-  },
-  primaryLinkStyle: 1,
-  primaryNodeVerticalGap: 25, // 25
-  primaryNodeHorizontalGap: 100, // 65
+  // before: {
+  //   moveDownNode(){
+  //     return false
+  //   },
+  //   insertSibling(el, obj) {
+  //     return true
+  //   },
+  //   async addChild(el, obj) {
+  //     await sleep()
+  //     return true
+  //   },
+  // },
+  // primaryLinkStyle: 1,
+  // primaryNodeVerticalGap: 25, // 25
+  // primaryNodeHorizontalGap: 100, // 65,
+  isTagging: false
 })
 
 setTimeout(() => mind.init(), 1000)

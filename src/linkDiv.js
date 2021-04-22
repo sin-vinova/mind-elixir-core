@@ -28,7 +28,7 @@ export default function linkDiv(primaryNode) {
     }px;`
   let primaryNodeList = this.box.children
   this.svg2nd.innerHTML = ''
-
+  const isTagging =this.isTagging
   // 1. calculate position of primary nodes
   let totalHeight = 0
   let shortSide // side with smaller height
@@ -233,10 +233,18 @@ export default function linkDiv(primaryNode) {
       }
     }
     const colorLine = el.children[0] && el.children[0].querySelector('t tpc') && el.children[0].querySelector('t tpc').getAttribute('data-color') || '#666'
-    if(rootDirection === RIGHT_TREE)
-      this.svg2nd.appendChild(createMainPath(path, colorLineRoot))
-    else
-      this.svg2nd.appendChild(createMainPath(path, colorLine))
+    if(isTagging){
+      if(el.className === 'lhs')
+        this.svg2nd.appendChild(createMainPath(path,'#4DC8D9', '3',"5,5"))
+      else
+      this.svg2nd.appendChild(createMainPath(path,'#979797', '3',"10,10"))
+    }
+    else{
+      if(rootDirection === RIGHT_TREE)
+        this.svg2nd.appendChild(createMainPath(path, colorLineRoot))
+      else
+        this.svg2nd.appendChild(createMainPath(path, colorLine))
+    }
   }
   
   // this.svg2nd.appendChild(createMainPath(path, undefined))
@@ -379,10 +387,15 @@ export default function linkDiv(primaryNode) {
           }
 
           const colorLine = child && child.children[0] && child.children[0].querySelector('t tpc') && child.children[0].querySelector('t tpc').getAttribute('data-color') || '#555';
-          if(rootDirection === RIGHT_TREE) 
-            svg.appendChild(createPath(path, colorLineRoot))
-          else
-            svg.appendChild(createPath(path, colorLine))
+          if(isTagging){
+            child.className === 'relateGrp' && svg.appendChild(createPath(path,'#979797', '3',"10,10"))
+          }
+          else{
+            if(rootDirection === RIGHT_TREE) 
+              svg.appendChild(createPath(path, colorLineRoot))
+            else
+              svg.appendChild(createPath(path, colorLine))
+          }
 
           // let expander = childT.children[1]
           let expander = null;

@@ -16,8 +16,12 @@ export let selectNode = function (targetElement, isNewNode) {
   if (typeof targetElement === 'string') {
     return this.selectNode(findEle(targetElement))
   }
-  if (this.currentNode) this.currentNode.className = ''
-  targetElement.className = 'selected'
+  if (this.currentNode) {
+    this.currentNode.classList.remove('selected')
+    this.isTagging && this.currentNode.classList.remove('tag-selected')
+  }
+  targetElement.classList.add('selected')
+  this.isTagging && targetElement.classList.add('tag-selected')
   this.currentNode = targetElement
   if (isNewNode) {
     this.bus.fire('selectNewNode', targetElement.nodeObj)
@@ -28,8 +32,10 @@ export let selectNode = function (targetElement, isNewNode) {
 }
 export let unselectNode = function () {
   if (this.currentNode) {
-    this.currentNode.className = ''
+    this.currentNode.classList.remove('selected')
+    this.isTagging && this.currentNode.classList.remove('tag-selected')
   }
+  
   this.currentNode = null
   this.bus.fire('unselectNode')
 }
