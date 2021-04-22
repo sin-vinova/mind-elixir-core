@@ -540,9 +540,10 @@ export let moveNodeAfter = function (from, to) {
  * @example
  * beginEdit(E('bd4313fbac40284b'))
  */
-export let beginEdit = function (el, isEdit) {
+export let beginEdit = function (el, isEdit,isTagging) {
+  // console.log("kkkkkk")
   let nodeEle = el || this.currentNode
-  if (!nodeEle) return
+  if (!nodeEle || isTagging) return
   this.createInputDiv(nodeEle, isEdit)
 }
 

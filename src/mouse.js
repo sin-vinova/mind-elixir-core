@@ -43,15 +43,9 @@ export default function (mind) {
         const listElemnentTag =  e.target.parentElement.children
         const listTag = []
         Array.from(listElemnentTag).forEach(item => listTag.push(item.innerHTML.substring(1).trim()))
-        const curTag = e.target.innerHTML.substring(1).trim()
-        const topic =e.target.parentElement.parentElement.firstElementChild.innerHTML
-        console.log({
-          listTag,
-          curTag,
-          topic
-        },"pppppp")
+        const curTag = e.target.innerHTML.trim()
+        const topic =e.target.parentElement.parentElement.firstElementChild.textContent
         mind.onClickTag && mind.onClickTag({
-          listTag,
           curTag,
           topic
         })
@@ -72,15 +66,14 @@ export default function (mind) {
 
   mind.map.addEventListener('dblclick', e => {
     e.preventDefault()
-
+    const nodeTopic =  getParent(e.target, 'T') ? getParent(e.target, 'T') : getParent(e.target, 'ROOT') ? getParent(e.target, 'ROOT') : null
     // define between edit and create --> edit
     let isEdit = true
     if (!mind.editable) return
     if (
-      e.target.parentElement.nodeName === 'T' ||
-      e.target.parentElement.nodeName === 'ROOT'
+      nodeTopic
     ) {
-      mind.beginEdit(e.target, isEdit)
+      mind.beginEdit(getParent(e.target, 'tpc'), isEdit,mind.isTagging)
     }
   })
 

@@ -3,13 +3,13 @@
 export default {
   nodeData: {
     id: 'root',
-    topic: 'Mind Elixir',
+    topic: 'Mind Elixir #hjhjh#abc #zzz',
     root: true,
     tag: ['cooking','launch'],
-    idActive: 1,
+    tagActive: '#hjhjh',
     children: [
       {
-        topic: 'What is Minde Elixir',
+        topic: 'Mind Elixir #hjhjh#abc #zzz',
         id: 'bd4313fbac40284b',
         // direction: 0,
         // expanded: true,
