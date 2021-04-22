@@ -1,7 +1,7 @@
 import { LEFT, RIGHT, SIDE,RIGHT_TREE } from '../const'
 import vari from '../var'
 import { v4 as uuidv4 } from 'uuid'
-import iconfollowNumImg from '../assets/icon/ic-logo.svg'
+import logo from '../assets/icon/ic-logo.svg'
 import iconAgree from '../assets/icon/ic-agree.svg'
 import iconNotAgree from '../assets/icon/ic-not-agree.svg'
 
@@ -147,7 +147,7 @@ export let createTopic = function (nodeObj, isTagging, first) {
       followNumWrapper.classList.add('follow-num-wrapper')
       const followNumImg = document.createElement("img")
       followNumImg.classList.add('follow-num-img')
-      followNumImg.src = iconfollowNumImg
+      followNumImg.src = logo
       const followNum = document.createElement("div")
       followNum.classList.add('follow-num')
       followNum.innerHTML= nodeObj.numFollow
