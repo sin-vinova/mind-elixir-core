@@ -46,6 +46,7 @@ export default function (mind) {
         const curTag = e.target.innerHTML.trim()
         const topic =e.target.parentElement.parentElement.firstElementChild.textContent
         mind.onClickTag && mind.onClickTag({
+          nodeObj: e.target.nodeObj,
           curTag,
           topic
         })
