@@ -35,17 +35,23 @@ export default function (mind) {
     } else if (
       nodeTopic
     ) {
+      if(e.target.classList.contains('disagree-icon'))
+        mind.onRemoveRelateNode && mind.onRemoveRelateNode(getParent(e.target,'tpc').nodeObj)
+      if(e.target.classList.contains('agree-icon'))
+        mind.onAddRelateNode && mind.onAddRelateNode(getParent(e.target,'tpc').nodeObj)
       if (mind.onRedirectPath) {
-        mind.onRedirectPath(e.target.nodeObj)
+        mind.onRedirectPath(nodeTopic.firstElementChild.nodeObj)
       }
+
       // mind.selectNode(e.target)
       if(e.target.classList.contains('tag')){
         const listElemnentTag =  e.target.parentElement.children
         const listTag = []
         Array.from(listElemnentTag).forEach(item => listTag.push(item.innerHTML.substring(1).trim()))
         const curTag = e.target.innerHTML.trim()
-        const topic =e.target.parentElement.parentElement.firstElementChild.textContent
+        const topic = nodeTopic.firstElementChild.textContent
         mind.onClickTag && mind.onClickTag({
+          nodeObj: nodeTopic.firstElementChild.nodeObj,
           curTag,
           topic
         })
@@ -78,6 +84,7 @@ export default function (mind) {
     if (
       nodeTopic
     ) {
+      
       mind.beginEdit(getParent(e.target, 'tpc'), isEdit,mind.isTagging)
     }
   })

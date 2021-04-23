@@ -302,7 +302,7 @@ export function selectText(div) {
 
 export function createInputDiv(tpc, isEdit) {
   console.time('createInputDiv')
-  if (!tpc) return
+  if (!tpc || tpc.contentEditable === 'true') return
   
   // let div = $d.createElement('div')
   let origin = tpc.childNodes[0].textContent
