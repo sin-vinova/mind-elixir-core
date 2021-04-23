@@ -17,7 +17,6 @@ export default function (mind) {
   mind.map.addEventListener('click', e => {
     // if (dragMoveHelper.afterMoving) return
     e.preventDefault()
-    console.log(e.target,"ppppppp")
     const nodeTopic =  getParent(e.target, 'T') ? getParent(e.target, 'T') : getParent(e.target, 'ROOT') ? getParent(e.target, 'ROOT') : null
     if (e.target.nodeName === 'EPD') {
       // W1
@@ -36,10 +35,8 @@ export default function (mind) {
     } else if (
       nodeTopic
     ) {
-      if(e.target.classList.contains('disagree-icon')){
+      if(e.target.classList.contains('disagree-icon'))
         mind.onRemoveRelateNode && mind.onRemoveRelateNode(getParent(e.target,'tpc').nodeObj)
-        console.log(e.target,"kkkk")
-      }
       if(e.target.classList.contains('agree-icon'))
         mind.onAddRelateNode && mind.onAddRelateNode(getParent(e.target,'tpc').nodeObj)
       if (mind.onRedirectPath) {
