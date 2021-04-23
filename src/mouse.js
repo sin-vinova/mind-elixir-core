@@ -33,11 +33,21 @@ export default function (mind) {
     ) {
       mind.addChild()
     } else if (
+      e.target.classList.contains('agree-icon')
+    ){
+      mind.onAddRelateNode && mind.onAddRelateNode(getParent(e.target,'tpc').nodeObj)
+    } else if (
+      e.target.classList.contains('disagree-icon')
+    ){
+      mind.onRemoveRelateNode && mind.onRemoveRelateNode(getParent(e.target,'tpc').nodeObj)
+    }
+    else if (
       nodeTopic
     ) {
       if (mind.onRedirectPath) {
         mind.onRedirectPath(nodeTopic.firstElementChild.nodeObj)
       }
+
       // mind.selectNode(e.target)
       if(e.target.classList.contains('tag')){
         const listElemnentTag =  e.target.parentElement.children
