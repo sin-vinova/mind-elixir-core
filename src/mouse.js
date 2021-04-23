@@ -36,9 +36,10 @@ export default function (mind) {
       nodeTopic
     ) {
       if(e.target.classList.contains('disagree-icon'))
-        mind.onRemoveRelateNode && mind.onRemoveRelateNode(getParent(e.target,'tpc').nodeObj)
-      if(e.target.classList.contains('agree-icon'))
-        mind.onAddRelateNode && mind.onAddRelateNode(getParent(e.target,'tpc').nodeObj)
+        mind.onRemoveRelateNode && mind.onRemoveRelateNode(nodeTopic.firstElementChild.nodeObj)
+      if(e.target.classList.contains('agree-icon')){
+        mind.onAddRelateNode && mind.onAddRelateNode(nodeTopic.firstElementChild.nodeObj)
+      }
       if (mind.onRedirectPath) {
         mind.onRedirectPath(nodeTopic.firstElementChild.nodeObj)
       }
