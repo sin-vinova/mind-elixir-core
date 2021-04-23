@@ -74,6 +74,7 @@ export default function (mind) {
     if (
       nodeTopic
     ) {
+      
       mind.beginEdit(getParent(e.target, 'tpc'), isEdit,mind.isTagging)
     }
   })
