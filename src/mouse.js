@@ -36,7 +36,7 @@ export default function (mind) {
       nodeTopic
     ) {
       if (mind.onRedirectPath) {
-        mind.onRedirectPath(nodeTopic.nodeObj)
+        mind.onRedirectPath(nodeTopic.firstElementChild.nodeObj)
       }
       // mind.selectNode(e.target)
       if(e.target.classList.contains('tag')){
@@ -44,9 +44,9 @@ export default function (mind) {
         const listTag = []
         Array.from(listElemnentTag).forEach(item => listTag.push(item.innerHTML.substring(1).trim()))
         const curTag = e.target.innerHTML.trim()
-        const topic =e.target.parentElement.parentElement.firstElementChild.textContent
+        const topic = nodeTopic.firstElementChild.textContent
         mind.onClickTag && mind.onClickTag({
-          nodeObj: nodeTopic.nodeObj,
+          nodeObj: nodeTopic.firstElementChild.nodeObj,
           curTag,
           topic
         })
