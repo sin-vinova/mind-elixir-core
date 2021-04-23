@@ -68,20 +68,32 @@ export default function (mind, option) {
       } else {
         isRoot = false
       }
-      if (isRoot) {
+      // value "mapPermission" : "View" || "Update"
+      if (mapPermission === 'Update') {
+        if (isRoot) {
+          focus.className = 'disabled'
+          up.className = 'disabled'
+          down.className = 'disabled'
+          add_sibling.className = 'disabled'
+          remove_child.className = 'disabled'
+  
+          // allow create_post_on_node_root
+          // add_post.className = 'disabled'
+        } else {
+          focus.className = ''
+          up.className = ''
+          down.className = ''
+          add_sibling.className = ''
+          remove_child.className = ''
+          add_post.className = ''
+        }
+      } else if (mapPermission === 'View') {
         focus.className = 'disabled'
         up.className = 'disabled'
         down.className = 'disabled'
         add_sibling.className = 'disabled'
         remove_child.className = 'disabled'
         add_post.className = 'disabled'
-      } else {
-        focus.className = ''
-        up.className = ''
-        down.className = ''
-        add_sibling.className = ''
-        remove_child.className = ''
-        add_post.className = ''
       }
       mind.selectNode(target)
       menuContainer.hidden = false

@@ -7,7 +7,7 @@ let mind = new MindElixir({
   direction: MindElixir.SIDE,
   // direction: MindElixir.RIGHT,
   // data: MindElixir.new('new topic'),
-  data: MindElixir.exampleTagging,
+  data: MindElixir.example,
   locale: 'en',
   draggable: true,
   editable: true,
@@ -43,7 +43,7 @@ let mind = new MindElixir({
   // primaryLinkStyle: 1,
   // primaryNodeVerticalGap: 25, // 25
   // primaryNodeHorizontalGap: 100, // 65,
-  isTagging: true
+  isTagging: false,
 })
 
 setTimeout(() => mind.init(), 1000)
