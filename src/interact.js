@@ -18,10 +18,18 @@ export let selectNode = function (targetElement, isNewNode) {
   }
   if (this.currentNode) {
     this.currentNode.classList.remove('selected')
-    this.isTagging && this.currentNode.classList.remove('tag-selected')
+    if(this.isTagging)
+      this.currentNode.classList.remove('tag-selected')
+    else
+      this.currentNode.style.boxShadow = 'unset'
   }
   targetElement.classList.add('selected')
-  this.isTagging && targetElement.classList.add('tag-selected')
+  if(this.isTagging)
+    targetElement.classList.add('tag-selected')
+  else{
+    const colorStyleBoxShadow = targetElement.dataset.color ? targetElement.dataset.color : '#4dc4ff'
+    targetElement.style.boxShadow = '0px 0px 15px 1px ' + colorStyleBoxShadow
+  }
   this.currentNode = targetElement
   if (isNewNode) {
     this.bus.fire('selectNewNode', targetElement.nodeObj)
