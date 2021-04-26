@@ -138,7 +138,8 @@ function MindElixir({
   onRemoveRelateNode,
   colorList,
   onClickTag,
-  isTagging
+  isTagging,
+  mapPermission,
 }) {
   vari.newTopicName = newTopicName
   this.mindElixirBox = document.querySelector(el)
@@ -177,6 +178,7 @@ function MindElixir({
   this.onRedirectPath = onRedirectPath || null
   this.onRedirectRoutePost = onRedirectRoutePost || null
   this.colorList = colorList || null
+  this.mapPermission = mapPermission || 'Update'
   this.onAddRelateNode = onAddRelateNode || null
   this.onRemoveRelateNode = onRemoveRelateNode || null
   this.isUndo = false
