@@ -43,16 +43,22 @@ export default {
             topic: 'Use in your own project',
             id: 'c1f1f11a7fbf7550',
             background: 'rgba(226, 24, 24, 0.7)',
+            belongOtherMap: true,
+            firstNodeOtherMap: true,
             children: [
               {
                 topic: "import MindElixir from 'mind-elixir'",
                 id: 'c1f1e245b0a89f9b',
                 background: 'rgba(226, 24, 24, 0.7)',
+                belongOtherMap: true,
+                firstNodeOtherMap: false,
               },
               {
                 topic: 'new MindElixir({...}).init()',
                 id: 'c1f1ebc7072c8928',
                 background: 'rgba(226, 24, 24, 0.7)',
+                belongOtherMap: true,
+                firstNodeOtherMap: false,
               },
             ],
           },

@@ -10,12 +10,13 @@ import { findEle } from './utils/dom'
  * @description Select a node and add solid border to it.
  * @param {TargetElement} el - Target element return by E('...'), default value: currentTarget.
  */
-export let selectNode = function (targetElement, isNewNode) {
+export let selectNode = function (targetElement, isNewNode, idNode) {
   if (!targetElement) return
   console.time('selectNode')
   if (typeof targetElement === 'string') {
     return this.selectNode(findEle(targetElement))
   }
+
   if (this.currentNode) {
     this.currentNode.classList.remove('selected')
     if(this.isTagging)
@@ -40,6 +41,7 @@ export let selectNode = function (targetElement, isNewNode) {
 }
 export let unselectNode = function () {
   if (this.currentNode) {
+    this.currentNode.style.boxShadow = 'unset'
     this.currentNode.classList.remove('selected')
     this.isTagging && this.currentNode.classList.remove('tag-selected')
   }

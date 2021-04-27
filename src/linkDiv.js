@@ -235,9 +235,9 @@ export default function linkDiv(primaryNode) {
     const colorLine = el.children[0] && el.children[0].querySelector('t tpc') && el.children[0].querySelector('t tpc').getAttribute('data-color') || '#666'
     if(isTagging){
       if(el.className === 'lhs')
-        this.svg2nd.appendChild(createMainPath(path,'#4DC8D9', '3',"5,5"))
+        this.svg2nd.appendChild(createMainPath(path,colorLine, '3',"5,5"))
       else
-      this.svg2nd.appendChild(createMainPath(path,'#979797', '3',"10,10"))
+        this.svg2nd.appendChild(createMainPath(path,'#979797', '3',"10,10"))
     }
     else{
       if(rootDirection === RIGHT_TREE)
@@ -388,7 +388,13 @@ export default function linkDiv(primaryNode) {
 
           const colorLine = child && child.children[0] && child.children[0].querySelector('t tpc') && child.children[0].querySelector('t tpc').getAttribute('data-color') || '#555';
           if(isTagging){
-            child.className === 'relateGrp' && svg.appendChild(createPath(path,'#979797', '3',"10,10"))
+            const objNode = (childT.children && childT.children[0] && childT.children[0].nodeObj) ? childT.children[0].nodeObj : undefined
+            if(objNode){
+              if(objNode.typeTag === 'relate')
+                svg.appendChild(createPath(path,'#979797', '3',"10,10"))
+              else
+                svg.appendChild(createPath(path,colorLine, '3',"5,5"))
+            }
           }
           else{
             if(rootDirection === RIGHT_TREE) 
@@ -422,6 +428,7 @@ export default function linkDiv(primaryNode) {
           }
           // traversal
           let nextChildren = child.children[1].children
+          // console.log(child,"kkkkkkk")
           if (nextChildren.length > 0) loopChildren(nextChildren, childT)
         }
       }

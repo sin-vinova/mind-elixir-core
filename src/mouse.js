@@ -18,6 +18,11 @@ export default function (mind) {
     // if (dragMoveHelper.afterMoving) return
     e.preventDefault()
     const nodeTopic =  getParent(e.target, 'T') ? getParent(e.target, 'T') : getParent(e.target, 'ROOT') ? getParent(e.target, 'ROOT') : null
+    if(mind.isTagging)
+      document.querySelectorAll('.tag-topic-relate').forEach(item =>{
+        if(item.nodeObj.firstChildTag)
+          mind.expandNode(item,false)
+      })
     if (e.target.nodeName === 'EPD') {
       // W1
       // e.target.parentElement.children.forEach(element => {
@@ -35,6 +40,10 @@ export default function (mind) {
     } else if (
       nodeTopic
     ) {
+      const dataId = nodeTopic.firstElementChild.dataset.nodeid
+      if(nodeTopic.firstElementChild.nodeObj && nodeTopic.firstElementChild.nodeObj.typeTag && nodeTopic.firstElementChild.nodeObj.typeTag === 'relate' && nodeTopic.firstElementChild.nodeObj.firstChildTag){
+        mind.expandNode(nodeTopic.firstElementChild,true)
+      }
       if(e.target.classList.contains('disagree-icon'))
         mind.onRemoveRelateNode && mind.onRemoveRelateNode(nodeTopic.firstElementChild.nodeObj)
       if(e.target.classList.contains('agree-icon')){
@@ -58,7 +67,10 @@ export default function (mind) {
         })
         // mind.onClickTag && mind.onClickTag(
       }
-      mind.selectNode(nodeTopic.firstChild)
+      if(mind.isTagging)
+        mind.selectNode(document.querySelectorAll(`[data-nodeid=${dataId}]`)[0])
+      else
+        mind.selectNode(nodeTopic.firstChild)
     } else if (e.target.nodeName === 'path') {
       if (e.target.parentElement.nodeName === 'g') {
         mind.selectLink(e.target.parentElement)

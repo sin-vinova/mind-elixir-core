@@ -99,7 +99,8 @@ export default function (mind, option) {
         unfocus.className = 'disabled'
       }
       mind.selectNode(target)
-      menuContainer.hidden = false
+      if( !mind.isTagging && !(target.nodeObj && target.nodeObj.belongOtherMap))
+        menuContainer.hidden = false
       let height = menuUl.offsetHeight
       let width = menuUl.offsetWidth
       if (height + e.clientY > window.innerHeight) {

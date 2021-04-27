@@ -543,7 +543,7 @@ export let moveNodeAfter = function (from, to) {
 export let beginEdit = function (el, isEdit,isTagging) {
   // console.log("kkkkkk")
   let nodeEle = el || this.currentNode
-  if (!nodeEle || isTagging) return
+  if (!nodeEle || isTagging || (nodeEle.nodeObj && nodeEle.nodeObj.belongOtherMap)) return
   this.createInputDiv(nodeEle, isEdit)
 }
 
