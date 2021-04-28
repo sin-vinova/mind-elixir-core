@@ -84,19 +84,20 @@ export let updateNodeStyle = function (object) {
 }
 
 export let updateNodeTags = function (object) {
-  if (!object.tags) return
-  let nodeEle = findEle(object.id)
-  let tags = object.tags
-  let tagsEl = nodeEle.querySelector('.tags')
-  if (tagsEl) {
-    tagsEl.innerHTML = tags.map(tag => `<span>${tag}</span>`).join('')
-  } else {
-    let tagsContainer = $d.createElement('div')
-    tagsContainer.className = 'tags'
-    tagsContainer.innerHTML = tags.map(tag => `<span>${tag}</span>`).join('')
-    nodeEle.appendChild(tagsContainer)
-  }
-  this.linkDiv()
+  return
+  // if (!object.tags) return
+  // let nodeEle = findEle(object.id)
+  // let tags = object.tags
+  // let tagsEl = nodeEle.querySelector('.tags')
+  // if (tagsEl) {
+  //   tagsEl.innerHTML = tags.map(tag => `<span>${tag}</span>`).join('')
+  // } else {
+  //   let tagsContainer = $d.createElement('div')
+  //   tagsContainer.className = 'tags'
+  //   tagsContainer.innerHTML = tags.map(tag => `<span>${tag}</span>`).join('')
+  //   nodeEle.appendChild(tagsContainer)
+  // }
+  // this.linkDiv()
 }
 
 export let updateNodeIcons = function (object) {

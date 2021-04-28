@@ -138,21 +138,21 @@ function PrimaryToSvg(primaryNode) {
     }
     // render tags
     let tags = ''
-    if (nodeObj.tags && nodeObj.tags.length) {
-      let tagsEle = tpc.querySelectorAll('.tags > span')
-      for (let i = 0; i < tagsEle.length; i++) {
-        let tag = tagsEle[i]
-        let tagRect = tag.getBoundingClientRect()
-        tags += `<rect x="${topicOffsetLeft}" y="${
-          topicOffsetTop + 4
-          }" rx="5px" ry="5px" width="${tagRect.width}" height="${
-          tagRect.height
-          }" style="fill: #d6f0f8;"></rect>
-        <text font-family="微软雅黑" font-size="12px"  fill="#276f86" x="${
-          topicOffsetLeft + 4
-          }" y="${topicOffsetTop + 4 + 12}">${tag.innerHTML}</text>`
-      }
-    }
+    // if (nodeObj.tags && nodeObj.tags.length) {
+    //   let tagsEle = tpc.querySelectorAll('.tags > span')
+    //   for (let i = 0; i < tagsEle.length; i++) {
+    //     let tag = tagsEle[i]
+    //     let tagRect = tag.getBoundingClientRect()
+    //     tags += `<rect x="${topicOffsetLeft}" y="${
+    //       topicOffsetTop + 4
+    //       }" rx="5px" ry="5px" width="${tagRect.width}" height="${
+    //       tagRect.height
+    //       }" style="fill: #d6f0f8;"></rect>
+    //     <text font-family="微软雅黑" font-size="12px"  fill="#276f86" x="${
+    //       topicOffsetLeft + 4
+    //       }" y="${topicOffsetTop + 4 + 12}">${tag.innerHTML}</text>`
+    //   }
+    // }
     let icons = ''
     if (nodeObj.icons && nodeObj.icons.length) {
       let iconsEle = tpc.querySelectorAll('.icons > span')
