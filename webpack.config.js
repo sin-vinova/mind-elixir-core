@@ -107,6 +107,7 @@ module.exports = (env, argv) => {
         })],
       },
     }
+    
   }
   if (argv.mode === 'production' && env.lite) {
     console.log('lite')
