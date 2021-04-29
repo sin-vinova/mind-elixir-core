@@ -137,7 +137,7 @@ export default function linkDiv(primaryNode) {
       }
       if(this.direction === RIGHT_TREE ){
         // - el.children[0].offsetHeight/2- el.children[0].offsetHeight/2
-        const topTree = i===0 ? elOffsetH/2 -10  : -10  
+        const topTree = i===0 ? elOffsetH/2 -10   : -10 
         el.style.top = base + currentOffsetR + topTree+ 'px'
       }else
         el.style.top = base + currentOffsetR + 'px'
@@ -158,9 +158,9 @@ export default function linkDiv(primaryNode) {
         if (y2 < 10000){
           if(this.direction === RIGHT_TREE)
             path += `M ${LEFT} 10000
-            L ${LEFT} ${y2 +  el.children[0].offsetHeight/2} 
+            L ${LEFT} ${y2 +  el.children[0].offsetHeight/2+10} 
            
-            L ${x2} ${y2 + el.children[0].offsetHeight/2}`
+            L ${x2} ${y2 + el.children[0].offsetHeight/2 +10}`
           else
             path += `M ${LEFT} 10000
             L ${LEFT} ${y2 + 20} 
@@ -170,8 +170,8 @@ export default function linkDiv(primaryNode) {
         else{
           if(this.direction === RIGHT_TREE)
             path += `M ${LEFT} 10000
-            L ${LEFT} ${y2 + el.children[0].offsetHeight/2} 
-            L ${x2} ${y2 + el.children[0].offsetHeight/2}`
+            L ${LEFT} ${y2 + el.children[0].offsetHeight/2+10} 
+            L ${x2} ${y2 + el.children[0].offsetHeight/2+10}`
           else
             path += `M ${LEFT} 10000
             L ${LEFT} ${y2 - 20} 

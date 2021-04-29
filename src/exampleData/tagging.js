@@ -18,7 +18,7 @@ export default {
         createdBy: 'you',
         nodeLinkCount: 200,
         typeTag: 'relate',
-        firstChildTag: true,
+        // firstChildTag: true,
         expanded: false,
         children: [{
           topic: 'What is Minde Elixir',
