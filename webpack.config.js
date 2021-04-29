@@ -87,7 +87,7 @@ module.exports = (env, argv) => {
               {
                 loader: 'url-loader',
                 options: {
-                  limit: 8192,
+                  limit: true,
                 },
               },
             ],
@@ -107,7 +107,7 @@ module.exports = (env, argv) => {
         })],
       },
     }
-    
+
   }
   if (argv.mode === 'production' && env.lite) {
     console.log('lite')
