@@ -17,12 +17,12 @@ let config = {
         use: ['style-loader', 'css-loader'],
       },
       {
-        test: /\.(ttf|woff|woff2|eot|svg)$/i,
+        test: /\.(ttf|woff|woff2|eot|svg|png)$/i,
         use: [
           {
             loader: 'url-loader',
             options: {
-              limit: 8192,
+              limit: true,
             },
           },
         ],
