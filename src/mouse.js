@@ -14,6 +14,7 @@ function getParent(el,query) {
   return parent;
 }
 export default function (mind) {
+  let isPanning = false;
   mind.map.addEventListener('click', e => {
     // if (dragMoveHelper.afterMoving) return
     e.preventDefault()
@@ -124,4 +125,32 @@ export default function (mind) {
   mind.map.addEventListener('mouseup', e => {
     dragMoveHelper.clear()
   })
+
+  mind.map.onmousedown = function (e) {
+    isPanning = true
+  }
+
+  mind.map.onmousewheel = e => {
+    isPanning = true
+    if (isPanning) {
+      if (e.deltaY > 0) {
+        // scrolling up
+        if (mind.scaleVal > 1.6) return
+        mind.scale((mind.scaleVal += 0.1))
+      } else if (e.deltaY < 0) {
+        // scrolling down
+        if (mind.scaleVal < 0.2) return
+        mind.scale((mind.scaleVal -= 0.1))
+      }
+      isPanning = false
+    }
+  }
+
+  mind.map.onmouseup = function (e) {
+    isPanning = false
+  }
+
+  mind.map.onmouseleave = function (e) {
+    isPanning = false
+  }
 }
