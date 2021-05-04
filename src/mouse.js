@@ -139,7 +139,7 @@ export default function (mind) {
         mind.scale((mind.scaleVal += 0.1))
       } else if (e.deltaY < 0) {
         // scrolling down
-        if (mind.scaleVal < 0.6) return
+        if (mind.scaleVal < 0.2) return
         mind.scale((mind.scaleVal -= 0.1))
       }
       isPanning = false
