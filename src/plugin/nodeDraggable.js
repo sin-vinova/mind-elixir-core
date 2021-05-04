@@ -96,11 +96,11 @@ export default function (mind) {
     switch (insertLocation) {
       case 'before':
         mind.moveNodeBefore(dragged, meet)
-        mind.selectNode(E(obj.id))
+        mind.selectNode(E(obj.id,mind))
         break
       case 'after':
         mind.moveNodeAfter(dragged, meet)
-        mind.selectNode(E(obj.id))
+        mind.selectNode(E(obj.id,mind))
         break
       case 'in':
         mind.moveNode(dragged, meet)

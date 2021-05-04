@@ -6,8 +6,8 @@ let mind = new MindElixir({
   newTopicName: '子节点',
   direction: MindElixir.SIDE,
   // direction: MindElixir.RIGHT,
-  // data: MindElixir.new('new topic'),
-  data: MindElixir.exampleTagging,
+  data: MindElixir.example,
+  // data: {nodeData: JSON.parse('{"id":"rootTag","topic":"ok1 #tag1","root":true,"tagActive":"#tag1","expanded":true,"children":[{"id":617,"topic":"CPU#tag1","root":false,"direction":0,"expanded":false,"parentNodeId":385,"style":null,"icons":[],"mapId":383,"type":"Node","tags":"Tag1,Tag2,Tag3,Tag4","nodeLinkCount":0,"createdBy":"Brain Ng","customerProfilePicture":"https://cortishare-dev.s3.ap-southeast-1.amazonaws.com/maps/774e6bb2-7fd5-11eb-a7c1-90e2ba30e15c/774e6bb2-7fd5-11eb-a7c1-90e2ba30e15c.png?AWSAccessKeyId=AKIATJCHCXBCXHXUKBUW&Expires=1648709170&Signature=aOnXQLr2HD0lvTeRbAxRN5KADwg%3D","children":[],"firstChildTag":true,"typeTag":"relate"},{"id":612,"topic":"CPU","root":false,"direction":0,"expanded":true,"parentNodeId":385,"style":null,"icons":[],"mapId":383,"children":[],"level":null,"type":"Node","nodeLinkCount":3,"createdBy":null,"customerProfilePicture":null,"tags":"Tag1,Tag2,Tag3,Tag4","belongOtherMap":true,"firstNodeOtherMap":true,"firstChildTag":true,"typeTag":"available"}]}')},
   locale: 'en',
   draggable: true,
   editable: true,
@@ -43,7 +43,7 @@ let mind = new MindElixir({
   // primaryLinkStyle: 1,
   // primaryNodeVerticalGap: 25, // 25
   // primaryNodeHorizontalGap: 100, // 65,
-  isTagging: true,
+  isTagging: false,
 })
 
 setTimeout(() => mind.init(), 1000)

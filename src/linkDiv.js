@@ -436,15 +436,16 @@ export default function linkDiv(primaryNode) {
   }
 
   // 4. generate custom link
+  var self = this
   this.linkSvgGroup.innerHTML = ''
   for (let prop in this.linkData) {
     let link = this.linkData[prop]
     if (typeof link.from === 'string')
-      this.createLink(findEle(link.from), findEle(link.to), true, link)
+      this.createLink(findEle(link.from,self), findEle(link.to,self), true, link)
     else
       this.createLink(
-        findEle(link.from.nodeObj.id),
-        findEle(link.to.nodeObj.id),
+        findEle(link.from.nodeObj.id,self),
+        findEle(link.to.nodeObj.id,self),
         true,
         link
       )

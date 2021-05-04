@@ -228,7 +228,7 @@ export let addChild = function (el, node) {
   if (nodeObj.expanded === false) {
     this.expandNode(nodeEle, true)
     // dom reset thus
-    nodeEle = E(nodeObj.id)
+    nodeEle = E(nodeObj.id,this)
   }
   let newNodeObj = node || generateNewObj()
   nodeObj.expanded = true
@@ -428,8 +428,8 @@ export let moveNode = function (from, to) {
   let originParentId = fromObj.parent.id
   if (toObj.expanded === false) {
     this.expandNode(to, true)
-    from = E(fromObj.id)
-    to = E(toObj.id)
+    from = E(fromObj.id,this)
+    to = E(toObj.id,this)
   }
   if (!checkMoveValid(fromObj, toObj)) {
     console.warn('Invalid move')

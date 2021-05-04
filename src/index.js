@@ -201,23 +201,24 @@ function MindElixir({
 
   this.undo = function () {
     let operation = this.history.pop()
+    let self =this
     if (!operation) return
     this.isUndo = true
     if (operation.name === 'moveNode') {
       this.moveNode(
-        E(operation.obj.fromObj.id),
-        E(operation.obj.originParentId)
+        E(operation.obj.fromObj.id, self),
+        E(operation.obj.originParentId, self)
       )
     } else if (operation.name === 'removeNode') {
       if (operation.originSiblingId) {
-        this.insertBefore(E(operation.originSiblingId), operation.obj)
+        this.insertBefore(E(operation.originSiblingId,self), operation.obj)
       } else {
-        this.addChild(E(operation.originParentId), operation.obj)
+        this.addChild(E(operation.originParentId,self), operation.obj)
       }
     } else if (operation.name === 'addChild') {
-      this.removeNode(E(operation.obj.id))
+      this.removeNode(E(operation.obj.id,self))
     } else if (operation.name === 'finishEdit') {
-      this.setNodeTopic(E(operation.obj.id), operation.origin)
+      this.setNodeTopic(E(operation.obj.id,self), operation.origin)
     } else {
       this.isUndo = false
     }

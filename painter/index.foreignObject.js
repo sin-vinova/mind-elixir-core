@@ -213,3 +213,5 @@ export let exportPng = async function () {
 export default {
   exportSvg, exportPng
 }
+
+

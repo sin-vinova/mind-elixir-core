@@ -1,4 +1,8 @@
 
+
+
+
+
 // set direction =0 for available node , 1 for related node
 export default {
   nodeData: {

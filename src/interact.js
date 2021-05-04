@@ -12,9 +12,10 @@ import { findEle } from './utils/dom'
  */
 export let selectNode = function (targetElement, isNewNode, idNode) {
   if (!targetElement) return
+  let self=this
   console.time('selectNode')
   if (typeof targetElement === 'string') {
-    return this.selectNode(findEle(targetElement))
+    return this.selectNode(findEle(targetElement,self))
   }
   if (this.onRedirectPath) {
     this.onRedirectPath(targetElement.nodeObj)
