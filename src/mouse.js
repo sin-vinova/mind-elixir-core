@@ -133,11 +133,11 @@ export default function (mind) {
   mind.map.onmousewheel = e => {
     isPanning = true
     if (isPanning) {
-      if (e.deltaY < 0) {
+      if (e.deltaY > 0) {
         // scrolling up
         if (mind.scaleVal > 1.6) return
         mind.scale((mind.scaleVal += 0.1))
-      } else if (e.deltaY > 0) {
+      } else if (e.deltaY < 0) {
         // scrolling down
         if (mind.scaleVal < 0.6) return
         mind.scale((mind.scaleVal -= 0.1))
