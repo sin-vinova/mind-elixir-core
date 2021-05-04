@@ -69,7 +69,7 @@ export default function (mind) {
         // mind.onClickTag && mind.onClickTag(
       }
       if(mind.isTagging)
-        mind.selectNode(document.querySelectorAll(`[data-nodeid=${dataId}]`)[0])
+        mind.selectNode(mind.mindElixirBox.querySelectorAll(`[data-nodeid=${dataId}]`)[0])
       else
         mind.selectNode(nodeTopic.firstChild)
     } else if (e.target.nodeName === 'path') {
