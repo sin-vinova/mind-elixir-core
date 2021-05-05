@@ -22,7 +22,7 @@ let config = {
           {
             loader: 'url-loader',
             options: {
-              limit: true,
+              limit: 8192,
             },
           },
         ],
@@ -82,12 +82,12 @@ module.exports = (env, argv) => {
             use: ['style-loader', 'css-loader'],
           },
           {
-            test: /\.(ttf|woff|woff2|eot|svg)$/i,
+            test: /\.(ttf|woff|woff2|eot|svg|png)$/i,
             use: [
               {
                 loader: 'url-loader',
                 options: {
-                  limit: true,
+                  limit: 8192,
                 },
               },
             ],

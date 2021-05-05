@@ -1,7 +1,7 @@
 import { LEFT, RIGHT, SIDE,RIGHT_TREE } from '../const'
 import vari from '../var'
 import { v4 as uuidv4 } from 'uuid'
-import logo from '../assets/icon/ic-logo.svg'
+import logo from '../assets/icon/ic-logo.png'
 import iconAgree from '../assets/icon/ic-agree.svg'
 import iconNotAgree from '../assets/icon/ic-not-agree.svg'
 

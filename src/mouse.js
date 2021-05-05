@@ -79,7 +79,7 @@ export default function (mind) {
     } else if (e.target.className === 'circle') {
       // skip circle
     } else {
-      mind.unselectNode()
+      // mind.unselectNode()
       mind.hideLinkController()
     }
   })
