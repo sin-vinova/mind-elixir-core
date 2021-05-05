@@ -50,9 +50,9 @@ export default function (mind) {
       if(e.target.classList.contains('agree-icon')){
         mind.onAddRelateNode && mind.onAddRelateNode(nodeTopic.firstElementChild.nodeObj)
       }
-      // if (mind.onRedirectPath) {
-      //   mind.onRedirectPath(nodeTopic.firstElementChild.nodeObj)
-      // }
+      if (mind.onRedirectPath) {
+        mind.onRedirectPath(nodeTopic.firstElementChild.nodeObj)
+      }
 
       // mind.selectNode(e.target)
       if(e.target.classList.contains('tag')){
