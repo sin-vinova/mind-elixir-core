@@ -17,9 +17,9 @@ export let selectNode = function (targetElement, isNewNode, idNode) {
   if (typeof targetElement === 'string') {
     return this.selectNode(findEle(targetElement,self))
   }
-  // if (this.onRedirectPath) {
-  //   this.onRedirectPath(targetElement.nodeObj)
-  // }
+  if (this.onRedirectPath) {
+    this.onRedirectPath(targetElement.nodeObj)
+  }
   if (this.currentNode) {
     this.currentNode.classList.remove('selected')
     if(this.isTagging)
