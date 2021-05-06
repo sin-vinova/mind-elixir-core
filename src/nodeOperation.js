@@ -378,7 +378,7 @@ export let removeNode = function (el) {
   if (t.tagName === 'ROOT') {
     return
   }
-  // if (childrenLength === 0) {
+  if (childrenLength === 0) {
     // remove epd when children length === 0
     let parentT = t.parentNode.parentNode.previousSibling
     if (parentT.tagName !== 'ROOT')
@@ -389,12 +389,13 @@ export let removeNode = function (el) {
         }
       });
       // parentT.children[1].remove()
-    this.selectParent()
+  }
   // } else {
   //   // select sibling automatically
   //   let success = this.selectPrevSibling()
   //   if (!success) this.selectNextSibling()
   // }
+  this.selectParent()
   for (let prop in this.linkData) {
     // MAYBEBUG should traversal all children node
     let link = this.linkData[prop]
