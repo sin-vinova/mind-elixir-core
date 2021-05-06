@@ -145,7 +145,7 @@ export default function (mind, option) {
   }
   remove_child.onclick = e => {
     if (isRoot) return
-    // mind.removeNode()
+    mind.removeNode()
     if (mind.onDeleteNodeRequest) {
       mind.onDeleteNodeRequest()
     }

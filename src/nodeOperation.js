@@ -369,7 +369,9 @@ export let removeNode = function (el) {
   if (nodeObj.root === true) {
     throw new Error('Can not remove root node')
   }
+  console.log('rrrrr')
   let index = nodeObj.parent.children.findIndex(node => node === nodeObj)
+  console.log(index,"kkkkkk")
   let next = nodeObj.parent.children[index + 1]
   let originSiblingId = next && next.id
 
