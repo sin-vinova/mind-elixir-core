@@ -142,10 +142,11 @@ export default function (mind, option) {
   }
   remove_child.onclick = e => {
     if (isRoot) return
-    if (mind.onDeleteNodeRequest()) {
+    // mind.removeNode()
+    if (mind.onDeleteNodeRequest) {
       mind.onDeleteNodeRequest()
     }
-    // mind.removeNode()
+    
     menuContainer.hidden = true
   }
   focus.onclick = e => {

@@ -36,51 +36,57 @@ let $d = document
 // }
 
 export let updateNodeStyle = function (object) {
+  // origin code
+  // if (!object.style) return
+  // let nodeEle = findEle(object.id, this)
+  // nodeEle.style.color = object.style.color
+  // nodeEle.style.background = object.style.background
+  // nodeEle.style.fontSize = object.style.fontSize + 'px'
+  // nodeEle.style.fontWeight = object.style.fontWeight || 'normal'
+  // this.linkDiv()
+
+
   if (!object.style) return
-
-  // only set bg , not set link
-  if (object.root) {
-    let nodeEle = findEle(object.id, this)
-    nodeEle.style.color = object.style.color
-    nodeEle.style.background = object.style.background
-    nodeEle.style.fontSize = object.style.fontSize + 'px'
-    nodeEle.style.fontWeight = object.style.fontWeight || 'normal'
-    this.linkDiv()
-    return
-  }
-
   let nodeEle = findEle(object.id, this)
-
-  const updateBackgroundNode = (item) => {
-    let nodeEle = findEle(item.id, this)
-    nodeEle.setAttribute('data-color', item.style.background);
-    nodeEle.style.background = item.style.background
-    if (item.children) {
-      item.children.map((item) => {
-        updateBackgroundNode(item)
-      })
-    }
-  }
-
-  if (object.children) {
-    object.children.map(item => {
-      let nodeEle = findEle(item.id, this)
-      console.log('nodeEle', nodeEle)
-      nodeEle.setAttribute('data-color', item.style.background);
-      nodeEle.style.background = item.style.background
-      updateBackgroundNode(item)
-    })
-  }
-
-  // change color linkDiv
-  nodeEle.setAttribute('data-color', object.style.background);
-
   nodeEle.style.color = object.style.color
   nodeEle.style.background = object.style.background
   nodeEle.style.fontSize = object.style.fontSize + 'px'
   nodeEle.style.fontWeight = object.style.fontWeight || 'normal'
-  // this.linkDiv()
-  this.refresh()
+  nodeEle.style.boxShadow = '0px 0px 15px 1px ' + object.style.background
+  if (object.root) {
+    // only set bg , not set link --> root node
+  } else {
+    // change color linkDiv
+    nodeEle.setAttribute('data-color', object.style.background);
+  }
+  this.linkDiv()
+
+
+  /*
+    // code --> change color backgrond and color link for children node
+    let nodeEle = findEle(object.id, this)
+
+    const updateBackgroundNode = (item) => {
+      let nodeEle = findEle(item.id, this)
+      nodeEle.setAttribute('data-color', item.style.background);
+      nodeEle.style.background = item.style.background
+      if (item.children) {
+        item.children.map((item) => {
+          updateBackgroundNode(item)
+        })
+      }
+    }
+
+    if (object.children) {
+      object.children.map(item => {
+        let nodeEle = findEle(item.id, this)
+        console.log('nodeEle', nodeEle)
+        nodeEle.setAttribute('data-color', item.style.background);
+        nodeEle.style.background = item.style.background
+        updateBackgroundNode(item)
+      })
+    }
+  */
 }
 
 export let updateNodeTags = function (object) {
@@ -372,7 +378,7 @@ export let removeNode = function (el) {
   if (t.tagName === 'ROOT') {
     return
   }
-  if (childrenLength === 0) {
+  // if (childrenLength === 0) {
     // remove epd when children length === 0
     let parentT = t.parentNode.parentNode.previousSibling
     if (parentT.tagName !== 'ROOT')
@@ -384,11 +390,11 @@ export let removeNode = function (el) {
       });
       // parentT.children[1].remove()
     this.selectParent()
-  } else {
-    // select sibling automatically
-    let success = this.selectPrevSibling()
-    if (!success) this.selectNextSibling()
-  }
+  // } else {
+  //   // select sibling automatically
+  //   let success = this.selectPrevSibling()
+  //   if (!success) this.selectNextSibling()
+  // }
   for (let prop in this.linkData) {
     // MAYBEBUG should traversal all children node
     let link = this.linkData[prop]

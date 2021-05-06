@@ -10,6 +10,7 @@ export default {
         direction: 0,
         tag: ['lunch','cooking'],
         expanded: true,
+        belongOtherMap:true,
         // background: '#E21818',
         style: {
           color: '',

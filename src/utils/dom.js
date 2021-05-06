@@ -292,6 +292,7 @@ export function createInputDiv(tpc, isEdit) {
   let origin = tpc.childNodes[0].textContent
   const fakeId = uuidv4()
   let clnTpc = tpc.cloneNode(true)
+  clnTpc.nodeObj = tpc.nodeObj
   Array.from(clnTpc.querySelectorAll('.tag')).forEach(item => item.style.textDecoration ='unset')
   tpc.style.display ='none'
   clnTpc.dataset.nodeid = fakeId

@@ -240,10 +240,26 @@ export default function linkDiv(primaryNode) {
         this.svg2nd.appendChild(createMainPath(path,'#979797', '3',"10,10"))
     }
     else{
-      if(rootDirection === RIGHT_TREE)
-        this.svg2nd.appendChild(createMainPath(path, colorLineRoot))
-      else
-        this.svg2nd.appendChild(createMainPath(path, colorLine))
+      let isOtherNode
+      if (
+        el 
+        && el.children 
+        && el.children[0] 
+        && el.children[0].children 
+        && el.children[0].children.length !== 0 
+        && el.children[0].children[0]
+        && el.children[0].children[0].nodeObj){
+          isOtherNode = el.children[0].children[0].nodeObj.belongOtherMap
+        }
+      if(isOtherNode){
+        this.svg2nd.appendChild(createMainPath(path, colorLine,'3',"5,5"))
+      }
+      else{
+        if(rootDirection === RIGHT_TREE)
+          this.svg2nd.appendChild(createMainPath(path, colorLineRoot))
+        else
+          this.svg2nd.appendChild(createMainPath(path, colorLine))
+      }
     }
   }
   
@@ -397,10 +413,26 @@ export default function linkDiv(primaryNode) {
             }
           }
           else{
-            if(rootDirection === RIGHT_TREE) 
-              svg.appendChild(createPath(path, colorLineRoot))
-            else
-              svg.appendChild(createPath(path, colorLine))
+            let isOtherNode
+            if (
+              child 
+              && child.children 
+              && child.children[0] 
+              && child.children[0].children 
+              && child.children[0].children.length !== 0 
+              && child.children[0].children[0]
+              && child.children[0].children[0].nodeObj){
+                isOtherNode = child.children[0].children[0].nodeObj.belongOtherMap
+              }
+            if(isOtherNode){
+              svg.appendChild(createPath(path, colorLine,'3',"5,5"))
+            }
+            else{
+              if(rootDirection === RIGHT_TREE)
+                svg.appendChild(createPath(path, colorLineRoot))
+              else
+                svg.appendChild(createPath(path, colorLine))
+            }
           }
 
           // let expander = childT.children[1]

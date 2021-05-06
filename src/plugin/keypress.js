@@ -72,17 +72,25 @@ export default function (mind) {
       // input
       return
     }
+    console.log(e.target)
+    if(mind.isTagging)
+      return
     e.preventDefault()
     if (e.keyCode === 8 || e.keyCode === 46) {
       // del,backspace
       if (mind.currentLink) mind.removeLink()
-      // else mind.removeNode()
+      // else 
       else {
-        if (mind.onDeleteNodeRequest()) {
-          mind.onDeleteNodeRequest()
+        if(!mind.currentNode || (mind.currentNode && (!mind.currentNode.nodeObj.belongOtherMap || (mind.currentNode.nodeObj.belongOtherMap && mind.currentNode.nodeObj.firstNodeOtherMap)))){
+          // mind.removeNode()
+          if (mind.onDeleteNodeRequest) {
+            mind.onDeleteNodeRequest()
+          }
         }
       }
     } else {
+      if(mind.currentNode && mind.currentNode.nodeObj.belongOtherMap)
+        return
       key2func[e.keyCode] && key2func[e.keyCode](e)
     }
   }

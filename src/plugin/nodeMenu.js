@@ -330,32 +330,38 @@ export default function (mind) {
         mind.onEditNodeRequest(nodeObj.topic, e.target.dataset.color)
       }
 
-      // if want change color font then write this function for case bgOrFont === 'font'
-      const setBackgroundChild = childNode => {
-        if (childNode.children) {
-          childNode.children.map(child => {
-            child.style = {
-              background: e.target.dataset.color,
-            }
-            setBackgroundChild(child)
-            return child
-          })
+      /*
+        // if want change color font then write this function for case bgOrFont === 'font'
+        // code --> change color backgrond and color link for children node
+        const setBackgroundChild = childNode => {
+          if (childNode.children) {
+            childNode.children.map(child => {
+              // if(!childNode.belongOtherMap){
+                child.style = {
+                  background: e.target.dataset.color,
+                }
+                setBackgroundChild(child)
+              // }
+              return child
+            })
+          }
         }
-      }
 
-      if (nodeObj.root) {
-        nodeObj.style = {
-          background: e.target.dataset.color,
-        }
-      } else if (nodeObj.children && nodeObj.children.length !== 0) {
-        nodeObj.children = nodeObj.children.map(childNode => {
-          childNode.style = {
+        if (nodeObj.root) {
+          nodeObj.style = {
             background: e.target.dataset.color,
           }
-          setBackgroundChild(childNode)
-          return childNode
-        })
-      }
+        } else if (nodeObj.children && nodeObj.children.length !== 0) {
+          nodeObj.children = nodeObj.children.map(childNode => {
+            if(!childNode.belongOtherMap)
+              childNode.style = {
+                background: e.target.dataset.color,
+              }
+            setBackgroundChild(childNode)
+            return childNode
+          })
+        }
+      */
       mind.updateNodeStyle(nodeObj)
     }
   }
@@ -363,13 +369,22 @@ export default function (mind) {
     menuContainer.hidden = true
   })
   mind.bus.addListener('selectNode', function (nodeObj) {
-    if ((nodeObj.parent && nodeObj.parent.root) || nodeObj.root) {
-      menuContainer.hidden = false
-    } else if (nodeObj.level && (nodeObj.level === 1 || nodeObj.level === 0)) {
-      menuContainer.hidden = false
-    } else {
+    console.log("gggg",nodeObj,"lklkl")
+    // if(!nodeObj){
+    //   menuContainer.hidden = true
+    //   return
+    // }
+    if(mind.isTagging || nodeObj.belongOtherMap)
       menuContainer.hidden = true
-    }
+    // if ((nodeObj.parent && nodeObj.parent.root) || nodeObj.root) {
+    //   menuContainer.hidden = false
+    // } else if (nodeObj.level && (nodeObj.level === 1 || nodeObj.level === 0)) {
+    //   menuContainer.hidden = false
+    // } else {
+    //   menuContainer.hidden = true
+    // }
+    else
+      menuContainer.hidden = false
     clearSelect('.palette', 'nmenu-selected')
     clearSelect('.size', 'size-selected')
     clearSelect('.bold', 'size-selected')
