@@ -61,6 +61,7 @@ export default function (mind, option) {
   mind.container.oncontextmenu = function (e) {
     e.preventDefault()
     // console.log(e.pageY, e.screenY, e.clientY)
+    
     let target = e.target
     if (target.tagName === 'TPC') {
       if (target.parentElement.tagName === 'ROOT') {
@@ -68,7 +69,9 @@ export default function (mind, option) {
       } else {
         isRoot = false
       }
-
+      if (mind.onRedirectPath) {
+        mind.onRedirectPath(target.firstElementChild.nodeObj)
+      }
       // value "mapPermission" : "View" || "Update" || "Owner"
       if (mind.mapPermission === 'Update' || mind.mapPermission === 'Owner') {
         if (isRoot) {
