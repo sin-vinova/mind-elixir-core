@@ -70,7 +70,7 @@ export default function (mind, option) {
         isRoot = false
       }
       if (mind.onRedirectPath) {
-        mind.onRedirectPath(target.firstElementChild.nodeObj)
+        mind.onRedirectPath(target.nodeObj)
       }
       // value "mapPermission" : "View" || "Update" || "Owner"
       if (mind.mapPermission === 'Update' || mind.mapPermission === 'Owner') {
