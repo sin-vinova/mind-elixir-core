@@ -50,9 +50,6 @@ export default function (mind) {
       if(e.target.classList.contains('agree-icon')){
         mind.onAddRelateNode && mind.onAddRelateNode(nodeTopic.firstElementChild.nodeObj)
       }
-      if (mind.onRedirectPath) {
-        mind.onRedirectPath(nodeTopic.firstElementChild.nodeObj)
-      }
 
       // mind.selectNode(e.target)
       if(e.target.classList.contains('tag')){
@@ -72,6 +69,9 @@ export default function (mind) {
         mind.selectNode(mind.mindElixirBox.querySelectorAll(`[data-nodeid=${dataId}]`)[0])
       else
         mind.selectNode(nodeTopic.firstChild)
+      if (mind.onRedirectPath) {
+        mind.onRedirectPath(nodeTopic.firstElementChild.nodeObj)
+      }
     } else if (e.target.nodeName === 'path') {
       if (e.target.parentElement.nodeName === 'g') {
         mind.selectLink(e.target.parentElement)

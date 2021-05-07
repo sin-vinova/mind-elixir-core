@@ -145,14 +145,17 @@ export let createTopic = function (nodeObj, isTagging, first) {
   }
   else{
     // console.log("yyyyy")
-    topic.innerHTML = hashtagForrmat(nodeObj.topic)
     
     if(nodeObj.belongOtherMap){
+      topic.innerHTML = hashtagForrmat(nodeObj.topic,'tag-child')
       topic.classList.add('tag-topic-available')
       if(nodeObj.firstNodeOtherMap){
         topic.appendChild(createPersonalInfo(nodeObj))
         topic.appendChild(createFollowNum(nodeObj))
       }
+    }
+    else{
+      topic.innerHTML = hashtagForrmat(nodeObj.topic)
     }
     
   }
@@ -343,7 +346,7 @@ export function createInputDiv(tpc, isEdit) {
       this.onCreateNodeRequest(topic)
     }
     if (isEdit && this.onEditNodeRequest) {
-      this.onEditNodeRequest(topic)
+      this.onEditNodeRequest(node)
     }
     clnTpc.remove()
     this.inputDiv = clnTpc = null

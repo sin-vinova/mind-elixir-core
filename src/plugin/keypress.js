@@ -81,11 +81,8 @@ export default function (mind) {
       if (mind.currentLink) mind.removeLink()
       // else 
       else {
-        if(!mind.currentNode || (mind.currentNode && (!mind.currentNode.nodeObj.belongOtherMap || (mind.currentNode.nodeObj.belongOtherMap && mind.currentNode.nodeObj.firstNodeOtherMap)))){
-          // mind.removeNode()
-          if (mind.onDeleteNodeRequest) {
-            mind.onDeleteNodeRequest()
-          }
+        if (mind.onDeleteNodeRequest) {
+          mind.onDeleteNodeRequest()
         }
       }
     } else {

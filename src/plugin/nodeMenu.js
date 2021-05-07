@@ -327,7 +327,7 @@ export default function (mind) {
 
       // update background node
       if (mind.onEditNodeRequest) {
-        mind.onEditNodeRequest(nodeObj.topic, e.target.dataset.color)
+        mind.onEditNodeRequest(nodeObj)
       }
 
       /*

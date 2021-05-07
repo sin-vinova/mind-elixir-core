@@ -69,9 +69,7 @@ export default function (mind, option) {
       } else {
         isRoot = false
       }
-      if (mind.onRedirectPath) {
-        mind.onRedirectPath(target.nodeObj)
-      }
+      
       // value "mapPermission" : "View" || "Update" || "Owner"
       if (mind.mapPermission === 'Update' || mind.mapPermission === 'Owner') {
         if (isRoot) {
@@ -120,6 +118,9 @@ export default function (mind, option) {
         menuUl.style.right = ''
         menuUl.style.left = e.clientX + 10 + 'px'
       }
+      if (mind.onRedirectPath) {
+        mind.onRedirectPath(target.nodeObj)
+      }
     }
   }
 
@@ -145,7 +146,7 @@ export default function (mind, option) {
   }
   remove_child.onclick = e => {
     if (isRoot) return
-    mind.removeNode()
+    // mind.removeNode()
     if (mind.onDeleteNodeRequest) {
       mind.onDeleteNodeRequest()
     }

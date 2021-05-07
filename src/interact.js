@@ -1,4 +1,7 @@
 import { findEle } from './utils/dom'
+import {
+  addParentLink,
+} from './utils/index'
 /**
  * @namespace MapInteraction
  */
@@ -347,7 +350,9 @@ export let expandNode = function (el, isExpand) {
  * @description Refresh mind map, you can use it after modified `this.nodeData`
  * @memberof MapInteraction
  */
-export let refresh = function(){
+export let refresh = function(reFormatdata = false){
+  if(reFormatdata)
+    addParentLink(this.nodeData)
   // create dom element for every nodes
   this.layout()
   // generate links between nodes
