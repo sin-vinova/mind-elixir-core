@@ -163,7 +163,24 @@ body {
       color: #B7DFFF;
     }
   }
-  
+  add {
+    position: absolute;
+    height: 18px;
+    width: 18px;
+    top: -9px !important;
+    // left: 50% !important;
+    text-align: center;
+    transform: translateX(-50%);
+    background: #0070C9;
+    border-radius: 50%;
+    color: white;
+    pointer-events: auto;
+    &.add {
+      // transition: all 0.3s;
+      // opacity: 0;
+      display: none;
+    }
+  }
   .box {
     & > grp {
       // for primary node
@@ -336,24 +353,7 @@ body {
           background-color: #fff;
         }
       }
-      add {
-        position: absolute;
-        height: 18px;
-        width: 18px;
-        top: -9px !important;
-        // left: 50% !important;
-        text-align: center;
-        transform: translateX(-50%);
-        background: #0070C9;
-        border-radius: 50%;
-        color: white;
-        pointer-events: auto;
-        &.add {
-          // transition: all 0.3s;
-          // opacity: 0;
-          display: none;
-        }
-      }
+      
       // &:hover .add {
       //   opacity: 1;
       // }

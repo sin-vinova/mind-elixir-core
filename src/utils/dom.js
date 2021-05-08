@@ -61,7 +61,7 @@ export let createGroup = function (node,direction,deepFirstChild) {
   grp.appendChild(top)
   if (node.children && node.children.length > 0) {
     top.appendChild(createExpander(node.expanded))
-    top.appendChild(createAddNode(direction,deepFirstChild))
+    // top.appendChild(createAddNode(direction,deepFirstChild))
     if (node.expanded !== false) {
       let children = createChildren(node.children)
       grp.appendChild(children)
@@ -573,9 +573,10 @@ export function layout() {
   let tpc = createTopic(this.nodeData,this.isTagging,this.box)
   tpc.draggable = false
   this.root.appendChild(tpc)
-
+  
   let primaryNodes = this.nodeData.children
   if (!primaryNodes || primaryNodes.length === 0) return
+  this.root.appendChild(createAddNode(this.direction,true))
   if (this.direction === SIDE) {
     // init direction of primary node
     let lcount = 0

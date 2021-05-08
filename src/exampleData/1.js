@@ -1,7 +1,7 @@
 export default {
   nodeData: {
     id: 'root',
-    topic: '',
+    topic: 'dsdsadssdsada',
     root: true,
     children: [
       {
