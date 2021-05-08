@@ -343,7 +343,7 @@ export function createInputDiv(tpc, isEdit) {
     else node.topic = topic
     // request API Node
     if (!isEdit && this.onCreateNodeRequest) {
-      this.onCreateNodeRequest(topic)
+      this.onCreateNodeRequest(node)
     }
     if (isEdit && this.onEditNodeRequest) {
       this.onEditNodeRequest(node)

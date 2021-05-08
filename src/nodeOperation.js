@@ -242,8 +242,7 @@ export let addChild = function (el, node) {
   else nodeObj.children = [newNodeObj]
   addParentLink(this.nodeData)
   let top = nodeEle.parentElement
-  console.log(this)
-  let { grp, top: newTop } = createGroup(newNodeObj,this.direction,nodeEle.tagName === 'ROOT')
+  let { grp, top: newTop } = createGroup(newNodeObj,this.direction,nodeObj.root)
 
   if (top.tagName === 'T') {
     let flag = false;
