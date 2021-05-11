@@ -576,7 +576,8 @@ export function layout() {
   
   let primaryNodes = this.nodeData.children
   if (!primaryNodes || primaryNodes.length === 0) return
-  this.root.appendChild(createAddNode(this.direction,true))
+  if(!this.isTagging)
+    this.root.appendChild(createAddNode(this.direction,true))
   if (this.direction === SIDE) {
     // init direction of primary node
     let lcount = 0
