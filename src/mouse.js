@@ -19,11 +19,12 @@ export default function (mind) {
     // if (dragMoveHelper.afterMoving) return
     e.preventDefault()
     const nodeTopic =  getParent(e.target, 'T') ? getParent(e.target, 'T') : getParent(e.target, 'ROOT') ? getParent(e.target, 'ROOT') : null
-    if(mind.isTagging)
+    if(mind.isTagging && nodeTopic && nodeTopic.firstElementChild.nodeObj.typeTag === 'relate' && nodeTopic.firstElementChild.nodeObj.firstChildTag){
       document.querySelectorAll('.tag-topic-relate').forEach(item =>{
         if(item.nodeObj.firstChildTag)
           mind.expandNode(item,false)
       })
+    }
     if (e.target.nodeName === 'EPD') {
       // W1
       // e.target.parentElement.children.forEach(element => {
@@ -33,6 +34,9 @@ export default function (mind) {
       // });
       // W2
       mind.expandNode(e.target.parentElement.children[0])
+      if(mind.onUpdateExpandNode)
+      mind.onUpdateExpandNode(e.target.parentElement.children[0].nodeObj)
+      
       // mind.expandNode(e.target.previousSibling)
     } else if (
       e.target.nodeName === 'ADD'

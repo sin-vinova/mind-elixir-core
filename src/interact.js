@@ -20,9 +20,7 @@ export let selectNode = function (targetElement, isNewNode, idNode) {
   if (typeof targetElement === 'string') {
     return this.selectNode(findEle(targetElement,self))
   }
-  // if (this.onRedirectPath) {
-  //   this.onRedirectPath(targetElement.nodeObj)
-  // }
+
   if (this.currentNode) {
     this.currentNode.classList.remove('selected')
     if(this.isTagging)
@@ -338,6 +336,7 @@ export let expandNode = function (el, isExpand) {
   } else {
     node.expanded = true
   }
+  
   // TODO 在此函数构造 html 结构，而非调用 layout
   this.layout()
   this.linkDiv()

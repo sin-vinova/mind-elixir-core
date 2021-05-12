@@ -133,6 +133,7 @@ function MindElixir({
   onEditNodeRequest,
   onDeleteNodeRequest,
   onRedirectPath,
+  onUpdateExpandNode,
   onRedirectRoutePost,
   onAddRelateNode,
   onRemoveRelateNode,
@@ -176,6 +177,7 @@ function MindElixir({
   this.onEditNodeRequest = onEditNodeRequest || null
   this.onDeleteNodeRequest = onDeleteNodeRequest || null
   this.onRedirectPath = onRedirectPath || null
+  this.onUpdateExpandNode = onUpdateExpandNode || null
   this.onRedirectRoutePost = onRedirectRoutePost || null
   this.colorList = colorList || null
   this.mapPermission = mapPermission || 'Update'
