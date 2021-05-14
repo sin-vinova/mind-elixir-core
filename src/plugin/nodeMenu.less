@@ -99,6 +99,9 @@ nmenu {
   height: 100%;
   width: 104px;
   padding: 0;
+  box-sizing: border-box;
+  position: absolute;
+  transition: 0.3s all;
   #nm-style {
     width: 100%;
     height: 100%;
@@ -126,4 +129,15 @@ nmenu {
       }
     }
   }
+  & .button-hide-color {
+    position: absolute;
+    left: -50px;
+    top: 20px;
+    cursor: pointer;
+  }
+}
+
+.close-color {
+  width: 0;
+  height: 0;
 }
