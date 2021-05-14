@@ -475,7 +475,7 @@ export let createTagOption = function (){
  * @param {number} direction primary node direction
  * @return {ChildrenElement} children element.
  */
-export function createChildren(data, first, direction,isTagging) {
+export function createChildren(data, first, direction,isTagging,removeAddNodeButton) {
   let chldr = $d.createElement('children') 
   if (first) {
     chldr = first
@@ -536,7 +536,7 @@ export function createChildren(data, first, direction,isTagging) {
       // console.log('backgroundbackground', background)
       if(!isTagging){
         top.appendChild(createExpander(nodeObj.expanded))
-        if(!nodeObj.belongOtherMap)
+        if(!nodeObj.belongOtherMap && !removeAddNodeButton)
           top.appendChild(createAddNode(direction,first))
       }
       else if(nodeObj.typeTag !== 'relate'){
@@ -546,13 +546,13 @@ export function createChildren(data, first, direction,isTagging) {
       }
       grp.appendChild(top)
       if (nodeObj.expanded !== false) {
-        let children = createChildren(nodeObj.children,false,direction,isTagging)
+        let children = createChildren(nodeObj.children,false,direction,isTagging,removeAddNodeButton)
         grp.appendChild(children)
       }
     } else {
       // top.appendChild(createAddNode())
       if(!isTagging){
-        if(!nodeObj.belongOtherMap)
+        if(!nodeObj.belongOtherMap && !removeAddNodeButton)
           grp.appendChild(top).appendChild(createAddNode(direction,first))
         else
           grp.appendChild(top)
@@ -576,7 +576,7 @@ export function layout() {
   
   let primaryNodes = this.nodeData.children
   if (!primaryNodes || primaryNodes.length === 0) return
-  if(!this.isTagging)
+  if(!this.isTagging && !this.removeAddNodeButton)
     this.root.appendChild(createAddNode(this.direction,true))
   if (this.direction === SIDE) {
     // init direction of primary node
@@ -600,6 +600,6 @@ export function layout() {
       }
     })
   }
-  createChildren(this.nodeData.children, this.box, this.direction,this.isTagging )
+  createChildren(this.nodeData.children, this.box, this.direction,this.isTagging, this.removeAddNodeButton )
   console.timeEnd('layout')
 }
