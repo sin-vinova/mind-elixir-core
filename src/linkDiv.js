@@ -123,7 +123,7 @@ export default function linkDiv(primaryNode) {
         
         xLine = 10000;
         path = `M ${xLine} ${10000} C ${10000} ${10000} ${10000 + 2 * primaryNodeHorizontalGap * 0.03
-          } ${y2} ${x2} ${y2}`
+          } ${y2} ${x2} ${y2+10}`
       }
 
       if (shortSide === 'l') {
@@ -193,7 +193,7 @@ export default function linkDiv(primaryNode) {
         }while(xLine > minRight)
 
         xLine = 10000;
-        path = `M ${xLine} ${10000} C ${xLine} 10000 ${10000 + 2 * primaryNodeHorizontalGap * 0.03} ${y2} ${x2} ${y2}`
+        path = `M ${xLine} ${10000} C ${xLine} 10000 ${10000 + 2 * primaryNodeHorizontalGap * 0.03} ${y2} ${x2} ${y2+10}`
       }
       if (shortSide === 'r') {
         currentOffsetR += elOffsetH + shortSideGap

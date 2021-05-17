@@ -16,72 +16,23 @@ export default {
           color: '',
           background: '#E21818',
           fontSize: '40px',
-        },
+        }, 
         children: [
           {
-            topic: 'A mind map core',
-            id: 'beeb823afd6d2114',
-            background: 'rgba(226, 24, 24, 0.7)',
-          },
-          {
-            topic: 'Free',
-            id: 'c1f068377de9f3a0',
-            background: 'rgba(226, 24, 24, 0.7)',
-          },
-          {
-            topic: 'Open-Source',
-            id: 'c1f06d38a09f23ca',
-            background: 'rgba(226, 24, 24, 0.7)',
-          },
-          {
-            topic: 'Use without JavaScript framework',
-            id: 'c1f06e4cbcf16463',
-            expanded: true,
-            children: [],
-            background: 'green',
-          },
-          {
-            topic: 'Use in your own project',
-            id: 'c1f1f11a7fbf7550',
-            background: 'rgba(226, 24, 24, 0.7)',
-            belongOtherMap: true,
-            firstNodeOtherMap: true,
+            topic: 'tab - Create a child node',
+            id: 'bd1b6892bcab126a',
+            background: '#4D9BD9',
+            style: { fontSize: 40 },
             children: [
               {
-                topic: "import MindElixir from 'mind-elixir'",
-                id: 'c1f1e245b0a89f9b',
-                background: 'rgba(226, 24, 24, 0.7)',
-                belongOtherMap: true,
-                firstNodeOtherMap: false,
+                topic: 'tab - Create a child node',
+                id: 'bd1b6892bcab126a',
+                background: '#4D9BD9',
+                style: { fontSize: 40 },
               },
-              {
-                topic: 'new MindElixir({...}).init()',
-                id: 'c1f1ebc7072c8928',
-                background: 'rgba(226, 24, 24, 0.7)',
-                belongOtherMap: true,
-                firstNodeOtherMap: false,
-              },
-            ],
+            ]
           },
-          {
-            topic: 'Easy to use',
-            id: 'c1f0723c07b408d7',
-            expanded: true,
-            background: '#000',
-            children: [
-              {
-                topic: 'Use it like other mind map application',
-                id: 'c1f09612fd89920d',
-                // background: 'rgba(226, 24, 24, 0.7)',
-                style: {
-                  color: '',
-                  background: 'green',
-                  fontSize: '20px',
-                },
-              },
-            ],
-          },
-        ],
+        ]
       },
       {
         topic: 'Basics',
@@ -115,11 +66,11 @@ export default {
         expanded: true,
         background: '#EA8F24',
         children: [
-          {
-            topic: 'Right click and select Focus Mode',
-            id: 'bd1bb2ac4bbab458',
-            background: 'rgba(234, 143, 36, 0.7)',
-          },
+          // {
+          //   topic: 'Right click and select Focus Mode',
+          //   id: 'bd1bb2ac4bbab458',
+          //   background: 'rgba(234, 143, 36, 0.7)',
+          // },
           {
             topic: 'Right click and select Cancel Focus Mode',
             id: 'bd1bb4b14d6697c3',

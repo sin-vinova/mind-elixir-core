@@ -74,8 +74,8 @@ export let createGroup = function (node,direction,deepFirstChild) {
 export let createTop = function (nodeObj,direction,deepFirstChild,isTagging) {
   let top = $d.createElement('t')
   let tpc = createTopic(nodeObj,isTagging)
-  if(!deepFirstChild || direction ===RIGHT_TREE)
-    top.style.marginTop = '20px'
+  // if(direction ===RIGHT_TREE)
+  top.style.marginTop = '20px'
   if(direction && direction ===RIGHT_TREE){
     if(!deepFirstChild){
       tpc.style.marginLeft = '60px'
