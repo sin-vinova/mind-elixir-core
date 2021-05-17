@@ -22,7 +22,7 @@ function createToolBarRBContainer(mind) {
   // toolBarRBContainer.appendChild(percentage)
   toolBarRBContainer.className = 'rb'
   fc.onclick = () => {
-    mind.container.requestFullscreen()
+    mind.mindElixirBox.requestFullscreen()
   }
   gc.onclick = () => {
     mind.toCenter()

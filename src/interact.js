@@ -340,6 +340,11 @@ export let expandNode = function (el, isExpand) {
   // TODO 在此函数构造 html 结构，而非调用 layout
   this.layout()
   this.linkDiv()
+  const newEl = E(el.nodeObj.id,this)
+  this.selectNode(newEl)
+  if (this.onRedirectPath) {
+    this.onRedirectPath(newEl.nodeObj)
+  }
 }
 
 /**
