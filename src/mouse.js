@@ -142,11 +142,11 @@ export default function (mind) {
       if (e.deltaY > 0) {
         // scrolling up
         if (mind.scaleVal > 1.6) return
-        mind.scale((mind.scaleVal += 0.05))
+        mind.scale((mind.scaleVal += 0.02))
       } else if (e.deltaY < 0) {
         // scrolling down
         if (mind.scaleVal < 0.2) return
-        mind.scale((mind.scaleVal -= 0.05))
+        mind.scale((mind.scaleVal -= 0.02))
       }
       isPanning = false
     }
