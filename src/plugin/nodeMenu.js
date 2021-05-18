@@ -405,7 +405,6 @@ export default function (mind) {
     menuContainer.hidden = true
   })
   mind.bus.addListener('selectNode', function (nodeObj) {
-    console.log("gggg",nodeObj,"lklkl")
     // if(!nodeObj){
     //   menuContainer.hidden = true
     //   return
@@ -424,5 +423,6 @@ export default function (mind) {
     clearSelect('.palette', 'nmenu-selected')
     clearSelect('.size', 'size-selected')
     clearSelect('.bold', 'size-selected')
+
   })
 }

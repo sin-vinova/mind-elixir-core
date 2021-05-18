@@ -552,7 +552,6 @@ export let moveNodeAfter = function (from, to) {
  * beginEdit(E('bd4313fbac40284b'))
  */
 export let beginEdit = function (el, isEdit,isTagging) {
-  // console.log("kkkkkk")
   let nodeEle = el || this.currentNode
   if (!nodeEle || isTagging || (nodeEle.nodeObj && nodeEle.nodeObj.belongOtherMap)) return
   this.createInputDiv(nodeEle, isEdit)

@@ -289,8 +289,11 @@ export function selectText(div) {
 
 export function createInputDiv(tpc, isEdit) {
   console.time('createInputDiv')
+  const sefl = this
   if (!tpc || tpc.contentEditable === 'true') return
-  
+  const colorTable = sefl.container.querySelector('nmenu')
+  if(colorTable && !colorTable.hidden)
+    colorTable.hidden = true
   // let div = $d.createElement('div')
   let origin = tpc.childNodes[0].textContent
   const fakeId = uuidv4()
@@ -307,7 +310,6 @@ export function createInputDiv(tpc, isEdit) {
   // div.style.cssText = `min-width:${tpc.offsetWidth - 8}px;`
   // if (this.direction === LEFT) div.style.right = 0
   clnTpc.focus()
-  const sefl = this
   clnTpc.addEventListener("input", function (e) {
     if (sefl.onChangeText && typeof sefl.onChangeText == 'function') { 
       sefl.onChangeText(e.target.textContent)
