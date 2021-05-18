@@ -409,7 +409,7 @@ export default function (mind) {
     //   menuContainer.hidden = true
     //   return
     // }
-    if(mind.isTagging || nodeObj.belongOtherMap)
+    if(mind.isTagging || nodeObj.belongOtherMap || mind.currentNode.contentEditable === 'true')
       menuContainer.hidden = true
     // if ((nodeObj.parent && nodeObj.parent.root) || nodeObj.root) {
     //   menuContainer.hidden = false
@@ -423,6 +423,5 @@ export default function (mind) {
     clearSelect('.palette', 'nmenu-selected')
     clearSelect('.size', 'size-selected')
     clearSelect('.bold', 'size-selected')
-
   })
 }
