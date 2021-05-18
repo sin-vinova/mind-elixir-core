@@ -32,10 +32,10 @@ export default function (mind, option) {
   menuUl.appendChild(add_post)
   // menuUl.appendChild(add_sibling)
   menuUl.appendChild(remove_child)
-  if (!option || option.focus) {
-    menuUl.appendChild(focus)
-    menuUl.appendChild(unfocus)
-  }
+  // if (!option || option.focus) {
+  //   menuUl.appendChild(focus)
+  //   menuUl.appendChild(unfocus)
+  // }
   // menuUl.appendChild(up)
   // menuUl.appendChild(down)
   // if (!option || option.link) {
@@ -58,12 +58,27 @@ export default function (mind, option) {
 
   mind.container.append(menuContainer)
   let isRoot = true
+  function getParent(el,query) {
+    if(el.matches(query))
+      return el
+    let result = [];
+    let parent
+    for (let p = el && el.parentElement; p; p = p.parentElement) {
+      result.push(p);
+    }
+    result.forEach(eleParent =>{
+      if(eleParent.matches(query))
+        parent = eleParent
+    })
+    return parent;
+  }
   mind.container.oncontextmenu = function (e) {
     e.preventDefault()
     // console.log(e.pageY, e.screenY, e.clientY)
     
-    let target = e.target
-    if (target.tagName === 'TPC') {
+    let target = getParent(e.target, 'TPC') ? getParent(e.target, 'TPC') : null
+    // const nodeTopic =  getParent(target, 'TPC') ? getParent(e.target, 'TPC') : null
+    if (target) {
       if (target.parentElement.tagName === 'ROOT') {
         isRoot = true
       } else {
@@ -72,36 +87,46 @@ export default function (mind, option) {
       
       // value "mapPermission" : "View" || "Update" || "Owner"
       if (mind.mapPermission === 'Update' || mind.mapPermission === 'Owner') {
+        mind.selectNode(target)
+        add_child.className = ''
+        remove_child.className = ''
+        add_post.className = ''
         if (isRoot) {
-          focus.className = 'disabled'
-          up.className = 'disabled'
-          down.className = 'disabled'
-          add_sibling.className = 'disabled'
+          // focus.className = 'disabled'
+          // up.className = 'disabled'
+          // down.className = 'disabled'
+          // add_sibling.className = 'disabled'
           remove_child.className = 'disabled'
-  
+          
           // allow create_post_on_node_root
           // add_post.className = 'disabled'
-        } else {
-          focus.className = ''
-          up.className = ''
-          down.className = ''
-          add_sibling.className = ''
-          remove_child.className = ''
-          add_post.className = ''
         }
+        // } else {
+        //   // focus.className = ''
+        //   // up.className = ''
+        //   // down.className = ''
+        //   add_child.className = ''
+        //   remove_child.className = ''
+        //   add_post.className = ''
+        // }
       } else if (mind.mapPermission === 'View') {
         add_child.className = 'disabled'
         add_post.className = 'disabled'
-        up.className = 'disabled'
-        down.className = 'disabled'
-        add_sibling.className = 'disabled'
         remove_child.className = 'disabled'
-        focus.className = 'disabled'
-        unfocus.className = 'disabled'
+        // up.className = 'disabled'
+        // down.className = 'disabled'
+        // add_sibling.className = 'disabled'
+        
+        // focus.className = 'disabled'
+        // unfocus.className = 'disabled'
       }
-      mind.selectNode(target)
-      if( !mind.isTagging && !(target.nodeObj && target.nodeObj.belongOtherMap))
+      
+      if( !mind.isTagging && !(target.nodeObj && target.nodeObj.belongOtherMap && !target.nodeObj.firstNodeOtherMap))
         menuContainer.hidden = false
+      if(target.nodeObj.belongOtherMap && target.nodeObj.firstNodeOtherMap){
+        add_child.className = 'disabled'
+        add_post.className = 'disabled'
+      }
       let height = menuUl.offsetHeight
       let width = menuUl.offsetWidth
       if (height + e.clientY > window.innerHeight) {
@@ -129,15 +154,19 @@ export default function (mind, option) {
   }
 
   add_child.onclick = e => {
-    mind.addChild()
-    menuContainer.hidden = true
+    const currentNodeObj = mind.currentNode.nodeObj
+    if( !mind.isTagging && !currentNodeObj.belongOtherMap){
+      mind.addChild()
+      menuContainer.hidden = true
+    }
   }
   add_post.onclick = e => {
     // mind.addPost();
-    if (mind.onRedirectRoutePost) {
+    const currentNodeObj = mind.currentNode.nodeObj
+    if( !mind.isTagging && !currentNodeObj.belongOtherMap){
       mind.onRedirectRoutePost()
+      menuContainer.hidden = true
     }
-    menuContainer.hidden = true
   }
   add_sibling.onclick = e => {
     if (isRoot) return
@@ -172,24 +201,24 @@ export default function (mind, option) {
     mind.moveDownNode()
     menuContainer.hidden = true
   }
-  link.onclick = e => {
-    let from = mind.currentNode
-    mind.map.addEventListener(
-      'click',
-      e => {
-        e.preventDefault()
-        if (
-          e.target.parentElement.nodeName === 'T' ||
-          e.target.parentElement.nodeName === 'ROOT'
-        ) {
-          mind.createLink(from, mind.currentNode)
-        } else {
-          console.log('取消连接')
-        }
-      },
-      {
-        once: true,
-      }
-    )
-  }
+  // link.onclick = e => {
+  //   let from = mind.currentNode
+  //   mind.map.addEventListener(
+  //     'click',
+  //     e => {
+  //       e.preventDefault()
+  //       if (
+  //         e.target.parentElement.nodeName === 'T' ||
+  //         e.target.parentElement.nodeName === 'ROOT'
+  //       ) {
+  //         mind.createLink(from, mind.currentNode)
+  //       } else {
+  //         console.log('取消连接')
+  //       }
+  //     },
+  //     {
+  //       once: true,
+  //     }
+  //   )
+  // }
 }

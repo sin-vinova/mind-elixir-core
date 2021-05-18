@@ -34,8 +34,6 @@ export default function (mind) {
       // });
       // W2
       mind.expandNode(e.target.parentElement.children[0])
-      if(mind.onUpdateExpandNode)
-      mind.onUpdateExpandNode(e.target.parentElement.children[0].nodeObj)
       
       // mind.expandNode(e.target.previousSibling)
     } else if (

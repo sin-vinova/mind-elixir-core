@@ -11,6 +11,7 @@ export default {
         tag: ['lunch','cooking'],
         expanded: true,
         belongOtherMap:true,
+        firstNodeOtherMap: true,
         // background: '#E21818',
         style: {
           color: '',

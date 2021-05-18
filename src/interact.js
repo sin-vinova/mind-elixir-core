@@ -345,6 +345,9 @@ export let expandNode = function (el, isExpand) {
   if (this.onRedirectPath) {
     this.onRedirectPath(newEl.nodeObj)
   }
+  if(this.onUpdateExpandNode)
+    this.onUpdateExpandNode(newEl.nodeObj)
+      
 }
 
 /**
