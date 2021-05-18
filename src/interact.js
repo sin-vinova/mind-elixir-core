@@ -14,7 +14,7 @@ import {
  * @param {TargetElement} el - Target element return by E('...'), default value: currentTarget.
  */
 export let selectNode = function (targetElement, isNewNode, idNode) {
-  if (!targetElement) return
+  if (!targetElement ) return
   let self=this
   console.time('selectNode')
   if (typeof targetElement === 'string') {

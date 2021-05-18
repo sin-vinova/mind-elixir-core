@@ -16,6 +16,8 @@ function getParent(el,query) {
 export default function (mind) {
   let isPanning = false;
   mind.map.addEventListener('click', e => {
+    if(e.target.classList.contains('fake-el'))
+      return
     // if (dragMoveHelper.afterMoving) return
     e.preventDefault()
     const nodeTopic =  getParent(e.target, 'T') ? getParent(e.target, 'T') : getParent(e.target, 'ROOT') ? getParent(e.target, 'ROOT') : null
@@ -87,6 +89,8 @@ export default function (mind) {
   })
 
   mind.map.addEventListener('dblclick', e => {
+    if(e.target.classList.contains('fake-el'))
+      return
     e.preventDefault()
 
     // const nodeTopic =  getParent(e.target, 'T') ? getParent(e.target, 'T') : getParent(e.target, 'ROOT') ? getParent(e.target, 'ROOT') : null

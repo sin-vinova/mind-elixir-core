@@ -302,6 +302,7 @@ export function createInputDiv(tpc, isEdit) {
   Array.from(clnTpc.querySelectorAll('.tag')).forEach(item => item.style.textDecoration ='unset')
   tpc.style.display ='none'
   clnTpc.dataset.nodeid = fakeId
+  clnTpc.classList.add('fake-el')
   tpc.parentElement.prepend(clnTpc)
   // tpc.appendChild(div)
   // div.innerHTML = origin
