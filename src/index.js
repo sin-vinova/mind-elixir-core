@@ -236,9 +236,21 @@ MindElixir.prototype = {
   addParentLink,
   getObjById,
   // node operation
+  addRelateNode: async function (nodeObj) {
+    if (
+      !this.before.addRelateNode ||
+      (await this.before.addRelateNode())
+    ) {
+      this.onAddRelateNode && this.onAddRelateNode(nodeObj)
+    }
+  },
   addPost: async function (...args) {
-    alert("addPost clicked");
-    console.log(args, 'addPost')
+    if (
+      !this.before.addPost ||
+      (await this.before.addPost.apply(this, args))
+    ) {
+      this.onRedirectRoutePost()
+    }
   },
   insertSibling: async function (...args) {
     if (

@@ -164,7 +164,7 @@ export default function (mind, option) {
     // mind.addPost();
     const currentNodeObj = mind.currentNode.nodeObj
     if( !mind.isTagging && !currentNodeObj.belongOtherMap){
-      mind.onRedirectRoutePost()
+      mind.addPost()
       menuContainer.hidden = true
     }
   }

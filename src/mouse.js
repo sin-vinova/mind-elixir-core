@@ -52,7 +52,8 @@ export default function (mind) {
       if(e.target.classList.contains('disagree-icon'))
         mind.onRemoveRelateNode && mind.onRemoveRelateNode(nodeTopic.firstElementChild.nodeObj)
       if(e.target.classList.contains('agree-icon')){
-        mind.onAddRelateNode && mind.onAddRelateNode(nodeTopic.firstElementChild.nodeObj)
+        mind.addRelateNode(nodeTopic.firstElementChild.nodeObj)
+        // mind.onAddRelateNode && mind.onAddRelateNode(nodeTopic.firstElementChild.nodeObj)
       }
 
       // mind.selectNode(e.target)
