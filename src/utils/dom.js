@@ -290,6 +290,7 @@ export function selectText(div) {
 export function createInputDiv(tpc, isEdit) {
   console.time('createInputDiv')
   const sefl = this
+  sefl.isEditing = true 
   if (!tpc || tpc.contentEditable === 'true') return
   const colorTable = sefl.container.querySelector('nmenu')
   if(colorTable && !colorTable.hidden)
@@ -337,11 +338,27 @@ export function createInputDiv(tpc, isEdit) {
       this.map.focus()
     }
   })
+  clnTpc.addEventListener('focus', () =>{
+    // const range = new Range();
+    // range.setStart(clnTpc,0)
+    // range.setEnd(clnTpc,10)
+    // const selection = window.getSelection();
+    // selection.addRange(range);
+    // clnTpc.setSelectionRange(0,clnTpc.textContent.length -1)
+  })
   clnTpc.addEventListener('blur', () => {
-    tpc.style.display ='block'
     if (!clnTpc) return // 防止重复blur
     let node = tpc.nodeObj
     let topic = clnTpc.textContent.trim()
+    if(clnTpc.textContent.length > 100){
+      clnTpc.focus()
+      if (this.onValidateEdit) {
+        this.onValidateEdit()
+      }
+      return
+    }
+    sefl.isEditing = false 
+    tpc.style.display ='block'
     if (topic === '') node.topic = origin
     else node.topic = topic
     // request API Node

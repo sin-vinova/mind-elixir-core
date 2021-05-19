@@ -137,6 +137,7 @@ function MindElixir({
   onRedirectRoutePost,
   onAddRelateNode,
   onRemoveRelateNode,
+  onValidateEdit,
   colorList,
   onClickTag,
   isTagging,
@@ -144,6 +145,7 @@ function MindElixir({
   removeAddNodeButton
 }) {
   vari.newTopicName = newTopicName
+  this.isEditing = false
   this.mindElixirBox = document.querySelector(el)
   this.history = [] // TODO
   this.before = before || {}
@@ -184,6 +186,7 @@ function MindElixir({
   this.mapPermission = mapPermission || 'Update'
   this.onAddRelateNode = onAddRelateNode || null
   this.onRemoveRelateNode = onRemoveRelateNode || null
+  this.onValidateEdit = onValidateEdit || null
   this.isUndo = false
   this.isTagging = !!isTagging
   this.onClickTag = onClickTag || null
