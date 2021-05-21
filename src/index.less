@@ -183,6 +183,33 @@ body {
       display: none;
     }
   }
+
+  tpc {
+    .insert-preview {
+      position: absolute;
+      width: 100%;
+      left: 0px;
+      z-index: 9;
+    }
+    .before {
+      height: 14px;
+      top: -14px;
+    }
+    .show {
+      background: #7ad5ff;
+      pointer-events: none;  // 不加会识别为不可移动
+      opacity: .7
+    }
+    .in {
+      height: 100%;
+      top: 0px;
+    }
+    .after {
+      height: 14px;
+      bottom: -14px;
+    }
+  }
+
   .box {
     & > grp {
       // for primary node
@@ -303,29 +330,6 @@ body {
           display: inline-block;
           direction: ltr;
           margin-right: 10px;
-        }
-        .insert-preview {
-          position: absolute;
-          width: 100%;
-          left: 0px;
-          z-index: 9;
-        }
-        .before {
-          height: 14px;
-          top: -14px;
-        }
-        .show {
-          background: #7ad5ff;
-          pointer-events: none;  // 不加会识别为不可移动
-          opacity: .7
-        }
-        .in {
-          height: 100%;
-          top: 0px;
-        }
-        .after {
-          height: 14px;
-          bottom: -14px;
         }
       }
       epd {

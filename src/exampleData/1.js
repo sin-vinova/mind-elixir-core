@@ -24,6 +24,8 @@ export default {
             id: 'bd1b6892bcab126a',
             background: '#4D9BD9',
             style: { fontSize: 40 },
+            belongOtherMap:true,
+            firstNodeOtherMap: false,
             children: [
               {
                 topic: 'tab - Create a child node',

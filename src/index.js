@@ -89,7 +89,9 @@ import './iconfont/iconfont.js'
 
 window.E = findEle
 export let E = findEle
-
+const testFn =() =>{
+  console.log("okkkkkkkkkkkk")
+}
 let $d = document
 /** 
  * @class MindElixir 
@@ -179,7 +181,7 @@ function MindElixir({
   this.onCreateNodeRequest = onCreateNodeRequest || null
   this.onEditNodeRequest = onEditNodeRequest || null
   this.onDeleteNodeRequest = onDeleteNodeRequest || null
-  this.onRedirectPath = onRedirectPath || null
+  this.onRedirectPath = onRedirectPath || testFn
   this.onUpdateExpandNode = onUpdateExpandNode || null
   this.onRedirectRoutePost = onRedirectRoutePost || null
   this.colorList = colorList || null

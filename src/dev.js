@@ -45,42 +45,42 @@ let mind = new MindElixir({
   // primaryNodeHorizontalGap: 100, // 65,
   isTagging: false,
 })
-
-setTimeout(() => mind.init(), 1000)
-function sleep() {
-  return new Promise((res, rej) => {
-    setTimeout(() => res(), 1000)
-  })
-}
+mind.init()
+// setTimeout(() => mind.init(), 1000)
+// function sleep() {
+//   return new Promise((res, rej) => {
+//     setTimeout(() => res(), 1000)
+//   })
+// }
 console.log('test E function', E('bd4313fbac40284b'))
-let mind2 = new MindElixir({
-  el: '#map2',
-  direction: 2,
-  data: MindElixir.example2,
-  draggable: false,
-  // overflowHidden: true,
-  nodeMenu: true,
-})
-mind2.init()
-window.currentOperation = null
-mind.bus.addListener('operation', operation => {
-  console.log(operation)
-  if (operation.name !== 'finishEdit') window.currentOperation = operation
-  // return {
-  //   name: action name,
-  //   obj: target object
-  // }
+// let mind2 = new MindElixir({
+//   el: '#map2',
+//   direction: 2,
+//   data: MindElixir.example2,
+//   draggable: false,
+//   // overflowHidden: true,
+//   nodeMenu: true,
+// })
+// mind2.init()
+// window.currentOperation = null
+// mind.bus.addListener('operation', operation => {
+//   console.log(operation)
+//   if (operation.name !== 'finishEdit') window.currentOperation = operation
+//   // return {
+//   //   name: action name,
+//   //   obj: target object
+//   // }
 
-  // name: [insertSibling|addChild|removeNode|beginEdit|finishEdit]
-  // obj: target
+//   // name: [insertSibling|addChild|removeNode|beginEdit|finishEdit]
+//   // obj: target
 
-  // name: moveNode
-  // obj: {from:target1,to:target2}
-})
-mind.bus.addListener('selectNode', node => {
-  console.log(node)
-})
-window.m = mind
-window.M = MindElixir
-window.exportSvg = exportSvg
-window.exportPng = exportPng
+//   // name: moveNode
+//   // obj: {from:target1,to:target2}
+// })
+// mind.bus.addListener('selectNode', node => {
+//   console.log(node)
+// })
+// window.m = mind
+// window.M = MindElixir
+// window.exportSvg = exportSvg
+// window.exportPng = exportPng

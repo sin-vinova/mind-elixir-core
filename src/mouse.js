@@ -23,8 +23,8 @@ export default function (mind) {
     const nodeTopic =  getParent(e.target, 'T') ? getParent(e.target, 'T') : getParent(e.target, 'ROOT') ? getParent(e.target, 'ROOT') : null
     if(mind.isTagging && nodeTopic && nodeTopic.firstElementChild.nodeObj.typeTag === 'relate' && nodeTopic.firstElementChild.nodeObj.firstChildTag){
       document.querySelectorAll('.tag-topic-relate').forEach(item =>{
-        if(item.nodeObj.firstChildTag)
-          mind.expandNode(item,false)
+        if(item.nodeObj.firstChildTag && item.nodeObj.expanded)
+          mind.expandNode(item,false,false)
       })
     }
     if (e.target.nodeName === 'EPD') {
@@ -47,7 +47,7 @@ export default function (mind) {
     ) {
       const dataId = nodeTopic.firstElementChild.dataset.nodeid
       if(nodeTopic.firstElementChild.nodeObj && nodeTopic.firstElementChild.nodeObj.typeTag && nodeTopic.firstElementChild.nodeObj.typeTag === 'relate' && nodeTopic.firstElementChild.nodeObj.firstChildTag){
-        mind.expandNode(nodeTopic.firstElementChild,true)
+        mind.expandNode(nodeTopic.firstElementChild,true,false)
       }
       if(e.target.classList.contains('disagree-icon'))
         mind.onRemoveRelateNode && mind.onRemoveRelateNode(nodeTopic.firstElementChild.nodeObj)
@@ -74,7 +74,7 @@ export default function (mind) {
         mind.selectNode(mind.mindElixirBox.querySelectorAll(`[data-nodeid=${dataId}]`)[0])
       else
         mind.selectNode(nodeTopic.firstChild)
-      if (mind.onRedirectPath) {
+      if (mind.onRedirectPath ) {
         mind.onRedirectPath(nodeTopic.firstElementChild.nodeObj)
       }
     } else if (e.target.nodeName === 'path') {

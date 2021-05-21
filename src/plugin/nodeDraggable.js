@@ -8,6 +8,7 @@ export let insertPreview = function (el, insertLocation) {
   }
   let query = el.getElementsByClassName('insert-preview')
   let className = `insert-preview ${insertLocation} show`
+
   if (query.length > 0) {
     query[0].className = className
   } else {
@@ -30,12 +31,20 @@ export let clearPreview = function (el) {
 
 export let canPreview = function (el, dragged) {
   let isContain = dragged.parentNode.parentNode.contains(el)
+  const isChild =  !!(dragged.nodeObj 
+        && dragged.nodeObj.parent
+        && dragged.nodeObj.parent.id
+        && el
+        && el.nodeObj
+        && el.nodeObj.id
+        && dragged.nodeObj.parent.id === el.nodeObj.id)
   return (
     el &&
     el.tagName === 'TPC' &&
     el !== dragged &&
     !isContain &&
-    el.nodeObj.root !== true
+    !isChild
+    // el.nodeObj.root !== true
   )
 }
 
@@ -55,11 +64,13 @@ export default function (mind) {
       if (canPreview(topMeet, dragged)) {
         meet = topMeet
         let y = topMeet.getBoundingClientRect().y
-        if (event.clientY > y + topMeet.clientHeight) {
-          insertLocation = 'after'
-        } else if (event.clientY > y + topMeet.clientHeight / 2) {
-          insertLocation = 'in'
-        }
+        // if (event.clientY > y + topMeet.clientHeight) {
+        //   insertLocation = 'after'
+        // } else if (event.clientY > y + topMeet.clientHeight / 2) {
+        // if (event.clientY > y + topMeet.clientHeight / 2) {
+        //   insertLocation = 'in'
+        // }
+        insertLocation = 'in'
       } else {
         let bottomMeet = $d.elementFromPoint(
           event.clientX,
@@ -68,11 +79,13 @@ export default function (mind) {
         if (canPreview(bottomMeet, dragged)) {
           meet = bottomMeet
           let y = bottomMeet.getBoundingClientRect().y
-          if (event.clientY < y) {
-            insertLocation = 'before'
-          } else if (event.clientY < y + bottomMeet.clientHeight / 2) {
-            insertLocation = 'in'
-          }
+          // if (event.clientY < y) {
+          //   insertLocation = 'before'
+          // } else if (event.clientY < y + bottomMeet.clientHeight / 2) {
+          // if (event.clientY < y + bottomMeet.clientHeight / 2) {
+          //   insertLocation = 'in'
+          // }
+          insertLocation = 'in'
         } else {
           insertLocation = meet = null
         }
@@ -85,6 +98,8 @@ export default function (mind) {
     // store a ref. on the dragged elem
     dragged = event.target
     dragged.parentNode.parentNode.style.opacity = 0.5
+    mind.selectNode(dragged)
+    mind.onRedirectPath && mind.onRedirectPath(dragged.nodeObj)
     dragMoveHelper.clear()
   })
 
@@ -104,6 +119,7 @@ export default function (mind) {
         break
       case 'in':
         mind.moveNode(dragged, meet)
+        mind.OnDragNode && mind.OnDragNode(obj, meet.nodeObj)
         break
     }
     dragged.parentNode.parentNode.style.opacity = 1

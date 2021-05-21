@@ -327,7 +327,7 @@ export let setLocale = function (locale) {
   this.init()
 }
 
-export let expandNode = function (el, isExpand) {
+export let expandNode = function (el, isExpand, autoSelectAfterExpand = true) {
   let node = el.nodeObj
   if (typeof isExpand === 'boolean') {
     node.expanded = isExpand
@@ -340,13 +340,15 @@ export let expandNode = function (el, isExpand) {
   // TODO 在此函数构造 html 结构，而非调用 layout
   this.layout()
   this.linkDiv()
-  const newEl = E(el.nodeObj.id,this)
-  this.selectNode(newEl)
-  if (this.onRedirectPath) {
-    this.onRedirectPath(newEl.nodeObj)
+  if(autoSelectAfterExpand){
+    const newEl = E(el.nodeObj.id,this)
+    this.selectNode(newEl)
+    if (this.onRedirectPath) {
+      this.onRedirectPath(newEl.nodeObj)
+    }
+    if(this.onUpdateExpandNode)
+      this.onUpdateExpandNode(newEl.nodeObj)
   }
-  if(this.onUpdateExpandNode)
-    this.onUpdateExpandNode(newEl.nodeObj)
       
 }
 

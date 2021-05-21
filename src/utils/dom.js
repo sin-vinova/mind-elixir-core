@@ -140,11 +140,9 @@ export let createTopic = function (nodeObj, isTagging, first) {
       else{
         topic.classList.add('tag-topic-available')
       }
-      // topic.appendChild(title) 
     }
   }
   else{
-    // console.log("yyyyy")
     
     if(nodeObj.belongOtherMap){
       topic.innerHTML = hashtagForrmat(nodeObj.topic,'tag-child')
@@ -152,6 +150,9 @@ export let createTopic = function (nodeObj, isTagging, first) {
       if(nodeObj.firstNodeOtherMap){
         topic.appendChild(createPersonalInfo(nodeObj))
         topic.appendChild(createFollowNum(nodeObj))
+      }
+      else{
+        topic.draggable = false
       }
     }
     else{
@@ -178,6 +179,10 @@ export let createTopic = function (nodeObj, isTagging, first) {
       topic.style.fontSize = nodeObj.style.fontSize
     }
   }
+  // let className = `insert-preview in show`
+  // let insertPreviewEL = document.createElement('div')
+  // insertPreviewEL.className = className
+  // topic.appendChild(insertPreviewEL)
   return topic
 }
 
