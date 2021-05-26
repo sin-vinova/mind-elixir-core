@@ -74,6 +74,8 @@ export default function (mind, option) {
   }
   mind.container.oncontextmenu = function (e) {
     e.preventDefault()
+    if(e.target.classList.contains('fake-el') || mind.isEditing)
+      return
     // console.log(e.pageY, e.screenY, e.clientY)
     
     let target = getParent(e.target, 'TPC') ? getParent(e.target, 'TPC') : null
