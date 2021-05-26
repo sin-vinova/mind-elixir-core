@@ -388,6 +388,22 @@ export default function (mind) {
     }
   }
   let state = 'open'
+
+  // close node-menu when screen on mobile
+  window.addEventListener('resize', () => {
+    if (mind.container.offsetWidth <= 600) {
+      state = 'close'
+      menuContainer.classList.add("close-color");
+      buttonContainer.innerHTML = icColorOpen
+    } else {
+      if (state === 'open') {
+        state = 'open'
+        menuContainer.classList.remove("close-color");
+        buttonContainer.innerHTML = icColorClose
+      }
+    }
+  })
+  
   buttonContainer.onclick = e => {
     e.stopPropagation()
     e.preventDefault()
