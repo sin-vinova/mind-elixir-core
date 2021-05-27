@@ -573,6 +573,14 @@ export function createChildren(data, first, direction,isTagging,removeAddNodeBut
       if (nodeObj.expanded !== false) {
         let children = createChildren(nodeObj.children,false,direction,isTagging,removeAddNodeButton)
         grp.appendChild(children)
+        // console.log(grp,"ooooooo")
+        // if(isTagging){
+        //   grp.top = children[0]
+        // }
+        // if(!first){
+          // grp.children[0].top = grp.parentNode.children[0].children[0].offsetWidth /2
+        // }
+        // console.log(grp.children[0].top =,"lllll")
       }
     } else {
       // top.appendChild(createAddNode())
@@ -586,7 +594,10 @@ export function createChildren(data, first, direction,isTagging,removeAddNodeBut
         grp.appendChild(top)
     }
     chldr.appendChild(grp)
+    console.log(chldr.parentElement,"ooooo")
+
   }
+  // console.log(chldr.parentElement,"lllllll")
   return chldr
 }
 

@@ -122,7 +122,10 @@ export default function linkDiv(primaryNode) {
         }while(xLine < minLeft)
         
         xLine = 10000;
-        path = `M ${xLine} ${10000} C ${10000} ${10000} ${10000 + 2 * primaryNodeHorizontalGap * 0.03
+        if(primaryNodeList.length === 1)
+          path = `M ${xLine} ${10000}  ${x2} ${10000}`
+        else
+          path = `M ${xLine} ${10000} C ${10000} ${10000} ${10000 + 2 * primaryNodeHorizontalGap * 0.03
           } ${y2} ${x2} ${y2+10}`
       }
 
@@ -290,10 +293,16 @@ export default function linkDiv(primaryNode) {
         let parentOL = parent.offsetLeft
         let parentOW = parent.offsetWidth
         let parentOH = parent.offsetHeight
+        // console.log(children,"kkkkk")
+        let offsetChild = parent.style.top ? parent.style.top : '0px'
+        offsetChild = parseFloat(offsetChild.substring(0, offsetChild.length - 2))
+        let firstElHeight = children.length ? children[0].children[0].children[0].offsetHeight : parent.children[0].offsetHeight
 
         for (let i = 0; i < children.length; i++) {
           let child = children[i]
           let childT = child.children[0] // t tag inside the child dom
+          if(rootDirection===RIGHT_TREE)
+            childT.style.top = (parent.children[0].offsetHeight-firstElHeight)/2 +offsetChild +'px'
           let childTOT = childT.offsetTop
           let childTOH = childT.offsetHeight
           let y1
