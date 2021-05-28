@@ -355,7 +355,7 @@ export function createInputDiv(tpc, isEdit) {
     if (!clnTpc) return // 防止重复blur
     let node = tpc.nodeObj
     let topic = clnTpc.textContent.trim()
-    if(clnTpc.textContent.length > 100){
+    if(clnTpc.textContent.length > 40){
       clnTpc.focus()
       if (this.onValidateEdit) {
         this.onValidateEdit()
