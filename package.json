@@ -50,6 +50,7 @@
     "webpack-dev-server": "^3.5.1"
   },
   "dependencies": {
+    "hammerjs": "^2.0.8",
     "uuid": "^8.3.2"
   }
 }
