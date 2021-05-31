@@ -611,7 +611,7 @@ export function layout() {
   this.root.appendChild(tpc)
   
   let primaryNodes = this.nodeData.children
-  if (!primaryNodes || primaryNodes.length === 0) return
+  if (!primaryNodes ) return
   if(!this.isTagging && !this.removeAddNodeButton)
     this.root.appendChild(createAddNode(this.direction,true))
   if (this.direction === SIDE) {
@@ -636,6 +636,7 @@ export function layout() {
       }
     })
   }
-  createChildren(this.nodeData.children, this.box, this.direction,this.isTagging, this.removeAddNodeButton )
+  if(primaryNodes.length)
+    createChildren(this.nodeData.children, this.box, this.direction,this.isTagging, this.removeAddNodeButton )
   console.timeEnd('layout')
 }

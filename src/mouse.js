@@ -15,100 +15,111 @@ function getParent(el,query) {
 }
 export default function (mind) {
   let isPanning = false;
-  mind.map.addEventListener('click', e => {
+  var touchtime = 0
+  mind.map.addEventListener('click', function(e) {
     if(e.target.classList.contains('fake-el') || mind.isEditing)
       return
     // if (dragMoveHelper.afterMoving) return
     e.preventDefault()
-    const nodeTopic =  getParent(e.target, 'T') ? getParent(e.target, 'T') : getParent(e.target, 'ROOT') ? getParent(e.target, 'ROOT') : null
-    if(mind.isTagging && nodeTopic && nodeTopic.firstElementChild.nodeObj.typeTag === 'relate' && nodeTopic.firstElementChild.nodeObj.firstChildTag){
-      document.querySelectorAll('.tag-topic-relate').forEach(item =>{
-        if(item.nodeObj.firstChildTag && item.nodeObj.expanded)
-          mind.expandNode(item,false,false)
-      })
-    }
-    if (e.target.nodeName === 'EPD') {
-      // W1
-      // e.target.parentElement.children.forEach(element => {
-      //   if (element.nodeName === 'TPC') {
-      //     mind.expandNode(element)
-      //   }
-      // });
-      // W2
-      mind.expandNode(e.target.parentElement.children[0])
-      
-      // mind.expandNode(e.target.previousSibling)
-    } else if (
-      e.target.nodeName === 'ADD'
-    ) {
-      mind.addChild()
-    } else if (
-      nodeTopic
-    ) {
-      const dataId = nodeTopic.firstElementChild.dataset.nodeid
-      if(nodeTopic.firstElementChild.nodeObj && nodeTopic.firstElementChild.nodeObj.typeTag && nodeTopic.firstElementChild.nodeObj.typeTag === 'relate' && nodeTopic.firstElementChild.nodeObj.firstChildTag){
-        mind.expandNode(nodeTopic.firstElementChild,true,false)
-      }
-      if(e.target.classList.contains('disagree-icon'))
-        mind.onRemoveRelateNode && mind.onRemoveRelateNode(nodeTopic.firstElementChild.nodeObj)
-      if(e.target.classList.contains('agree-icon')){
-        mind.addRelateNode(nodeTopic.firstElementChild.nodeObj)
-        // mind.onAddRelateNode && mind.onAddRelateNode(nodeTopic.firstElementChild.nodeObj)
-      }
-
-      // mind.selectNode(e.target)
-      if(e.target.classList.contains('tag')){
-        const listElemnentTag =  e.target.parentElement.children
-        const listTag = []
-        Array.from(listElemnentTag).forEach(item => listTag.push(item.innerHTML.substring(1).trim()))
-        const curTag = e.target.innerHTML.trim()
-        const topic = nodeTopic.firstElementChild.textContent
-        mind.onClickTag && mind.onClickTag({
-          nodeObj: nodeTopic.firstElementChild.nodeObj,
-          curTag,
-          topic
+    if (touchtime == 0 || ((new Date().getTime()) - touchtime) >= 800) {
+      // set first click
+      touchtime = new Date().getTime();
+      const nodeTopic =  getParent(e.target, 'T') ? getParent(e.target, 'T') : getParent(e.target, 'ROOT') ? getParent(e.target, 'ROOT') : null
+      if(mind.isTagging && nodeTopic && nodeTopic.firstElementChild.nodeObj.typeTag === 'relate' && nodeTopic.firstElementChild.nodeObj.firstChildTag){
+        document.querySelectorAll('.tag-topic-relate').forEach(item =>{
+          if(item.nodeObj.firstChildTag && item.nodeObj.expanded)
+            mind.expandNode(item,false,false)
         })
-        // mind.onClickTag && mind.onClickTag(
       }
-      if(mind.isTagging)
-        mind.selectNode(mind.mindElixirBox.querySelectorAll(`[data-nodeid=${dataId}]`)[0])
-      else
-        mind.selectNode(nodeTopic.firstChild)
-      if (mind.onRedirectPath ) {
-        mind.onRedirectPath(nodeTopic.firstElementChild.nodeObj)
+      if (e.target.nodeName === 'EPD') {
+        // W1
+        // e.target.parentElement.children.forEach(element => {
+        //   if (element.nodeName === 'TPC') {
+        //     mind.expandNode(element)
+        //   }
+        // });
+        // W2
+        mind.expandNode(e.target.parentElement.children[0])
+        
+        // mind.expandNode(e.target.previousSibling)
+      } else if (
+        e.target.nodeName === 'ADD'
+      ) {
+        mind.addChild()
+      } else if (
+        nodeTopic
+      ) {
+        const dataId = nodeTopic.firstElementChild.dataset.nodeid
+        if(nodeTopic.firstElementChild.nodeObj && nodeTopic.firstElementChild.nodeObj.typeTag && nodeTopic.firstElementChild.nodeObj.typeTag === 'relate' && nodeTopic.firstElementChild.nodeObj.firstChildTag){
+          mind.expandNode(nodeTopic.firstElementChild,true,false)
+        }
+        if(e.target.classList.contains('disagree-icon'))
+          mind.onRemoveRelateNode && mind.onRemoveRelateNode(nodeTopic.firstElementChild.nodeObj)
+        if(e.target.classList.contains('agree-icon')){
+          mind.addRelateNode(nodeTopic.firstElementChild.nodeObj)
+          // mind.onAddRelateNode && mind.onAddRelateNode(nodeTopic.firstElementChild.nodeObj)
+        }
+
+        // mind.selectNode(e.target)
+        if(e.target.classList.contains('tag')){
+          const listElemnentTag =  e.target.parentElement.children
+          const listTag = []
+          Array.from(listElemnentTag).forEach(item => listTag.push(item.innerHTML.substring(1).trim()))
+          const curTag = e.target.innerHTML.trim()
+          const topic = nodeTopic.firstElementChild.textContent
+          mind.onClickTag && mind.onClickTag({
+            nodeObj: nodeTopic.firstElementChild.nodeObj,
+            curTag,
+            topic
+          })
+          // mind.onClickTag && mind.onClickTag(
+        }
+        if(mind.isTagging)
+          mind.selectNode(mind.mindElixirBox.querySelectorAll(`[data-nodeid=${dataId}]`)[0])
+        else
+          mind.selectNode(nodeTopic.firstChild)
+        if (mind.onRedirectPath ) {
+          mind.onRedirectPath(nodeTopic.firstElementChild.nodeObj)
+        }
+      } else if (e.target.nodeName === 'path') {
+        if (e.target.parentElement.nodeName === 'g') {
+          mind.selectLink(e.target.parentElement)
+        }
+      } else if (e.target.className === 'circle') {
+        // skip circle
+      } else {
+        // mind.unselectNode()
+        mind.hideLinkController()
       }
-    } else if (e.target.nodeName === 'path') {
-      if (e.target.parentElement.nodeName === 'g') {
-        mind.selectLink(e.target.parentElement)
-      }
-    } else if (e.target.className === 'circle') {
-      // skip circle
     } else {
-      // mind.unselectNode()
-      mind.hideLinkController()
+      touchtime = 0;
+      const nodeTopic =  getParent(e.target, 'T') ? getParent(e.target, 'T') : null
+
+      // define between edit and create --> edit
+      let isEdit = true
+      if (!mind.editable) return
+      if (
+        nodeTopic
+      ) {
+        
+        mind.beginEdit(getParent(e.target, 'tpc'), isEdit,mind.isTagging)
+      }
     }
-  })
-
-  mind.map.addEventListener('dblclick', e => {
-    if(e.target.classList.contains('fake-el') || mind.isEditing)
-      return
-    e.preventDefault()
-
-    // const nodeTopic =  getParent(e.target, 'T') ? getParent(e.target, 'T') : getParent(e.target, 'ROOT') ? getParent(e.target, 'ROOT') : null
+  });
+  // mind.map.addEventListener('click', e => {
     
-    // no allow modify root node
-    const nodeTopic =  getParent(e.target, 'T') ? getParent(e.target, 'T') : null
+  // })
 
-    // define between edit and create --> edit
-    let isEdit = true
-    if (!mind.editable) return
-    if (
-      nodeTopic
-    ) {
-      
-      mind.beginEdit(getParent(e.target, 'tpc'), isEdit,mind.isTagging)
-    }
-  })
+  // mind.map.addEventListener('dblclick', e => {
+  //   if(e.target.classList.contains('fake-el') || mind.isEditing)
+  //     return
+  //   e.preventDefault()
+
+  //   // const nodeTopic =  getParent(e.target, 'T') ? getParent(e.target, 'T') : getParent(e.target, 'ROOT') ? getParent(e.target, 'ROOT') : null
+    
+  //   // no allow modify root node
+    
+  // })
 
   /**
    * drag and move
@@ -240,3 +251,25 @@ export default function (mind) {
   //   stage.style.transform = 'rotate('+rotation+'deg)';
   // });
 }
+
+
+
+
+
+
+// $(".target").on("click", function() {
+//     if (touchtime == 0) {
+//         // set first click
+//         touchtime = new Date().getTime();
+//     } else {
+//         // compare first click to this click and see if they occurred within double click threshold
+//         if (((new Date().getTime()) - touchtime) < 800) {
+//             // double click occurred
+//             alert("double clicked");
+//             touchtime = 0;
+//         } else {
+//             // not a double click so set as a new first click
+//             touchtime = new Date().getTime();
+//         }
+//     }
+// });
