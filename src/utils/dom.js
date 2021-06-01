@@ -313,6 +313,7 @@ export function createInputDiv(tpc, isEdit) {
   // tpc.appendChild(div)
   // div.innerHTML = origin
   clnTpc.contentEditable = true
+  clnTpc.style.webkitUserSelect = 'text'
   clnTpc.spellcheck = false
   // div.style.cssText = `min-width:${tpc.offsetWidth - 8}px;`
   // if (this.direction === LEFT) div.style.right = 0
