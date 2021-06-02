@@ -387,7 +387,11 @@ export default function (mind) {
       mind.updateNodeStyle(nodeObj)
     }
   }
-  let state = 'open'
+
+  let state = 'close'
+  // set default close for node-menu
+  menuContainer.classList.add("close-color");
+  buttonContainer.innerHTML = icColorOpen
 
   // close node-menu when screen on mobile
   if (mind.container.offsetWidth <= 600) {
