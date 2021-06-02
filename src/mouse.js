@@ -1,6 +1,5 @@
 import { dragMoveHelper, isMobile } from './utils/index'
 import Hammer from 'hammerjs'
-
 function getParent(el,query) {
   let result = [];
   let parent
@@ -147,13 +146,12 @@ export default function (mind) {
   mind.map.onmousedown = function (e) {
     isPanning = true
   }
-
-  mind.map.onmousewheel = e => {
-    e.stopPropagation()
+  const functionWheelZoom = (e) =>{
     e.preventDefault()
+    e.stopPropagation()
+    
     isPanning = true
     if (isPanning) {
-      console.log('e.deltaY', e.deltaY)
       if (e.deltaY > 0) {
         // scrolling up
         if (mind.scaleVal < 0.2) return
@@ -166,6 +164,8 @@ export default function (mind) {
       isPanning = false
     }
   }
+  mind.map.onwheel = functionWheelZoom
+  
 
   mind.map.onmouseup = function (e) {
     isPanning = false
@@ -273,3 +273,7 @@ export default function (mind) {
 //         }
 //     }
 // });
+
+
+
+

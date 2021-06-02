@@ -5,6 +5,19 @@ export default {
     root: true,
     children: [],
     expanded: true,
+    children: [
+      {
+        id: 936,
+        topic: 'new node',
+        root: false,
+        direction: 0,
+        expanded: true,
+        parentNodeId: 935,
+        style: { color: null, background: null, fontSize: null },
+        icons: [],
+        mapId: 435,
+      }
+    ]
   },
   linkData: {},
 }
