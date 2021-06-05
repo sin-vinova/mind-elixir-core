@@ -38,12 +38,19 @@ export let canPreview = function (el, dragged) {
         && el.nodeObj
         && el.nodeObj.id
         && dragged.nodeObj.parent.id === el.nodeObj.id)
+  const checkMoveNodeOtherMap = !!(
+        dragged.nodeObj.belongOtherMap 
+        && el
+        && el.nodeObj
+        && el.nodeObj.belongOtherMap)
   return (
+    
     el &&
     el.tagName === 'TPC' &&
     el !== dragged &&
     !isContain &&
-    !isChild
+    !isChild &&
+    !checkMoveNodeOtherMap
     // el.nodeObj.root !== true
   )
 }
@@ -101,6 +108,7 @@ export default function (mind) {
     mind.selectNode(dragged)
     mind.onRedirectPath && mind.onRedirectPath(dragged.nodeObj)
     dragMoveHelper.clear()
+    
   })
 
   mind.map.addEventListener('dragend', async function (event) {
