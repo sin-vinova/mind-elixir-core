@@ -39,8 +39,8 @@ export let canPreview = function (el, dragged) {
         && el.nodeObj.id
         && dragged.nodeObj.parent.id === el.nodeObj.id)
   const checkMoveNodeOtherMap = !!(
-        dragged.nodeObj.belongOtherMap 
-        && el
+        // dragged.nodeObj.belongOtherMap 
+         el
         && el.nodeObj
         && el.nodeObj.belongOtherMap)
   return (

@@ -311,6 +311,7 @@ export function createInputDiv(tpc, isEdit) {
   clnTpc.dataset.nodeid = fakeId
   clnTpc.classList.add('fake-el')
   tpc.parentElement.prepend(clnTpc)
+  clnTpc.inputmode= 'search'
   // tpc.appendChild(div)
   // div.innerHTML = origin
   clnTpc.contentEditable = true
@@ -319,6 +320,8 @@ export function createInputDiv(tpc, isEdit) {
   // div.style.cssText = `min-width:${tpc.offsetWidth - 8}px;`
   // if (this.direction === LEFT) div.style.right = 0
   clnTpc.focus()
+  
+
   clnTpc.addEventListener("input", function (e) {
     if (sefl.onChangeText && typeof sefl.onChangeText == 'function') { 
       sefl.onChangeText(e.target.textContent)
