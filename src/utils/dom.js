@@ -540,6 +540,8 @@ export function createChildren(data, first, direction,isTagging,removeAddNodeBut
           }
         }
       }
+      grp.dataset.checkGrp = 'firstDeepGrp'
+
     }
     if(!first && nodeObj.typeTag){
       if( nodeObj.typeTag === 'relate')

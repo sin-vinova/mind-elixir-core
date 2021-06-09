@@ -416,13 +416,14 @@ export default function linkDiv(primaryNode) {
             const objNode = (childT.children && childT.children[0] && childT.children[0].nodeObj) ? childT.children[0].nodeObj : undefined
             if(objNode){
               if(objNode.typeTag === 'relate')
-                svg.appendChild(createPath(path,'#979797', '3',"10,10"))
+                svg.appendChild(createPath(path,'#979797', '3',"10,10",objNode.id,curObj.parent.id))
               else
-                svg.appendChild(createPath(path,colorLine, '3',"5,5"))
+                svg.appendChild(createPath(path,colorLine, '3',"5,5",objNode.id,curObj.parent.id))
             }
           }
           else{
             let isOtherNode
+            let curObj
             if (
               child 
               && child.children 
@@ -431,16 +432,18 @@ export default function linkDiv(primaryNode) {
               && child.children[0].children.length !== 0 
               && child.children[0].children[0]
               && child.children[0].children[0].nodeObj){
+                curObj = child.children[0].children[0].nodeObj
                 isOtherNode = child.children[0].children[0].nodeObj.belongOtherMap
               }
+            // console.log(curObj,"pppppp")
             if(isOtherNode){
-              svg.appendChild(createPath(path, colorLine,'3',"5,5"))
+              svg.appendChild(createPath(path, colorLine,'3',"5,5",curObj.id,curObj.parent.id))
             }
             else{
               if(rootDirection === RIGHT_TREE)
-                svg.appendChild(createPath(path, colorLineRoot))
+                svg.appendChild(createPath(path, colorLineRoot,'1.5',null,curObj.id,curObj.parent.id))
               else
-                svg.appendChild(createPath(path, colorLine))
+                svg.appendChild(createPath(path, colorLine,'1.5',null,curObj.id,curObj.parent.id))
             }
           }
 

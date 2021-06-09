@@ -242,6 +242,20 @@ export default {
               { topic: 'ctrl + S', id: 'bd42e97d7ac35e99' },
             ],
           },
+          {
+            topic: 'Only save manually',
+            id: 'bd42e1d0163ebf04',
+            expanded: true,
+            children: [
+              {
+                topic: 'Save button in the top-right corner',
+                id: 'bd42e619051878b3',
+                expanded: true,
+                children: [],
+              },
+              { topic: 'ctrl + S', id: 'bd42e97d7ac35e99' },
+            ],
+          },
         ],
       },
     ],

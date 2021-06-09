@@ -1,5 +1,31 @@
-import { dragMoveHelper, isMobile } from './utils/index'
+import { dragMoveHelper, isMobile,throttle } from './utils/index'
+import * as nodeDraggable from "./plugin/nodeDraggable";
 import Hammer from 'hammerjs'
+let $d = document
+function checkElementFromPoint(x,y, notSameNode){
+  let elements = [];
+  let display = [];
+  let item = $d.elementFromPoint(x, y);
+  let lastItem;
+  while (item && item !== lastItem && item !== document.body && item !== document && item !== document.documentElement && !item.classList.contains('map-canvas')) {
+      elements.push(item);
+      // save current style.display value
+      display.push(item.style.display);
+      // temporarily hide this element so we can see what's underneath it
+      item.style.display = "none";
+      // prevent possible infinite loop by remembering this item
+      lastItem = item;
+      item = document.elementFromPoint(x, y);
+  }
+  // restore display property
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].style.display = display[i];
+  }
+  for (var i = 0; i < elements.length; i++) {
+    if(elements[i]!==notSameNode && elements[i].tagName === 'TPC')
+      return elements[i]
+  }
+}
 function getParent(el,query) {
   let result = [];
   let parent
@@ -206,27 +232,129 @@ export default function (mind) {
   let lastX = null;
   let lastY = null;
   var currentScale = mind.scaleVal || 1;
+  var moveNode = undefined
+  var dragged
+  var insertLocation
+  let threshold = 12
+  var meet
+  let linksRelateNode =[]
+  manager.on('panstart',function (e) {
+    moveNode =  getParent(e.target,'T')
+    if(moveNode){
+      dragged = moveNode.children[0]
+      mind.selectNode(dragged)
+      mind.onRedirectPath && mind.onRedirectPath(dragged.nodeObj)
+      dragMoveHelper.clear()
+    }
+    
+  })
   manager.on('panmove', function (e) {
     if (isMobile()) {
-      if (!lastX) {
+      nodeDraggable.clearPreview(meet)
+      if(moveNode && moveNode.children[0] 
+        && moveNode.children[0].tagName === 'TPC' 
+        && moveNode.children[0].nodeObj 
+        && (!moveNode.children[0].nodeObj.belongOtherMap || (moveNode.children[0].nodeObj.belongOtherMap 
+        && moveNode.children[0].nodeObj.firstNodeOtherMap))){
+        let curTpc= moveNode.children[0]
+        let curNodeObj = curTpc.nodeObj
+        moveNode.parentElement.style.transform = `translate(${e.deltaX}px,${e.deltaY}px)`
+        // moveNode.parentElement.parentElement.style.position ='relative'
+        // moveNode.parentElement.parentElement.style.zIndex = '100000000'
+        let topMeet  = checkElementFromPoint(e.center.x,e.center.y - threshold, moveNode.children[0] )
+        if(!curNodeObj.parent.root){
+          let nodesLink =getParent(moveNode,'grp[data-check-grp="firstDeepGrp"').lastChild
+          // const linksRelateNode = []
+          for(let i=0; i< nodesLink.children.length; i++){
+            if(nodesLink.children[i].dataset.idOfParentNode === curNodeObj.id){
+              linksRelateNode.push(nodesLink.children[i])
+              nodesLink.children[i].style.transform = `translate(${e.deltaX}px,${e.deltaY}px)`
+            }
+          }
+        }
+        if(topMeet){
+          if (nodeDraggable.canPreview(topMeet, dragged)){
+            meet = topMeet
+            insertLocation = 'in'
+          }
+          else {
+            let bottomMeet = checkElementFromPoint(e.center.x,e.center.y + threshold, moveNode.children[0])
+            if(bottomMeet){
+              if (nodeDraggable.canPreview(bottomMeet, dragged)) {
+                meet = bottomMeet
+                insertLocation = 'in'
+              }
+              else
+                insertLocation = meet = null
+            }
+            else
+              insertLocation = meet = null
+          }
+        }
+        else
+          insertLocation = meet = null
+        if (meet) nodeDraggable.insertPreview(meet, insertLocation)
+
+        // let topMeet = $d.elementFromPoint(
+        //   e.center.x,
+        //   e.center.y - threshold
+        // )
+        // console.log(topMeet,"jjjjj")
+
+      }
+      else{
+        if (!lastX) {
+          lastX = e.center.x
+          lastY = e.center.y
+          return
+        }
+        console.log('e.center.x', e);
+        deltaX = lastX - e.center.x
+        deltaY = lastY - e.center.y
+        mind.container.scrollTo(
+          mind.container.scrollLeft + deltaX,
+          mind.container.scrollTop + deltaY
+        )
         lastX = e.center.x
         lastY = e.center.y
-        return
       }
-      console.log('e.center.x', e.center.x, e.center.y);
-      deltaX = lastX - e.center.x
-      deltaY = lastY - e.center.y
-      mind.container.scrollTo(
-        mind.container.scrollLeft + deltaX,
-        mind.container.scrollTop + deltaY
-      )
-      lastX = e.center.x
-      lastY = e.center.y
     }
   })
   manager.on('panend', function (e) {
-    lastX = null
-    lastY = null
+    if(isMobile()){
+      if(dragged){
+        
+        nodeDraggable.clearPreview(meet)
+        moveNode.parentElement.style.transform = `unset`
+        for(let i=0; i< linksRelateNode.length; i++){
+          linksRelateNode[i].style.transform = 'unset'
+        }
+        let obj = dragged.nodeObj
+        switch (insertLocation) {
+          case 'before':
+            mind.moveNodeBefore(dragged, meet)
+            mind.selectNode(E(obj.id,mind))
+            break
+          case 'after':
+            mind.moveNodeAfter(dragged, meet)
+            mind.selectNode(E(obj.id,mind))
+            break
+          case 'in':
+            mind.moveNode(dragged, meet)
+            mind.OnDragNode && mind.OnDragNode(obj, meet.nodeObj)
+            break
+        }
+        
+        linksRelateNode = []
+        moveNode= null
+        dragged = null
+
+      }
+    }else{
+      lastX = null
+      lastY = null
+    }
+    
   })
 
   function getRelativeScale(scale) {

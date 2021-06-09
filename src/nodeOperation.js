@@ -566,6 +566,7 @@ export let setNodeTopic = function (tpc, topic) {
 // Judge L or R
 export function processPrimaryNode(primaryNode, obj) {
   console.log("cccc")
+
   if (this.direction === LEFT) {
     primaryNode.className = 'lhs'
   } else if (this.direction === RIGHT || this.direction === RIGHT_TREE) {
@@ -581,4 +582,5 @@ export function processPrimaryNode(primaryNode, obj) {
       obj.direction = RIGHT
     }
   }
+  primaryNode.dataset.checkGrp = 'firstDeepGrp'
 }

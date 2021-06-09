@@ -251,14 +251,14 @@ export function moveNodeAfterObj(from, to) {
   }
   childrenList.splice(toIndex + 1, 0, from)
 }
-
 export let dragMoveHelper = {
   afterMoving: false, // 区别click事件
   mousedown: false,
   lastX: null,
   lastY: null,
   onMove(e, container) {
-    if (this.mousedown) {
+    
+    if (this.mousedown ) {
       this.afterMoving = true
       if (!this.lastX) {
         this.lastX = e.pageX
@@ -274,6 +274,7 @@ export let dragMoveHelper = {
       this.lastX = e.pageX
       this.lastY = e.pageY
     }
+    
   },
   clear() {
     this.afterMoving = false
@@ -282,6 +283,7 @@ export let dragMoveHelper = {
     this.lastY = null
   },
 }
+
 
 export function dmhelper(dom) {
   this.dom = dom
