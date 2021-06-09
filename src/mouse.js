@@ -321,6 +321,8 @@ export default function (mind) {
     }
   })
   manager.on('panend', function (e) {
+    lastX = null
+    lastY = null
     if(isMobile()){
       if(dragged){
         
@@ -350,9 +352,6 @@ export default function (mind) {
         dragged = null
 
       }
-    }else{
-      lastX = null
-      lastY = null
     }
     
   })
