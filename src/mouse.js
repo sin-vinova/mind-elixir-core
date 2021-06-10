@@ -238,6 +238,7 @@ export default function (mind) {
   let threshold = 12
   var meet
   let linksRelateNode =[]
+  var nodesLink
   manager.on('panstart',function (e) {
     moveNode =  getParent(e.target,'T')
     if(moveNode){
@@ -259,12 +260,12 @@ export default function (mind) {
         let curTpc= moveNode.children[0]
         let curNodeObj = curTpc.nodeObj
         moveNode.parentElement.style.transform = `translate(${e.deltaX}px,${e.deltaY}px)`
-        // moveNode.parentElement.parentElement.style.position ='relative'
-        // moveNode.parentElement.parentElement.style.zIndex = '100000000'
+        moveNode.parentElement.style.zIndex = '100000000'
         let topMeet  = checkElementFromPoint(e.center.x,e.center.y - threshold, moveNode.children[0] )
         if(!curNodeObj.parent.root){
-          let nodesLink =getParent(moveNode,'grp[data-check-grp="firstDeepGrp"').lastChild
-          // const linksRelateNode = []
+          nodesLink =getParent(moveNode,'grp[data-check-grp="firstDeepGrp"').lastChild
+          // nodesLink.style.zIndex = '100000000'
+          moveNode.parentElement.style.position ='relative'
           for(let i=0; i< nodesLink.children.length; i++){
             if(nodesLink.children[i].dataset.idOfParentNode === curNodeObj.id){
               linksRelateNode.push(nodesLink.children[i])
@@ -325,9 +326,33 @@ export default function (mind) {
     lastY = null
     if(isMobile()){
       if(dragged){
-        
         nodeDraggable.clearPreview(meet)
         moveNode.parentElement.style.transform = `unset`
+        moveNode.parentElement.style.zIndex = 'unset'
+        // if(nodesLink){
+        //   // nodesLink.style.zIndex = 'unset'
+          
+        // }
+        if(meet){
+          if(meet.nodeObj && meet.nodeObj.root){
+            moveNode.parentElement.style.position = 'absolute'
+          }
+          else{
+            moveNode.parentElement.style.top = 'unset'
+            moveNode.parentElement.style.left = 'unset'
+            moveNode.parentElement.removeAttribute('data-check-grp')
+            moveNode.parentElement.style.position = 'unset'
+          }
+        }
+        else{
+          if(dragged.nodeObj.parent.root)
+            moveNode.parentElement.style.position = 'absolute'
+          else
+            moveNode.parentElement.style.position = 'unset'
+        }
+        
+
+        
         for(let i=0; i< linksRelateNode.length; i++){
           linksRelateNode[i].style.transform = 'unset'
         }
@@ -350,6 +375,7 @@ export default function (mind) {
         linksRelateNode = []
         moveNode= null
         dragged = null
+        nodesLink = null
 
       }
     }
