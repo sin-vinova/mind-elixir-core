@@ -251,6 +251,7 @@ export default function (mind) {
   })
   manager.on('panmove', function (e) {
     if (isMobile()) {
+      document.getElementById('abc').innerHTML = currentScale
       nodeDraggable.clearPreview(meet)
       if(moveNode && moveNode.children[0] 
         && moveNode.children[0].tagName === 'TPC' 
@@ -259,9 +260,9 @@ export default function (mind) {
         && moveNode.children[0].nodeObj.firstNodeOtherMap))){
         let curTpc= moveNode.children[0]
         let curNodeObj = curTpc.nodeObj
-        moveNode.parentElement.style.transform = `translate(${e.deltaX}px,${e.deltaY}px)`
+        moveNode.parentElement.style.transform = `translate(${e.deltaX/currentScale}px,${e.deltaY/currentScale}px)`
         moveNode.parentElement.style.zIndex = '100000000'
-        let topMeet  = checkElementFromPoint(e.center.x,e.center.y - threshold, moveNode.children[0] )
+        let topMeet  = checkElementFromPoint(e.center.x,e.center.y , moveNode.children[0] )
         if(!curNodeObj.parent.root){
           nodesLink =getParent(moveNode,'grp[data-check-grp="firstDeepGrp"').lastChild
           // nodesLink.style.zIndex = '100000000'
@@ -269,7 +270,7 @@ export default function (mind) {
           for(let i=0; i< nodesLink.children.length; i++){
             if(nodesLink.children[i].dataset.idOfParentNode === curNodeObj.id){
               linksRelateNode.push(nodesLink.children[i])
-              nodesLink.children[i].style.transform = `translate(${e.deltaX}px,${e.deltaY}px)`
+              nodesLink.children[i].style.transform = `translate(${e.deltaX/currentScale}px,${e.deltaY/currentScale}px)`
             }
           }
         }
@@ -279,7 +280,7 @@ export default function (mind) {
             insertLocation = 'in'
           }
           else {
-            let bottomMeet = checkElementFromPoint(e.center.x,e.center.y + threshold, moveNode.children[0])
+            let bottomMeet = checkElementFromPoint(e.center.x,e.center.y , moveNode.children[0])
             if(bottomMeet){
               if (nodeDraggable.canPreview(bottomMeet, dragged)) {
                 meet = bottomMeet
