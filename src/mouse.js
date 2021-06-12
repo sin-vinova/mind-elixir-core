@@ -251,7 +251,6 @@ export default function (mind) {
   })
   manager.on('panmove', function (e) {
     if (isMobile()) {
-      document.getElementById('abc').innerHTML = currentScale
       nodeDraggable.clearPreview(meet)
       if(moveNode && moveNode.children[0] 
         && moveNode.children[0].tagName === 'TPC' 
