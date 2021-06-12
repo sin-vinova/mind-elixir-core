@@ -46,7 +46,7 @@ export default function (mind) {
       return
     // if (dragMoveHelper.afterMoving) return
     e.preventDefault()
-    if (touchtime == 0 || ((new Date().getTime()) - touchtime) >= 800) {
+    if (touchtime == 0 || ((new Date().getTime()) - touchtime) >= 200) {
       // set first click
       touchtime = new Date().getTime();
       const nodeTopic =  getParent(e.target, 'T') ? getParent(e.target, 'T') : getParent(e.target, 'ROOT') ? getParent(e.target, 'ROOT') : null

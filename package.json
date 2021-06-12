@@ -4,7 +4,7 @@
   "description": "Mind elixir is a free open source mind map core.",
   "main": "dist/MindElixir.js",
   "scripts": {
-    "start": "webpack-dev-server --mode development --hot --inline --host 0.0.0.0 --port 8080",
+    "start": "webpack-dev-server --mode development --hot --inline --host 0.0.0.0 --port 8081",
     "lite": "webpack --mode production --env.lite=1",
     "test": "jest --runInBand",
     "build": "webpack --mode production --env.lite=0",
