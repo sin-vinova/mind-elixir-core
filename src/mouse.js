@@ -2,13 +2,19 @@ import { dragMoveHelper, isMobile,throttle } from './utils/index'
 import * as nodeDraggable from "./plugin/nodeDraggable";
 import Hammer from 'hammerjs'
 let $d = document
+function sleepFor( sleepDuration ){
+  var now = new Date().getTime();
+  while(new Date().getTime() < now + sleepDuration){ /* do nothing */ } 
+}
 function checkElementFromPoint(x,y, notSameNode){
   let elements = [];
   let display = [];
   let item = $d.elementFromPoint(x, y);
   let lastItem;
   while (item && item !== lastItem && item !== document.body && item !== document && item !== document.documentElement && !item.classList.contains('map-canvas')) {
-      elements.push(item);
+      
+    
+    elements.push(item);
       // save current style.display value
       display.push(item.style.display);
       // temporarily hide this element so we can see what's underneath it
@@ -17,6 +23,8 @@ function checkElementFromPoint(x,y, notSameNode){
       lastItem = item;
       item = document.elementFromPoint(x, y);
   }
+
+  
   // restore display property
   for (var i = 0; i < elements.length; i++) {
     elements[i].style.display = display[i];
@@ -149,10 +157,16 @@ export default function (mind) {
   /**
    * drag and move
    */
+  var positionMove = []
   mind.map.addEventListener('mousemove', e => {
     // click trigger mousemove in windows chrome
     // the 'true' is a string
     if (e.target.contentEditable !== 'true') {
+      positionMove.push({
+        pageX: e.pageX,
+        pageY: e.pageY,
+        time: Date.now()
+      })
       dragMoveHelper.onMove(e, mind.container)
     }
   })
@@ -160,12 +174,84 @@ export default function (mind) {
     if (e.target.contentEditable !== 'true') {
       dragMoveHelper.afterMoving = false
       dragMoveHelper.mousedown = true
+      positionMove = []
+      positionMove.push({
+        pageX: e.pageX,
+        pageY: e.pageY,
+        time: Date.now()
+      })
     }
   })
   mind.map.addEventListener('mouseleave', e => {
     dragMoveHelper.clear()
   })
   mind.map.addEventListener('mouseup', e => {
+    if (e.target.contentEditable !== 'true') {
+      let lastPos = {
+        pageX: e.pageX,
+        pageY: e.pageY,
+        time: Date.now()
+      }
+      let i = positionMove.length
+      let now = Date.now();
+      while ( i-- ) {
+        if ( now - positionMove[i].time > 150 ) { break; }
+        lastPos = positionMove[i];
+      }
+      let xOffset = lastPos.pageX -e.pageX
+			let yOffset = lastPos.pageY -e.pageY
+			let timeOffset = ( Date.now() - lastPos.time ) / 12
+      let decelX = ( xOffset / timeOffset )
+      let decelY = ( yOffset / timeOffset ) 
+      let myVar = setInterval(momentum, 10)
+      function momentum() {
+        console.log(decelY, decelX)
+        if(Math.abs(decelX) < 0.01)
+          decelX = 0
+        if(Math.abs(decelY) < 0.01)
+          decelY = 0
+        if(decelY === 0||  decelX ===0){
+          clearInterval(myVar)
+          return 
+        }
+        else{
+          decelX *= 0.95
+          decelY *= 0.95
+          mind.container.scrollTo({
+            left: mind.container.scrollLeft + decelX,
+            top: mind.container.scrollTop + decelY,
+            // behavior: 'smooth'
+          })
+        }
+      }
+      // function doSetTimeout() {
+      //   setTimeout(function() {
+      //     decelX *= 0.95
+      //     decelY *= 0.95
+          
+      //     mind.container.scrollTo({
+      //       left: mind.container.scrollLeft + decelX,
+      //       top: mind.container.scrollTop + decelY,
+      //       // behavior: 'smooth'
+      //     })
+      //   }, 200);
+      // }
+      // while(Math.abs(decelX) >= 0.01 && Math.abs(decelY) >= 0.01){
+      //   doSetTimeout()
+        
+      //   // sleepFor(500)
+      //   // mind.container.scrollTo(
+      //   //   mind.container.scrollLeft + decelX,
+      //   //   mind.container.scrollTop + decelY
+      //   // )
+      // }
+      // positionMove.push({
+      //   pageX: e.pageX,
+      //   pageY: e.pageY,
+      //   time: Date.now()
+      // })
+
+    }
     dragMoveHelper.clear()
   })
 
@@ -239,6 +325,7 @@ export default function (mind) {
   var meet
   let linksRelateNode =[]
   var nodesLink
+  let positionMoveMb = []
   manager.on('panstart',function (e) {
     moveNode =  getParent(e.target,'T')
     if(moveNode){
@@ -246,6 +333,13 @@ export default function (mind) {
       mind.selectNode(dragged)
       mind.onRedirectPath && mind.onRedirectPath(dragged.nodeObj)
       dragMoveHelper.clear()
+    }
+    else{
+      positionMoveMb.push({
+        pageX: e.center.x,
+        pageY: e.center.y,
+        time: Date.now()
+      })
     }
     
   })
@@ -309,6 +403,11 @@ export default function (mind) {
           lastY = e.center.y
           return
         }
+        positionMoveMb.push({
+          pageX: e.center.x,
+          pageY: e.center.y,
+          time: Date.now()
+        })
         console.log('e.center.x', e);
         deltaX = lastX - e.center.x
         deltaY = lastY - e.center.y
@@ -325,7 +424,7 @@ export default function (mind) {
     lastX = null
     lastY = null
     if(isMobile()){
-      if(dragged){
+      if(dragged && moveNode){
         nodeDraggable.clearPreview(meet)
         moveNode.parentElement.style.transform = `unset`
         moveNode.parentElement.style.zIndex = 'unset'
@@ -377,6 +476,45 @@ export default function (mind) {
         dragged = null
         nodesLink = null
 
+      }
+      else{
+        let lastPos = {
+          pageX: e.center.x,
+          pageY: e.center.y,
+          time: Date.now()
+        }
+        let i = positionMoveMb.length
+        let now = Date.now();
+        while ( i-- ) {
+          if ( now - positionMoveMb[i].time > 150 ) { break; }
+          lastPos = positionMoveMb[i];
+        }
+        let xOffset = lastPos.pageX - e.center.x
+        let yOffset = lastPos.pageY - e.center.y
+        let timeOffset = ( Date.now() - lastPos.time ) / 12
+        let decelX = ( xOffset / timeOffset )
+        let decelY = ( yOffset / timeOffset ) 
+        let myVar = setInterval(momentum, 10)
+        function momentum() {
+          console.log(decelY, decelX)
+          if(Math.abs(decelX) < 0.01)
+            decelX = 0
+          if(Math.abs(decelY) < 0.01)
+            decelY = 0
+          if(decelY === 0||  decelX ===0){
+            clearInterval(myVar)
+            return 
+          }
+          else{
+            decelX *= 0.95
+            decelY *= 0.95
+            mind.container.scrollTo({
+              left: mind.container.scrollLeft + decelX,
+              top: mind.container.scrollTop + decelY,
+              // behavior: 'smooth'
+            })
+          }
+        }
       }
     }
     
