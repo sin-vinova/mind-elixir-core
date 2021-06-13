@@ -317,7 +317,7 @@ export default function (mind) {
   var deltaY = 0
   let lastX = null;
   let lastY = null;
-  var currentScale = mind.scaleVal || 1;
+  // var currentScale = mind.scaleVal || 1;
   var moveNode = undefined
   var dragged
   var insertLocation
@@ -353,9 +353,9 @@ export default function (mind) {
         && moveNode.children[0].nodeObj.firstNodeOtherMap))){
         let curTpc= moveNode.children[0]
         let curNodeObj = curTpc.nodeObj
-        moveNode.parentElement.style.transform = `translate(${e.deltaX/currentScale}px,${e.deltaY/currentScale}px)`
+        moveNode.parentElement.style.transform = `translate(${e.deltaX/mind.scaleVal}px,${e.deltaY/mind.scaleVal}px)`
         moveNode.parentElement.style.zIndex = '100000000'
-        let topMeet  = checkElementFromPoint(e.center.x,e.center.y , moveNode.children[0] )
+        let topMeet  = checkElementFromPoint(e.center.x,e.center.y -threshold , moveNode.children[0] )
         if(!curNodeObj.parent.root){
           nodesLink =getParent(moveNode,'grp[data-check-grp="firstDeepGrp"').lastChild
           // nodesLink.style.zIndex = '100000000'
@@ -363,7 +363,7 @@ export default function (mind) {
           for(let i=0; i< nodesLink.children.length; i++){
             if(nodesLink.children[i].dataset.idOfParentNode === curNodeObj.id){
               linksRelateNode.push(nodesLink.children[i])
-              nodesLink.children[i].style.transform = `translate(${e.deltaX/currentScale}px,${e.deltaY/currentScale}px)`
+              nodesLink.children[i].style.transform = `translate(${e.deltaX/mind.scaleVal}px,${e.deltaY/mind.scaleVal}px)`
             }
           }
         }
@@ -373,7 +373,7 @@ export default function (mind) {
             insertLocation = 'in'
           }
           else {
-            let bottomMeet = checkElementFromPoint(e.center.x,e.center.y , moveNode.children[0])
+            let bottomMeet = checkElementFromPoint(e.center.x,e.center.y + threshold , moveNode.children[0])
             if(bottomMeet){
               if (nodeDraggable.canPreview(bottomMeet, dragged)) {
                 meet = bottomMeet
@@ -521,7 +521,7 @@ export default function (mind) {
   })
 
   function getRelativeScale(scale) {
-    return scale * currentScale;
+    return scale * mind.scaleVal;
   }
   manager.on('pinchmove', function(e) {
     // do something cool
@@ -532,7 +532,7 @@ export default function (mind) {
   });
   manager.on('pinchend', function(e) {
     // cache the scale
-    currentScale = getRelativeScale(e.scale);
+    mind.scaleVal = getRelativeScale(e.scale);
     // liveScale = currentScale;
   });
 
