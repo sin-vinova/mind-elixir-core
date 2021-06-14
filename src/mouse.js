@@ -202,26 +202,28 @@ export default function (mind) {
 			let yOffset = lastPos.pageY -e.pageY
 			let timeOffset = ( Date.now() - lastPos.time ) / 12
       let decelX = ( xOffset / timeOffset )
-      let decelY = ( yOffset / timeOffset ) 
-      let myVar = setInterval(momentum, 10)
-      function momentum() {
-        console.log(decelY, decelX)
-        if(Math.abs(decelX) < 0.01)
-          decelX = 0
-        if(Math.abs(decelY) < 0.01)
-          decelY = 0
-        if(decelY === 0||  decelX ===0){
-          clearInterval(myVar)
-          return 
-        }
-        else{
-          decelX *= 0.95
-          decelY *= 0.95
-          mind.container.scrollTo({
-            left: mind.container.scrollLeft + decelX,
-            top: mind.container.scrollTop + decelY,
-            // behavior: 'smooth'
-          })
+      let decelY = ( yOffset / timeOffset )
+      if(timeOffset){ 
+        let myVar = setInterval(momentum, 10)
+        function momentum() {
+          console.log(decelY, decelX)
+          if(Math.abs(decelX) < 0.01)
+            decelX = 0
+          if(Math.abs(decelY) < 0.01)
+            decelY = 0
+          if(decelY === 0||  decelX ===0){
+            clearInterval(myVar)
+            return 
+          }
+          else{
+            decelX *= 0.95
+            decelY *= 0.95
+            mind.container.scrollTo({
+              left: mind.container.scrollLeft + decelX,
+              top: mind.container.scrollTop + decelY,
+              // behavior: 'smooth'
+            })
+          }
         }
       }
       // function doSetTimeout() {
@@ -361,7 +363,7 @@ export default function (mind) {
           // nodesLink.style.zIndex = '100000000'
           moveNode.parentElement.style.position ='relative'
           for(let i=0; i< nodesLink.children.length; i++){
-            if(nodesLink.children[i].dataset.idOfParentNode === curNodeObj.id){
+            if(nodesLink.children[i].idsOfParentNode.includes(curNodeObj.id)){
               linksRelateNode.push(nodesLink.children[i])
               nodesLink.children[i].style.transform = `translate(${e.deltaX/mind.scaleVal}px,${e.deltaY/mind.scaleVal}px)`
             }
@@ -494,25 +496,27 @@ export default function (mind) {
         let timeOffset = ( Date.now() - lastPos.time ) / 12
         let decelX = ( xOffset / timeOffset )
         let decelY = ( yOffset / timeOffset ) 
-        let myVar = setInterval(momentum, 10)
-        function momentum() {
-          console.log(decelY, decelX)
-          if(Math.abs(decelX) < 0.01)
-            decelX = 0
-          if(Math.abs(decelY) < 0.01)
-            decelY = 0
-          if(decelY === 0||  decelX ===0){
-            clearInterval(myVar)
-            return 
-          }
-          else{
-            decelX *= 0.95
-            decelY *= 0.95
-            mind.container.scrollTo({
-              left: mind.container.scrollLeft + decelX,
-              top: mind.container.scrollTop + decelY,
-              // behavior: 'smooth'
-            })
+        if(timeOffset){
+          let myVar = setInterval(momentum, 10)
+          function momentum() {
+            console.log(decelY, decelX)
+            if(Math.abs(decelX) < 0.01)
+              decelX = 0
+            if(Math.abs(decelY) < 0.01)
+              decelY = 0
+            if(decelY === 0||  decelX ===0){
+              clearInterval(myVar)
+              return 
+            }
+            else{
+              decelX *= 0.95
+              decelY *= 0.95
+              mind.container.scrollTo({
+                left: mind.container.scrollLeft + decelX,
+                top: mind.container.scrollTop + decelY,
+                // behavior: 'smooth'
+              })
+            }
           }
         }
       }

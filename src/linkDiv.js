@@ -17,6 +17,16 @@ import {
  * 4. generate custom link
  * @param {object} primaryNode process the specific primary node only
  */
+function getListParentId(obj) {
+  let copyObj = obj.parent
+  let arrId =[]
+  while(copyObj){
+    arrId.push(copyObj.id)
+    copyObj = copyObj.parent
+  } 
+  console.log()
+  return arrId
+}
 export default function linkDiv(primaryNode) {
   var primaryNodeHorizontalGap = this.primaryNodeHorizontalGap || PRIMARY_NODE_HORIZONTAL_GAP
   var primaryNodeVerticalGap = this.primaryNodeVerticalGap || PRIMARY_NODE_VERTICAL_GAP
@@ -416,9 +426,9 @@ export default function linkDiv(primaryNode) {
             const objNode = (childT.children && childT.children[0] && childT.children[0].nodeObj) ? childT.children[0].nodeObj : undefined
             if(objNode){
               if(objNode.typeTag === 'relate')
-                svg.appendChild(createPath(path,'#979797', '3',"10,10",objNode.id,curObj.parent.id))
+                svg.appendChild(createPath(path,'#979797', '3',"10,10",objNode.id, getListParentId(curObj)))
               else
-                svg.appendChild(createPath(path,colorLine, '3',"5,5",objNode.id,curObj.parent.id))
+                svg.appendChild(createPath(path,colorLine, '3',"5,5",objNode.id, getListParentId(curObj)))
             }
           }
           else{
@@ -437,13 +447,13 @@ export default function linkDiv(primaryNode) {
               }
             // console.log(curObj,"pppppp")
             if(isOtherNode){
-              svg.appendChild(createPath(path, colorLine,'3',"5,5",curObj.id,curObj.parent.id))
+              svg.appendChild(createPath(path, colorLine,'3',"5,5",curObj.id,getListParentId(curObj)))
             }
             else{
               if(rootDirection === RIGHT_TREE)
-                svg.appendChild(createPath(path, colorLineRoot,'1.5',null,curObj.id,curObj.parent.id))
+                svg.appendChild(createPath(path, colorLineRoot,'1.5',null,curObj.id,getListParentId(curObj)))
               else
-                svg.appendChild(createPath(path, colorLine,'1.5',null,curObj.id,curObj.parent.id))
+                svg.appendChild(createPath(path, colorLine,'1.5',null,curObj.id,getListParentId(curObj)))
             }
           }
 
