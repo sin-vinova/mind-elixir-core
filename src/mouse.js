@@ -204,6 +204,7 @@ export default function (mind) {
       let decelX = ( xOffset / timeOffset )
       let decelY = ( yOffset / timeOffset )
       if(timeOffset){ 
+        let timer = Date.now()
         let myVar = setInterval(momentum, 10)
         function momentum() {
           console.log(decelY, decelX)
@@ -211,7 +212,7 @@ export default function (mind) {
             decelX = 0
           if(Math.abs(decelY) < 0.01)
             decelY = 0
-          if(decelY === 0||  decelX ===0){
+          if(decelY === 0||  decelX ===0 || Date.now() - timer > 700){
             clearInterval(myVar)
             return 
           }
@@ -497,6 +498,7 @@ export default function (mind) {
         let decelX = ( xOffset / timeOffset )
         let decelY = ( yOffset / timeOffset ) 
         if(timeOffset){
+          let timer = Date.now()
           let myVar = setInterval(momentum, 10)
           function momentum() {
             console.log(decelY, decelX)
@@ -504,7 +506,7 @@ export default function (mind) {
               decelX = 0
             if(Math.abs(decelY) < 0.01)
               decelY = 0
-            if(decelY === 0||  decelX ===0){
+            if(decelY === 0||  decelX ===0 || Date.now() - timer > 700 ){
               clearInterval(myVar)
               return 
             }
