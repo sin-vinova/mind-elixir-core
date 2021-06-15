@@ -6,34 +6,7 @@ function sleepFor( sleepDuration ){
   var now = new Date().getTime();
   while(new Date().getTime() < now + sleepDuration){ /* do nothing */ } 
 }
-function checkElementFromPoint(x,y, notSameNode){
-  let elements = [];
-  let display = [];
-  let item = $d.elementFromPoint(x, y);
-  let lastItem;
-  while (item && item !== lastItem && item !== document.body && item !== document && item !== document.documentElement && !item.classList.contains('map-canvas')) {
-      
-    
-    elements.push(item);
-      // save current style.display value
-      display.push(item.style.display);
-      // temporarily hide this element so we can see what's underneath it
-      item.style.display = "none";
-      // prevent possible infinite loop by remembering this item
-      lastItem = item;
-      item = document.elementFromPoint(x, y);
-  }
 
-  
-  // restore display property
-  for (var i = 0; i < elements.length; i++) {
-    elements[i].style.display = display[i];
-  }
-  for (var i = 0; i < elements.length; i++) {
-    if(elements[i]!==notSameNode && elements[i].tagName === 'TPC')
-      return elements[i]
-  }
-}
 function getParent(el,query) {
   let result = [];
   let parent
@@ -153,6 +126,17 @@ export default function (mind) {
   //   // no allow modify root node
     
   // })
+
+  function checkElementFromPoint (x,y,notSameNode) {
+    let tpcs = mind.map.querySelectorAll('TPC')
+    for(let i =0; i< tpcs.length; i++){
+      if(tpcs[i] !== notSameNode){
+        let rec = tpcs[i].getBoundingClientRect()
+        if(rec.y < y && rec.y + rec.height > y && rec.x < x && rec.x +rec.width > x)
+          return tpcs[i]
+      }
+    }
+  }
 
   /**
    * drag and move
@@ -358,7 +342,7 @@ export default function (mind) {
         let curNodeObj = curTpc.nodeObj
         moveNode.parentElement.style.transform = `translate(${e.deltaX/mind.scaleVal}px,${e.deltaY/mind.scaleVal}px)`
         moveNode.parentElement.style.zIndex = '100000000'
-        let topMeet  = checkElementFromPoint(e.center.x,e.center.y -threshold , moveNode.children[0] )
+        let topMeet  = checkElementFromPoint(e.center.x,e.center.y , moveNode.children[0] )
         if(!curNodeObj.parent.root){
           nodesLink =getParent(moveNode,'grp[data-check-grp="firstDeepGrp"').lastChild
           // nodesLink.style.zIndex = '100000000'
@@ -376,7 +360,7 @@ export default function (mind) {
             insertLocation = 'in'
           }
           else {
-            let bottomMeet = checkElementFromPoint(e.center.x,e.center.y + threshold , moveNode.children[0])
+            let bottomMeet = checkElementFromPoint(e.center.x,e.center.y , moveNode.children[0])
             if(bottomMeet){
               if (nodeDraggable.canPreview(bottomMeet, dragged)) {
                 meet = bottomMeet
