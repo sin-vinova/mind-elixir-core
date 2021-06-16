@@ -29,7 +29,7 @@ export let clearPreview = function (el) {
   }
 }
 
-export let canPreview = function (el, dragged) {
+export let canPreview = function (el, dragged ) {
   let isContain = dragged.parentNode.parentNode.contains(el)
   const isChild =  !!(dragged.nodeObj 
         && dragged.nodeObj.parent
@@ -43,6 +43,7 @@ export let canPreview = function (el, dragged) {
          el
         && el.nodeObj
         && el.nodeObj.belongOtherMap)
+  
   return (
     
     el &&
@@ -115,20 +116,22 @@ export default function (mind) {
     // reset the transparency
     event.target.style.opacity = ''
     clearPreview(meet)
-    let obj = dragged.nodeObj
-    switch (insertLocation) {
-      case 'before':
-        mind.moveNodeBefore(dragged, meet)
-        mind.selectNode(E(obj.id,mind))
-        break
-      case 'after':
-        mind.moveNodeAfter(dragged, meet)
-        mind.selectNode(E(obj.id,mind))
-        break
-      case 'in':
-        mind.moveNode(dragged, meet)
-        mind.OnDragNode && mind.OnDragNode(obj, meet.nodeObj)
-        break
+    if(meet && (!mind.checkNotAllowDropNode || (mind.checkNotAllowDropNode && !mind.checkNotAllowDropNode(meet.nodeObj, dragged.nodeObj)))){
+      let obj = dragged.nodeObj
+      switch (insertLocation) {
+        case 'before':
+          mind.moveNodeBefore(dragged, meet)
+          mind.selectNode(E(obj.id,mind))
+          break
+        case 'after':
+          mind.moveNodeAfter(dragged, meet)
+          mind.selectNode(E(obj.id,mind))
+          break
+        case 'in':
+          mind.moveNode(dragged, meet)
+          mind.OnDragNode && mind.OnDragNode(obj, meet.nodeObj)
+          break
+      }
     }
     dragged.parentNode.parentNode.style.opacity = 1
     dragged = null

@@ -314,21 +314,23 @@ export default function (mind) {
   var nodesLink
   let positionMoveMb = []
   manager.on('panstart',function (e) {
-    moveNode =  getParent(e.target,'T')
-    if(moveNode){
-      dragged = moveNode.children[0]
-      mind.selectNode(dragged)
-      mind.onRedirectPath && mind.onRedirectPath(dragged.nodeObj)
-      dragMoveHelper.clear()
+    if(mind.draggable){
+      console.log(mind.draggable,"kkkkkk")
+      moveNode =  getParent(e.target,'T')
+      if(moveNode){
+        dragged = moveNode.children[0]
+        mind.selectNode(dragged)
+        mind.onRedirectPath && mind.onRedirectPath(dragged.nodeObj)
+        dragMoveHelper.clear()
+      }
+      else{
+        positionMoveMb.push({
+          pageX: e.center.x,
+          pageY: e.center.y,
+          time: Date.now()
+        })
+      }
     }
-    else{
-      positionMoveMb.push({
-        pageX: e.center.x,
-        pageY: e.center.y,
-        time: Date.now()
-      })
-    }
-    
   })
   manager.on('panmove', function (e) {
     if (isMobile()) {
@@ -420,15 +422,18 @@ export default function (mind) {
           
         // }
         if(meet){
-          if(meet.nodeObj && meet.nodeObj.root){
-            moveNode.parentElement.style.position = 'absolute'
+          if(!mind.checkNotAllowDropNode || (mind.checkNotAllowDropNode && !mind.checkNotAllowDropNode(meet.nodeObj, dragged.nodeObj))){
+            if(meet.nodeObj && meet.nodeObj.root){
+              moveNode.parentElement.style.position = 'absolute'
+            }
+            else{
+              moveNode.parentElement.style.top = 'unset'
+              moveNode.parentElement.style.left = 'unset'
+              moveNode.parentElement.removeAttribute('data-check-grp')
+              moveNode.parentElement.style.position = 'unset'
+            }
           }
-          else{
-            moveNode.parentElement.style.top = 'unset'
-            moveNode.parentElement.style.left = 'unset'
-            moveNode.parentElement.removeAttribute('data-check-grp')
-            moveNode.parentElement.style.position = 'unset'
-          }
+          
         }
         else{
           if(dragged.nodeObj.parent.root)
@@ -442,22 +447,23 @@ export default function (mind) {
         for(let i=0; i< linksRelateNode.length; i++){
           linksRelateNode[i].style.transform = 'unset'
         }
-        let obj = dragged.nodeObj
-        switch (insertLocation) {
-          case 'before':
-            mind.moveNodeBefore(dragged, meet)
-            mind.selectNode(E(obj.id,mind))
-            break
-          case 'after':
-            mind.moveNodeAfter(dragged, meet)
-            mind.selectNode(E(obj.id,mind))
-            break
-          case 'in':
-            mind.moveNode(dragged, meet)
-            mind.OnDragNode && mind.OnDragNode(obj, meet.nodeObj)
-            break
+        if(meet && (!mind.checkNotAllowDropNode || (mind.checkNotAllowDropNode && !mind.checkNotAllowDropNode(meet.nodeObj, dragged.nodeObj)))){
+          let obj = dragged.nodeObj
+          switch (insertLocation) {
+            case 'before':
+              mind.moveNodeBefore(dragged, meet)
+              mind.selectNode(E(obj.id,mind))
+              break
+            case 'after':
+              mind.moveNodeAfter(dragged, meet)
+              mind.selectNode(E(obj.id,mind))
+              break
+            case 'in':
+              mind.moveNode(dragged, meet)
+              mind.OnDragNode && mind.OnDragNode(obj, meet.nodeObj)
+              break
+          }
         }
-        
         linksRelateNode = []
         moveNode= null
         dragged = null

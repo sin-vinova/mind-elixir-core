@@ -426,9 +426,9 @@ export default function linkDiv(primaryNode) {
             const objNode = (childT.children && childT.children[0] && childT.children[0].nodeObj) ? childT.children[0].nodeObj : undefined
             if(objNode){
               if(objNode.typeTag === 'relate')
-                svg.appendChild(createPath(path,'#979797', '3',"10,10",objNode.id, getListParentId(curObj)))
+                svg.appendChild(createPath(path,'#979797', '3',"10,10"))
               else
-                svg.appendChild(createPath(path,colorLine, '3',"5,5",objNode.id, getListParentId(curObj)))
+                svg.appendChild(createPath(path,colorLine, '3',"5,5"))
             }
           }
           else{

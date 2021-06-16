@@ -28,6 +28,7 @@ let mind = new MindElixir({
   nodeMenu: true,
   keypress: true,
   allowUndo: false,
+
   // before: {
   //   moveDownNode(){
   //     return false

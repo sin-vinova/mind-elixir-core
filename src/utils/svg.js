@@ -37,8 +37,10 @@ export let createPath = function (d, colorLine='#555', strokeWidth='1.5', stroke
   path.setAttribute('stroke-width', strokeWidth)
   path.setAttribute('transform', 'translate(0.5,-0.5)')
   strokeDasharray && path.setAttribute('stroke-dasharray',strokeDasharray)
-  path.idOfNode = idOfNode
-  path.idsOfParentNode = idsOfParentNode
+  if(idOfNode)
+    path.idOfNode = idOfNode
+  if(idsOfParentNode)
+    path.idsOfParentNode = idsOfParentNode
   // adding translate(0.5,-0.5) can fix render error on windows, but i still dunno why
   return path
 }

@@ -47,7 +47,7 @@ import {
   processPrimaryNode,
   setNodeTopic,
   moveNodeBefore,
-  moveNodeAfter,
+  moveNodeAfter
 } from './nodeOperation'
 import {
   createLink,
@@ -144,7 +144,8 @@ function MindElixir({
   onClickTag,
   isTagging,
   mapPermission,
-  removeAddNodeButton
+  removeAddNodeButton,
+  checkNotAllowDropNode
 }) {
   vari.newTopicName = newTopicName
   this.isEditing = false
@@ -164,6 +165,7 @@ function MindElixir({
   // todo move direction to data
   this.direction = typeof direction === 'number' ? direction : 1
   vari.mevar_draggable = draggable === undefined ? true : draggable
+  this.draggable = draggable || false
   this.editable = editable === undefined ? true : editable
   this.allowUndo = allowUndo === undefined ? true : allowUndo
   this.parentMap = {} // deprecate?
@@ -193,6 +195,7 @@ function MindElixir({
   this.isTagging = !!isTagging
   this.onClickTag = onClickTag || null
   this.removeAddNodeButton = removeAddNodeButton || false
+  this.checkNotAllowDropNode = checkNotAllowDropNode || null
   this.bus.addListener('operation', operation => {
     if (this.isUndo) {
       this.isUndo = false
