@@ -266,7 +266,7 @@ export default function (mind) {
   let positionMoveMb = []
   var currentLeft = 0
   var currentTop = 0
-
+  var checkPan = true
   function panstartFn (e){
     if(mind.draggable){
       console.log(mind.draggable,"kkkkkk")
@@ -439,6 +439,64 @@ export default function (mind) {
       else{
         currentLeft = currentLeft + e.deltaX / mind.scaleVal;
         currentTop = currentTop + e.deltaY / mind.scaleVal;
+        if(checkPan){
+          let lastPos = {
+            pageX: e.center.x,
+            pageY: e.center.y,
+            time: Date.now()
+          }
+          let i = positionMoveMb.length
+          let now = Date.now();
+          while ( i-- ) {
+            if ( now - positionMoveMb[i].time > 150 ) { break; }
+            lastPos = positionMoveMb[i];
+          }
+          let xOffset = lastPos.pageX - e.center.x
+          let yOffset = lastPos.pageY - e.center.y
+          let timeOffset = ( Date.now() - lastPos.time ) / 12
+          let decelX = ( xOffset / timeOffset )
+          let decelY = ( yOffset / timeOffset ) 
+          if(timeOffset){
+            let timer = Date.now()
+            let myVar = setInterval(momentum, 10)
+            function momentum() {
+              if(Math.abs(decelX) < 0.01)
+                decelX = 0
+              if(Math.abs(decelY) < 0.01)
+                decelY = 0
+              if(decelY === 0||  decelX ===0 || Date.now() - timer > 700 ){
+                clearInterval(myVar)
+                return 
+              }
+              else{
+                
+                if(decelX<0){
+                  decelX *= 0.87
+                }
+                else
+                  decelX *= 0.95
+                if(decelY<0)
+                  decelY *= 0.87
+                else
+                  decelY *= 0.95
+                mind.container.scrollTo({
+                  left: mind.container.scrollLeft + decelX,
+                  top: mind.container.scrollTop + decelY,
+                  // behavior: 'smooth'
+                })
+              }
+            }
+          }
+        }
+        else{
+          checkPan = true
+        }
+      }
+    }
+    else{
+      currentLeft = currentLeft + e.deltaX / mind.scaleVal;
+      currentTop = currentTop + e.deltaY / mind.scaleVal;
+      if(checkPan){
         let lastPos = {
           pageX: e.center.x,
           pageY: e.center.y,
@@ -459,16 +517,16 @@ export default function (mind) {
           let timer = Date.now()
           let myVar = setInterval(momentum, 10)
           function momentum() {
+            console.log(decelY, decelX)
             if(Math.abs(decelX) < 0.01)
               decelX = 0
             if(Math.abs(decelY) < 0.01)
               decelY = 0
-            if(decelY === 0||  decelX ===0 ){
+            if(decelY === 0||  decelX ===0 || Date.now() - timer > 700 ){
               clearInterval(myVar)
               return 
             }
             else{
-              
               if(decelX<0){
                 decelX *= 0.87
               }
@@ -487,57 +545,10 @@ export default function (mind) {
           }
         }
       }
-    }
-    else{
-      currentLeft = currentLeft + e.deltaX / mind.scaleVal;
-      currentTop = currentTop + e.deltaY / mind.scaleVal;
-      let lastPos = {
-        pageX: e.center.x,
-        pageY: e.center.y,
-        time: Date.now()
+      else{
+        checkPan =true
       }
-      let i = positionMoveMb.length
-      let now = Date.now();
-      while ( i-- ) {
-        if ( now - positionMoveMb[i].time > 150 ) { break; }
-        lastPos = positionMoveMb[i];
-      }
-      let xOffset = lastPos.pageX - e.center.x
-      let yOffset = lastPos.pageY - e.center.y
-      let timeOffset = ( Date.now() - lastPos.time ) / 12
-      let decelX = ( xOffset / timeOffset )
-      let decelY = ( yOffset / timeOffset ) 
-      if(timeOffset){
-        let timer = Date.now()
-        let myVar = setInterval(momentum, 10)
-        function momentum() {
-          console.log(decelY, decelX)
-          if(Math.abs(decelX) < 0.01)
-            decelX = 0
-          if(Math.abs(decelY) < 0.01)
-            decelY = 0
-          if(decelY === 0||  decelX ===0 || Date.now() - timer > 700 ){
-            clearInterval(myVar)
-            return 
-          }
-          else{
-            if(decelX<0){
-              decelX *= 0.87
-            }
-            else
-              decelX *= 0.95
-            if(decelY<0)
-              decelY *= 0.87
-            else
-              decelY *= 0.95
-            mind.container.scrollTo({
-              left: mind.container.scrollLeft + decelX,
-              top: mind.container.scrollTop + decelY,
-              // behavior: 'smooth'
-            })
-          }
-        }
-      }
+      
     }
   }
   manager.on('panstart',function (e) {
@@ -554,12 +565,9 @@ export default function (mind) {
     return scale * mind.scaleVal;
   }
   manager.on("pinchstart", function(e) {
-    manager.off("panend");
-    manager.off("panmove")
-    manager.off("panstart")
+    
   })
   manager.on('pinchmove', function(e) {
-    document.getElementById('abc').innerHTML = JSON.stringify(e)
     var scale = getRelativeScale(e.scale);
     if(scale > 3 || scale < 0.3)
       return
@@ -575,17 +583,7 @@ export default function (mind) {
   const delay = ms => new Promise(res => setTimeout(res, ms));
   manager.on('pinchend', async function(e) {
     mind.scaleVal = getRelativeScale(e.scale);
-    delay(800)
-    manager.on('panstart',function (e) {
-      panstartFn(e)    
-    })
-    manager.on('panmove', function (e) {
-      panmoveFn(e)
-    })
-    manager.on('panend', function (e) {
-      panendFn(e)
-    })
-
+    checkPan = false
   });
 
 
