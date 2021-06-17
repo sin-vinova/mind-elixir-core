@@ -142,137 +142,92 @@ export default function (mind) {
    * drag and move
    */
   var positionMove = []
-  mind.map.addEventListener('mousemove', e => {
-    // click trigger mousemove in windows chrome
-    // the 'true' is a string
-    if (e.target.contentEditable !== 'true') {
-      positionMove.push({
-        pageX: e.pageX,
-        pageY: e.pageY,
-        time: Date.now()
-      })
-      dragMoveHelper.onMove(e, mind.container)
-    }
-  })
-  mind.map.addEventListener('mousedown', e => {
-    if (e.target.contentEditable !== 'true') {
-      dragMoveHelper.afterMoving = false
-      dragMoveHelper.mousedown = true
-      positionMove = []
-      positionMove.push({
-        pageX: e.pageX,
-        pageY: e.pageY,
-        time: Date.now()
-      })
-    }
-  })
-  mind.map.addEventListener('mouseleave', e => {
-    dragMoveHelper.clear()
-  })
-  mind.map.addEventListener('mouseup', e => {
-    if (e.target.contentEditable !== 'true') {
-      let lastPos = {
-        pageX: e.pageX,
-        pageY: e.pageY,
-        time: Date.now()
-      }
-      let i = positionMove.length
-      let now = Date.now();
-      while ( i-- ) {
-        if ( now - positionMove[i].time > 150 ) { break; }
-        lastPos = positionMove[i];
-      }
-      let xOffset = lastPos.pageX -e.pageX
-			let yOffset = lastPos.pageY -e.pageY
-			let timeOffset = ( Date.now() - lastPos.time ) / 12
-      let decelX = ( xOffset / timeOffset )
-      let decelY = ( yOffset / timeOffset )
-      if(timeOffset){ 
-        let timer = Date.now()
-        let myVar = setInterval(momentum, 10)
-        function momentum() {
-          console.log(decelY, decelX)
-          if(Math.abs(decelX) < 0.01)
-            decelX = 0
-          if(Math.abs(decelY) < 0.01)
-            decelY = 0
-          if(decelY === 0||  decelX ===0 || Date.now() - timer > 700){
-            clearInterval(myVar)
-            return 
-          }
-          else{
-            decelX *= 0.95
-            decelY *= 0.95
-            mind.container.scrollTo({
-              left: mind.container.scrollLeft + decelX,
-              top: mind.container.scrollTop + decelY,
-              // behavior: 'smooth'
-            })
-          }
-        }
-      }
-      // function doSetTimeout() {
-      //   setTimeout(function() {
-      //     decelX *= 0.95
-      //     decelY *= 0.95
-          
-      //     mind.container.scrollTo({
-      //       left: mind.container.scrollLeft + decelX,
-      //       top: mind.container.scrollTop + decelY,
-      //       // behavior: 'smooth'
-      //     })
-      //   }, 200);
-      // }
-      // while(Math.abs(decelX) >= 0.01 && Math.abs(decelY) >= 0.01){
-      //   doSetTimeout()
-        
-      //   // sleepFor(500)
-      //   // mind.container.scrollTo(
-      //   //   mind.container.scrollLeft + decelX,
-      //   //   mind.container.scrollTop + decelY
-      //   // )
-      // }
-      // positionMove.push({
-      //   pageX: e.pageX,
-      //   pageY: e.pageY,
-      //   time: Date.now()
-      // })
+  // mind.map.addEventListener('mousemove', e => {
+  //   // click trigger mousemove in windows chrome
+  //   // the 'true' is a string
+  //   if (e.target.contentEditable !== 'true') {
+  //     positionMove.push({
+  //       pageX: e.pageX,
+  //       pageY: e.pageY,
+  //       time: Date.now()
+  //     })
+  //     dragMoveHelper.onMove(e, mind.container)
+  //   }
+  // })
+  // mind.map.addEventListener('mousedown', e => {
+  //   if (e.target.contentEditable !== 'true') {
+  //     dragMoveHelper.afterMoving = false
+  //     dragMoveHelper.mousedown = true
+  //     positionMove = []
+  //     positionMove.push({
+  //       pageX: e.pageX,
+  //       pageY: e.pageY,
+  //       time: Date.now()
+  //     })
+  //   }
+  // })
+  // mind.map.addEventListener('mouseleave', e => {
+  //   dragMoveHelper.clear()
+  // })
+  // mind.map.addEventListener('mouseup', e => {
+  //   if (e.target.contentEditable !== 'true') {
+  //     let lastPos = {
+  //       pageX: e.pageX,
+  //       pageY: e.pageY,
+  //       time: Date.now()
+  //     }
+  //     let i = positionMove.length
+  //     let now = Date.now();
+  //     while ( i-- ) {
+  //       if ( now - positionMove[i].time > 150 ) { break; }
+  //       lastPos = positionMove[i];
+  //     }
+  //     let xOffset = lastPos.pageX -e.pageX
+	// 		let yOffset = lastPos.pageY -e.pageY
+	// 		let timeOffset = ( Date.now() - lastPos.time ) / 12
+  //     let decelX = ( xOffset / timeOffset )
+  //     let decelY = ( yOffset / timeOffset )
+  //     if(timeOffset){ 
+  //       let timer = Date.now()
+  //       let myVar = setInterval(momentum, 10)
+  //       function momentum() {
+  //         console.log(decelY, decelX)
+  //         if(Math.abs(decelX) < 0.01)
+  //           decelX = 0
+  //         if(Math.abs(decelY) < 0.01)
+  //           decelY = 0
+  //         if(decelY === 0||  decelX ===0 || Date.now() - timer > 700){
+  //           clearInterval(myVar)
+  //           return 
+  //         }
+  //         else{
+  //           decelX *= 0.95
+  //           decelY *= 0.95
+  //           mind.container.scrollTo({
+  //             left: mind.container.scrollLeft + decelX,
+  //             top: mind.container.scrollTop + decelY,
+  //             // behavior: 'smooth'
+  //           })
+  //         }
+  //       }
+  //     }
+  //   }
+  //   dragMoveHelper.clear()
+  // })
 
-    }
-    dragMoveHelper.clear()
-  })
-
-  mind.map.onmousedown = function (e) {
-    isPanning = true
-  }
-  const functionWheelZoom = (e) =>{
-    e.preventDefault()
-    e.stopPropagation()
-    
-    isPanning = true
-    if (isPanning) {
-      if (e.deltaY > 0) {
-        // scrolling up
-        if (mind.scaleVal < 0.2) return
-        mind.scale((mind.scaleVal -= 0.02))
-      } else if (e.deltaY < 0) {
-        // scrolling down
-        if (mind.scaleVal > 1.6) return
-        mind.scale((mind.scaleVal += 0.02))
-      }
-      isPanning = false
-    }
-  }
-  mind.map.onwheel = functionWheelZoom
+  // mind.map.onmousedown = function (e) {
+  //   isPanning = true
+  // }
+  
   
 
-  mind.map.onmouseup = function (e) {
-    isPanning = false
-  }
+  // mind.map.onmouseup = function (e) {
+  //   isPanning = false
+  // }
 
-  mind.map.onmouseleave = function (e) {
-    isPanning = false
-  }
+  // mind.map.onmouseleave = function (e) {
+  //   isPanning = false
+  // }
 
   // zoom and transion on mobile
   function log(event, currentScale) {
@@ -300,20 +255,19 @@ export default function (mind) {
   // manager.add(Rotate);
   manager.add(Pinch);
 
-  var deltaX = 0
-  var deltaY = 0
-  let lastX = null;
-  let lastY = null;
+  
   // var currentScale = mind.scaleVal || 1;
   var moveNode = undefined
   var dragged
   var insertLocation
-  let threshold = 12
   var meet
   let linksRelateNode =[]
   var nodesLink
   let positionMoveMb = []
-  manager.on('panstart',function (e) {
+  var currentLeft = 0
+  var currentTop = 0
+
+  function panstartFn (e){
     if(mind.draggable){
       console.log(mind.draggable,"kkkkkk")
       moveNode =  getParent(e.target,'T')
@@ -331,8 +285,9 @@ export default function (mind) {
         })
       }
     }
-  })
-  manager.on('panmove', function (e) {
+  }
+
+  function panmoveFn (e) {
     if (isMobile()) {
       nodeDraggable.clearPreview(meet)
       if(moveNode && moveNode.children[0] 
@@ -387,31 +342,42 @@ export default function (mind) {
 
       }
       else{
-        if (!lastX) {
-          lastX = e.center.x
-          lastY = e.center.y
-          return
-        }
         positionMoveMb.push({
           pageX: e.center.x,
           pageY: e.center.y,
           time: Date.now()
         })
-        console.log('e.center.x', e);
-        deltaX = lastX - e.center.x
-        deltaY = lastY - e.center.y
-        mind.container.scrollTo(
-          mind.container.scrollLeft + deltaX,
-          mind.container.scrollTop + deltaY
-        )
-        lastX = e.center.x
-        lastY = e.center.y
+
+        mind.map.style.transform =
+          "scale(" +
+          mind.scaleVal +
+          ") translate(" +
+          (currentLeft + e.deltaX / mind.scaleVal) +
+          "px," +
+          (currentTop + e.deltaY / mind.scaleVal) +
+          "px)"
+        
       }
     }
-  })
-  manager.on('panend', function (e) {
-    lastX = null
-    lastY = null
+    else{
+      positionMoveMb.push({
+        pageX: e.center.x,
+        pageY: e.center.y,
+        time: Date.now()
+      })
+
+      mind.map.style.transform =
+        "scale(" +
+        mind.scaleVal +
+        ") translate(" +
+        (currentLeft + e.deltaX / mind.scaleVal) +
+        "px," +
+        (currentTop + e.deltaY / mind.scaleVal) +
+        "px)"
+    }
+  }
+
+  function panendFn (e){
     if(isMobile()){
       if(dragged && moveNode){
         nodeDraggable.clearPreview(meet)
@@ -471,6 +437,8 @@ export default function (mind) {
 
       }
       else{
+        currentLeft = currentLeft + e.deltaX / mind.scaleVal;
+        currentTop = currentTop + e.deltaY / mind.scaleVal;
         let lastPos = {
           pageX: e.center.x,
           pageY: e.center.y,
@@ -491,18 +459,25 @@ export default function (mind) {
           let timer = Date.now()
           let myVar = setInterval(momentum, 10)
           function momentum() {
-            console.log(decelY, decelX)
             if(Math.abs(decelX) < 0.01)
               decelX = 0
             if(Math.abs(decelY) < 0.01)
               decelY = 0
-            if(decelY === 0||  decelX ===0 || Date.now() - timer > 700 ){
+            if(decelY === 0||  decelX ===0 ){
               clearInterval(myVar)
               return 
             }
             else{
-              decelX *= 0.95
-              decelY *= 0.95
+              
+              if(decelX<0){
+                decelX *= 0.87
+              }
+              else
+                decelX *= 0.95
+              if(decelY<0)
+                decelY *= 0.87
+              else
+                decelY *= 0.95
               mind.container.scrollTo({
                 left: mind.container.scrollLeft + decelX,
                 top: mind.container.scrollTop + decelY,
@@ -513,54 +488,131 @@ export default function (mind) {
         }
       }
     }
-    
+    else{
+      currentLeft = currentLeft + e.deltaX / mind.scaleVal;
+      currentTop = currentTop + e.deltaY / mind.scaleVal;
+      let lastPos = {
+        pageX: e.center.x,
+        pageY: e.center.y,
+        time: Date.now()
+      }
+      let i = positionMoveMb.length
+      let now = Date.now();
+      while ( i-- ) {
+        if ( now - positionMoveMb[i].time > 150 ) { break; }
+        lastPos = positionMoveMb[i];
+      }
+      let xOffset = lastPos.pageX - e.center.x
+      let yOffset = lastPos.pageY - e.center.y
+      let timeOffset = ( Date.now() - lastPos.time ) / 12
+      let decelX = ( xOffset / timeOffset )
+      let decelY = ( yOffset / timeOffset ) 
+      if(timeOffset){
+        let timer = Date.now()
+        let myVar = setInterval(momentum, 10)
+        function momentum() {
+          console.log(decelY, decelX)
+          if(Math.abs(decelX) < 0.01)
+            decelX = 0
+          if(Math.abs(decelY) < 0.01)
+            decelY = 0
+          if(decelY === 0||  decelX ===0 || Date.now() - timer > 700 ){
+            clearInterval(myVar)
+            return 
+          }
+          else{
+            if(decelX<0){
+              decelX *= 0.87
+            }
+            else
+              decelX *= 0.95
+            if(decelY<0)
+              decelY *= 0.87
+            else
+              decelY *= 0.95
+            mind.container.scrollTo({
+              left: mind.container.scrollLeft + decelX,
+              top: mind.container.scrollTop + decelY,
+              // behavior: 'smooth'
+            })
+          }
+        }
+      }
+    }
+  }
+  manager.on('panstart',function (e) {
+    panstartFn(e)    
+  })
+  manager.on('panmove', function (e) {
+    panmoveFn(e)
+  })
+  manager.on('panend', function (e) {
+    panendFn(e)
   })
 
   function getRelativeScale(scale) {
     return scale * mind.scaleVal;
   }
+  manager.on("pinchstart", function(e) {
+    manager.off("panend");
+    manager.off("panmove")
+    manager.off("panstart")
+  })
   manager.on('pinchmove', function(e) {
-    // do something cool
+    document.getElementById('abc').innerHTML = JSON.stringify(e)
     var scale = getRelativeScale(e.scale);
-    // stage.style.transform = 'scale('+ scale +') translate(' + deltaX + 'px, ' + deltaY + 'px)'
-    stage.style.transform = 'scale('+ scale +')'
-    // mind.scale(scale)
-  });
-  manager.on('pinchend', function(e) {
-    // cache the scale
+    if(scale > 3 || scale < 0.3)
+      return
+    mind.map.style.transform =
+      "scale(" +
+      scale +
+      ") translate(" +
+      currentLeft +
+      "px," +
+      currentTop +
+      "px)";
+  })
+  const delay = ms => new Promise(res => setTimeout(res, ms));
+  manager.on('pinchend', async function(e) {
     mind.scaleVal = getRelativeScale(e.scale);
-    // liveScale = currentScale;
+    delay(800)
+    manager.on('panstart',function (e) {
+      panstartFn(e)    
+    })
+    manager.on('panmove', function (e) {
+      panmoveFn(e)
+    })
+    manager.on('panend', function (e) {
+      panendFn(e)
+    })
+
   });
 
-  // mc.on('rotate', function(e) {
-  //   // do something cool
-  //   var rotation = Math.round(e.rotation);    
-  //   stage.style.transform = 'rotate('+rotation+'deg)';
-  // });
+
+  const functionWheelZoom = (e) =>{
+    e.preventDefault()
+    e.stopPropagation()
+    if (e.deltaY < 0) {
+      // scrolling up
+      if (mind.scaleVal > 3) return
+      mind.scaleVal = mind.scaleVal +0.1
+    } else if (e.deltaY > 0) {
+      // scrolling down
+      if (mind.scaleVal < 0.3) return
+      mind.scaleVal = mind.scaleVal - 0.1
+    }
+    mind.map.style.transform =
+      "scale(" +
+      mind.scaleVal +
+      ") translate(" +
+      currentLeft +
+      "px," +
+      currentTop +
+      "px)";
+    
+  }
+ 
+  mind.map.onwheel = functionWheelZoom
 }
-
-
-
-
-
-
-// $(".target").on("click", function() {
-//     if (touchtime == 0) {
-//         // set first click
-//         touchtime = new Date().getTime();
-//     } else {
-//         // compare first click to this click and see if they occurred within double click threshold
-//         if (((new Date().getTime()) - touchtime) < 800) {
-//             // double click occurred
-//             alert("double clicked");
-//             touchtime = 0;
-//         } else {
-//             // not a double click so set as a new first click
-//             touchtime = new Date().getTime();
-//         }
-//     }
-// });
-
-
 
 
