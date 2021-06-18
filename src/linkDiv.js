@@ -132,7 +132,7 @@ export default function linkDiv(primaryNode) {
         }while(xLine < minLeft)
         
         xLine = 10000;
-        if(primaryNodeList.length === 1)
+        if(primaryNodeList.length === 1 || (primaryNodeList.length === 2 && ((primaryNodeList[0].classList.contains('lhs') &&  primaryNodeList[1].classList.contains('rhs')) || (primaryNodeList[0].classList.contains('rhs') &&  primaryNodeList[1].classList.contains('lhs')))))
           path = `M ${xLine} ${10000}  ${x2} ${10000}`
         else
           path = `M ${xLine} ${10000} C ${10000} ${10000} ${10000 + 2 * primaryNodeHorizontalGap * 0.03
@@ -206,7 +206,10 @@ export default function linkDiv(primaryNode) {
         }while(xLine > minRight)
 
         xLine = 10000;
-        path = `M ${xLine} ${10000} C ${xLine} 10000 ${10000 + 2 * primaryNodeHorizontalGap * 0.03} ${y2} ${x2} ${y2+10}`
+        if(primaryNodeList.length === 1 || (primaryNodeList.length === 2 && ((primaryNodeList[0].classList.contains('lhs') &&  primaryNodeList[1].classList.contains('rhs')) || (primaryNodeList[0].classList.contains('rhs') &&  primaryNodeList[1].classList.contains('lhs')))))
+          path = `M ${xLine} ${10000}  ${x2} ${10000}`
+        else
+          path = `M ${xLine} ${10000} C ${xLine} 10000 ${10000 + 2 * primaryNodeHorizontalGap * 0.03} ${y2} ${x2} ${y2+10}`
       }
       if (shortSide === 'r') {
         currentOffsetR += elOffsetH + shortSideGap
