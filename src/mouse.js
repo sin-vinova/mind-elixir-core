@@ -21,15 +21,15 @@ function getParent(el,query) {
 }
 export default function (mind) {
   let isPanning = false;
-  var touchtime = 0
+  // var touchtime = 0
   mind.map.addEventListener('click', function(e) {
     if(e.target.classList.contains('fake-el') || mind.isEditing)
       return
     // if (dragMoveHelper.afterMoving) return
     e.preventDefault()
-    if (touchtime == 0 || ((new Date().getTime()) - touchtime) >= 200) {
+    // if (touchtime == 0 || ((new Date().getTime()) - touchtime) >= 800) {
       // set first click
-      touchtime = new Date().getTime();
+      // touchtime = new Date().getTime();
       const nodeTopic =  getParent(e.target, 'T') ? getParent(e.target, 'T') : getParent(e.target, 'ROOT') ? getParent(e.target, 'ROOT') : null
       if(mind.isTagging && nodeTopic && nodeTopic.firstElementChild.nodeObj.typeTag === 'relate' && nodeTopic.firstElementChild.nodeObj.firstChildTag){
         document.querySelectorAll('.tag-topic-relate').forEach(item =>{
@@ -97,35 +97,44 @@ export default function (mind) {
         // mind.unselectNode()
         mind.hideLinkController()
       }
-    } else {
-      touchtime = 0;
-      const nodeTopic =  getParent(e.target, 'T') ? getParent(e.target, 'T') : null
+    // } else {
+      // touchtime = 0;
+      // const nodeTopic =  getParent(e.target, 'T') ? getParent(e.target, 'T') : null
 
-      // define between edit and create --> edit
-      let isEdit = true
-      if (!mind.editable) return
-      if (
-        nodeTopic
-      ) {
+      // // define between edit and create --> edit
+      // let isEdit = true
+      // if (!mind.editable) return
+      // if (
+      //   nodeTopic
+      // ) {
         
-        mind.beginEdit(getParent(e.target, 'tpc'), isEdit,mind.isTagging)
-      }
-    }
+      //   mind.beginEdit(getParent(e.target, 'tpc'), isEdit,mind.isTagging)
+      // }
+    // }
   });
   // mind.map.addEventListener('click', e => {
     
   // })
 
-  // mind.map.addEventListener('dblclick', e => {
-  //   if(e.target.classList.contains('fake-el') || mind.isEditing)
-  //     return
-  //   e.preventDefault()
+  const doubleClickFn = (e) => {
+    if(e.target.classList.contains('fake-el') || mind.isEditing)
+      return
+    e.preventDefault()
+    
+    // const nodeTopic =  getParent(e.target, 'T') ? getParent(e.target, 'T') : getParent(e.target, 'ROOT') ? getParent(e.target, 'ROOT') : null
+    const nodeTopic =  getParent(e.target, 'T') ? getParent(e.target, 'T') : null
+    // define between edit and create --> edit
+    let isEdit = true
+    if (!mind.editable) return
+    if (
+      nodeTopic
+    ) {
+      
+      mind.beginEdit(getParent(e.target, 'tpc'), isEdit,mind.isTagging)
+    }
+  }
 
-  //   // const nodeTopic =  getParent(e.target, 'T') ? getParent(e.target, 'T') : getParent(e.target, 'ROOT') ? getParent(e.target, 'ROOT') : null
-    
-  //   // no allow modify root node
-    
-  // })
+  mind.map.addEventListener('dblclick', doubleClickFn)
 
   function checkElementFromPoint (x,y,notSameNode) {
     let tpcs = mind.map.querySelectorAll('TPC')
@@ -247,6 +256,10 @@ export default function (mind) {
 
   var Pan = new Hammer.Pan();
   var Pinch = new Hammer.Pinch();
+  var DoubleTap = new Hammer.Tap({
+    event: 'doubletap',
+    taps: 2
+  });
   // var Rotate = new Hammer.Rotate();
 
   Pinch.recognizeWith([Pan]);
@@ -254,7 +267,7 @@ export default function (mind) {
   manager.add(Pan);
   // manager.add(Rotate);
   manager.add(Pinch);
-
+  manager.add(DoubleTap);
   
   // var currentScale = mind.scaleVal || 1;
   var moveNode = undefined
@@ -552,6 +565,7 @@ export default function (mind) {
     }
   }
   manager.on('panstart',function (e) {
+    console.log(e)
     panstartFn(e)    
   })
   manager.on('panmove', function (e) {
@@ -585,6 +599,8 @@ export default function (mind) {
     mind.scaleVal = getRelativeScale(e.scale);
     checkPan = false
   });
+
+  manager.on('doubletap', doubleClickFn);
 
 
   const functionWheelZoom = (e) =>{
