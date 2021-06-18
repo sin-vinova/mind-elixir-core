@@ -477,21 +477,23 @@ export default function (mind) {
                 decelX = 0
               if(Math.abs(decelY) < 0.01)
                 decelY = 0
-              if(decelY === 0||  decelX ===0 || Date.now() - timer > 700 ){
+              if((decelY === 0 &&  decelX ===0) || Date.now() - timer > 700 ){
                 clearInterval(myVar)
                 return 
               }
               else{
-                
-                if(decelX<0){
+                if(decelX < 0 && decelY > 0){
                   decelX *= 0.87
-                }
-                else
-                  decelX *= 0.95
-                if(decelY<0)
-                  decelY *= 0.87
-                else
                   decelY *= 0.95
+                }
+                else if(decelX > 0 && decelY < 0){
+                  decelX *= 0.95
+                  decelY *= 0.87
+                }
+                else{
+                  decelX *= 0.95
+                  decelY *= 0.95
+                }
                 mind.container.scrollTo({
                   left: mind.container.scrollLeft + decelX,
                   top: mind.container.scrollTop + decelY,
@@ -535,20 +537,23 @@ export default function (mind) {
               decelX = 0
             if(Math.abs(decelY) < 0.01)
               decelY = 0
-            if(decelY === 0||  decelX ===0 || Date.now() - timer > 700 ){
+            if((decelY === 0 &&  decelX ===0) || Date.now() - timer > 700 ){
               clearInterval(myVar)
               return 
             }
             else{
-              if(decelX<0){
+              if(decelX < 0 && decelY > 0){
                 decelX *= 0.87
-              }
-              else
-                decelX *= 0.95
-              if(decelY<0)
-                decelY *= 0.87
-              else
                 decelY *= 0.95
+              }
+              else if(decelX > 0 && decelY < 0){
+                decelX *= 0.95
+                decelY *= 0.87
+              }
+              else{
+                decelX *= 0.95
+                decelY *= 0.95
+              }
               mind.container.scrollTo({
                 left: mind.container.scrollLeft + decelX,
                 top: mind.container.scrollTop + decelY,
