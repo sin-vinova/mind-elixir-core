@@ -1,6 +1,7 @@
 import { dragMoveHelper, isMobile,throttle } from './utils/index'
 import * as nodeDraggable from "./plugin/nodeDraggable";
 import Hammer from 'hammerjs'
+import pressMbileMenu from './plugin/pressMobileMenu'
 let $d = document
 function sleepFor( sleepDuration ){
   var now = new Date().getTime();
@@ -260,6 +261,9 @@ export default function (mind) {
     event: 'doubletap',
     taps: 2
   });
+  var Press = new Hammer.Press({
+    time: 500
+  });
   // var Rotate = new Hammer.Rotate();
 
   Pinch.recognizeWith([Pan]);
@@ -268,7 +272,7 @@ export default function (mind) {
   // manager.add(Rotate);
   manager.add(Pinch);
   manager.add(DoubleTap);
-  
+  manager.add(Press)
   // var currentScale = mind.scaleVal || 1;
   var moveNode = undefined
   var dragged
@@ -397,6 +401,7 @@ export default function (mind) {
   }
 
   function panendFn (e){
+    console.log(e,"llllll")
     if(isMobile()){
       if(dragged && moveNode){
         nodeDraggable.clearPreview(meet)
@@ -638,6 +643,8 @@ export default function (mind) {
   }
  
   mind.map.onwheel = functionWheelZoom
+  if(isMobile())
+    pressMbileMenu(mind,manager)
 }
 
 
