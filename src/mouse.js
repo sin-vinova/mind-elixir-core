@@ -280,6 +280,8 @@ export default function (mind) {
   var currentLeft = 0
   var currentTop = 0
   var checkPan = true
+  var lastdelX
+  var lastdelY
   function panstartFn (e){
     if(mind.draggable){
       console.log(mind.draggable,"kkkkkk")
@@ -355,20 +357,24 @@ export default function (mind) {
 
       }
       else{
-        positionMoveMb.push({
-          pageX: e.center.x,
-          pageY: e.center.y,
-          time: Date.now()
-        })
-
-        mind.map.style.transform =
-          "scale(" +
-          mind.scaleVal +
-          ") translate(" +
-          (currentLeft + e.deltaX / mind.scaleVal) +
-          "px," +
-          (currentTop + e.deltaY / mind.scaleVal) +
-          "px)"
+        if(Math.abs(lastdelX - e.deltaX) >0.1 && Math.abs(lastdelY - e.deltaY) >0.1){
+          positionMoveMb.push({
+            pageX: e.center.x,
+            pageY: e.center.y,
+            time: Date.now()
+          })
+          
+          mind.map.style.transform =
+            "scale(" +
+            mind.scaleVal +
+            ") translate(" +
+            (currentLeft + e.deltaX / mind.scaleVal) +
+            "px," +
+            (currentTop + e.deltaY / mind.scaleVal) +
+            "px)"
+        }
+        lastdelX = e.deltaX
+        lastdelY = e.deltaY
         
       }
     }
@@ -471,7 +477,7 @@ export default function (mind) {
           let decelY = ( yOffset / timeOffset ) 
           if(timeOffset){
             let timer = Date.now()
-            let myVar = setInterval(momentum, 10)
+            let myVar = setInterval(momentum, 7)
             function momentum() {
               if(Math.abs(decelX) < 0.01)
                 decelX = 0
