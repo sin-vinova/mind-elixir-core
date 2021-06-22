@@ -75,6 +75,8 @@ export default function (mind, manager) {
   manager.on('press',function (e) {
     console.log(e)
     e.preventDefault()
+    if(e.target.nodeName === 'ADD')
+      return
     if(e.target.classList.contains('fake-el') || mind.isEditing)
       return
     // console.log(e.pageY, e.screenY, e.center.y)

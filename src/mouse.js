@@ -643,7 +643,7 @@ export default function (mind) {
   }
  
   mind.map.onwheel = functionWheelZoom
-  if(isMobile())
+  if(isMobile() && mind.contextMenu)
     pressMbileMenu(mind,manager)
 }
 
