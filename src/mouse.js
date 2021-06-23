@@ -284,8 +284,10 @@ export default function (mind) {
   var currentLeft = 0
   var currentTop = 0
   var checkPan = true
-  var lastdelX
-  var lastdelY
+  var deltaX = 0
+  var deltaY = 0
+  let lastX = null;
+  let lastY = null;
   function panstartFn (e){
     if(mind.draggable){
       console.log(mind.draggable,"kkkkkk")
@@ -361,26 +363,39 @@ export default function (mind) {
 
       }
       else{
-        if(Math.abs(lastdelX - e.deltaX) >0.1 && Math.abs(lastdelY - e.deltaY) >0.1){
-          positionMoveMb.push({
-            pageX: e.center.x,
-            pageY: e.center.y,
-            time: Date.now()
-          })
-          
-          mind.map.style.transform =
-            "scale(" +
-            mind.scaleVal +
-            ") translate(" +
-            (currentLeft + e.deltaX / mind.scaleVal) +
-            "px," +
-            (currentTop + e.deltaY / mind.scaleVal) +
-            "px)"
-        }
-        lastdelX = e.deltaX
-        lastdelY = e.deltaY
         
-      }
+        if (!lastX) {
+          lastX = e.center.x
+          lastY = e.center.y
+          return
+        }
+        deltaX = lastX - e.center.x
+        deltaY = lastY - e.center.y
+        mind.container.scrollTo(
+          mind.container.scrollLeft + deltaX,
+          mind.container.scrollTop + deltaY
+        )
+        lastX = e.center.x
+        lastY = e.center.y
+        // manager.on('panend', function (e) {
+        //   lastX = null
+        //   lastY = null
+        // })
+        positionMoveMb.push({
+          pageX: e.center.x,
+          pageY: e.center.y,
+          time: Date.now()
+        })
+          
+          // mind.map.style.transform =
+          //   "scale(" +
+          //   mind.scaleVal +
+          //   ") translate(" +
+          //   (currentLeft + e.deltaX / mind.scaleVal) +
+          //   "px," +
+          //   (currentTop + e.deltaY / mind.scaleVal) +
+          //   "px)"
+      }   
     }
     else{
       positionMoveMb.push({
@@ -388,20 +403,31 @@ export default function (mind) {
         pageY: e.center.y,
         time: Date.now()
       })
-
-      mind.map.style.transform =
-        "scale(" +
-        mind.scaleVal +
-        ") translate(" +
-        (currentLeft + e.deltaX / mind.scaleVal) +
-        "px," +
-        (currentTop + e.deltaY / mind.scaleVal) +
-        "px)"
+      if (!lastX) {
+        lastX = e.center.x
+        lastY = e.center.y
+        return
+      }
+      deltaX = lastX - e.center.x
+      deltaY = lastY - e.center.y
+      mind.container.scrollTo(
+        mind.container.scrollLeft + deltaX,
+        mind.container.scrollTop + deltaY
+      )
+      lastX = e.center.x
+      lastY = e.center.y
+      // mind.map.style.transform =
+      //   "scale(" +
+      //   mind.scaleVal +
+      //   ") translate(" +
+      //   (currentLeft + e.deltaX / mind.scaleVal) +
+      //   "px," +
+      //   (currentTop + e.deltaY / mind.scaleVal) +
+      //   "px)"
     }
   }
 
   function panendFn (e){
-    console.log(e,"llllll")
     if(isMobile()){
       if(dragged && moveNode){
         nodeDraggable.clearPreview(meet)
@@ -461,6 +487,8 @@ export default function (mind) {
 
       }
       else{
+        lastX = null
+        lastY = null
         currentLeft = currentLeft + e.deltaX / mind.scaleVal;
         currentTop = currentTop + e.deltaY / mind.scaleVal;
         if(checkPan){
@@ -520,6 +548,8 @@ export default function (mind) {
       }
     }
     else{
+      lastX = null
+      lastY = null
       currentLeft = currentLeft + e.deltaX / mind.scaleVal;
       currentTop = currentTop + e.deltaY / mind.scaleVal;
       if(checkPan){
@@ -581,7 +611,6 @@ export default function (mind) {
     }
   }
   manager.on('panstart',function (e) {
-    console.log(e)
     panstartFn(e)    
   })
   manager.on('panmove', function (e) {
@@ -594,24 +623,29 @@ export default function (mind) {
   function getRelativeScale(scale) {
     return scale * mind.scaleVal;
   }
+  var lastScale = null
   manager.on("pinchstart", function(e) {
-    
+    lastScale = e.scale
   })
   manager.on('pinchmove', function(e) {
-    var scale = getRelativeScale(e.scale);
-    if(scale > 3 || scale < 0.3)
-      return
-    mind.map.style.transform =
-      "scale(" +
-      scale +
-      ") translate(" +
-      currentLeft +
-      "px," +
-      currentTop +
-      "px)";
+    if(Math.abs(e.scale - lastScale) > 0.015){
+      var scale = getRelativeScale(e.scale);
+      if(scale > 3 || scale < 0.3)
+        return
+      
+      mind.map.style.transform =
+        "scale(" +
+        scale +
+        ") translate(" +
+        (e.deltaX/2/scale)+
+        "px," +
+        (e.deltaY/2/scale)+
+        "px)";
+    }
+    lastScale=e.scale
   })
   const delay = ms => new Promise(res => setTimeout(res, ms));
-  manager.on('pinchend', async function(e) {
+  manager.on('pinchend', function(e) {
     mind.scaleVal = getRelativeScale(e.scale);
     checkPan = false
   });
@@ -633,12 +667,8 @@ export default function (mind) {
     }
     mind.map.style.transform =
       "scale(" +
-      mind.scaleVal +
-      ") translate(" +
-      currentLeft +
-      "px," +
-      currentTop +
-      "px)";
+      mind.scaleVal 
+      ")"
     
   }
  
