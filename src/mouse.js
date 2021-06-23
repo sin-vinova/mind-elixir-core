@@ -628,7 +628,7 @@ export default function (mind) {
     lastScale = e.scale
   })
   manager.on('pinchmove', function(e) {
-    if(Math.abs(e.scale - lastScale) > 0.015){
+    if(Math.abs(e.scale - lastScale) > 0.012){
       var scale = getRelativeScale(e.scale);
       if(scale > 3 || scale < 0.3)
         return
