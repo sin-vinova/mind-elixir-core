@@ -2,6 +2,8 @@ import { dragMoveHelper, isMobile,throttle } from './utils/index'
 import * as nodeDraggable from "./plugin/nodeDraggable";
 import Hammer from 'hammerjs'
 import pressMbileMenu from './plugin/pressMobileMenu'
+import interact from 'interactjs'
+
 let $d = document
 function sleepFor( sleepDuration ){
   var now = new Date().getTime();
@@ -151,7 +153,152 @@ export default function (mind) {
   /**
    * drag and move
    */
-  var positionMove = []
+
+  
+  // if(isMobile()){
+    // drag on mobile
+    if(mind.draggable){
+      const position = { x: 0, y: 0 }
+      let moveNode
+      let dragged
+      let meet
+      let insertLocation
+      let linksRelateNode =[]
+      let nodesLink
+
+      function touchmoveMapEvent (e){
+        e.preventDefault()
+      }
+
+      function panstartFn (e){
+        position.x = 0
+        position.y = 0
+        moveNode =  getParent(e.target,'T')
+        dragged = moveNode.children[0]
+        mind.selectNode(dragged)
+        mind.onRedirectPath && mind.onRedirectPath(dragged.nodeObj)
+        dragMoveHelper.clear()  
+      }
+
+      function panmoveFn (e) {
+        nodeDraggable.clearPreview(meet)
+        if(dragged && !dragged.nodeObj.belongOtherMap || (dragged.nodeObj.belongOtherMap && dragged.nodeObj.firstNodeOtherMap)){
+          let curTpc= dragged
+          let curNodeObj = curTpc.nodeObj
+          position.x += e.dx
+          position.y += e.dy
+          moveNode.parentElement.style.transform =
+            `translate(${position.x}px, ${position.y}px)`
+          moveNode.parentElement.style.zIndex = '100000000'
+          let topMeet  = checkElementFromPoint(e.client.x,e.client.y , dragged)
+          if(!curNodeObj.parent.root){
+            nodesLink =getParent(moveNode,'grp[data-check-grp="firstDeepGrp"').lastChild
+            // nodesLink.style.zIndex = '100000000'
+            moveNode.parentElement.style.position ='relative'
+            for(let i=0; i< nodesLink.children.length; i++){
+              if(nodesLink.children[i].idsOfParentNode.includes(curNodeObj.id)){
+                linksRelateNode.push(nodesLink.children[i])
+                nodesLink.children[i].style.transform = `translate(${position.x}px, ${position.y}px)`
+              }
+            }
+          }
+          if(topMeet){
+            if (nodeDraggable.canPreview(topMeet, dragged)){
+              meet = topMeet
+              insertLocation = 'in'
+            }
+            else {
+              let bottomMeet = checkElementFromPoint(e.client.x,e.client.y , dragged)
+              if(bottomMeet){
+                if (nodeDraggable.canPreview(bottomMeet, dragged)) {
+                  meet = bottomMeet
+                  insertLocation = 'in'
+                }
+                else
+                  insertLocation = meet = null
+              }
+              else
+                insertLocation = meet = null
+            }
+          }
+          else
+            insertLocation = meet = null
+          if (meet) nodeDraggable.insertPreview(meet, insertLocation)
+        }      
+      }
+
+      function panendFn (e){
+        nodeDraggable.clearPreview(meet)
+        moveNode.parentElement.style.transform = `unset`
+        moveNode.parentElement.style.zIndex = 'unset'
+        if(meet){
+          if(!mind.checkNotAllowDropNode || (mind.checkNotAllowDropNode && !mind.checkNotAllowDropNode(meet.nodeObj, dragged.nodeObj))){
+            if(meet.nodeObj && meet.nodeObj.root){
+              moveNode.parentElement.style.position = 'absolute'
+            }
+            else{
+              moveNode.parentElement.style.top = 'unset'
+              moveNode.parentElement.style.left = 'unset'
+              moveNode.parentElement.removeAttribute('data-check-grp')
+              moveNode.parentElement.style.position = 'unset'
+            }
+          }
+          
+        }
+        else{
+          if(dragged.nodeObj.parent.root)
+            moveNode.parentElement.style.position = 'absolute'
+          else
+            moveNode.parentElement.style.position = 'unset'
+        }
+        for(let i=0; i< linksRelateNode.length; i++){
+          linksRelateNode[i].style.transform = 'unset'
+        }
+        if(meet && (!mind.checkNotAllowDropNode || (mind.checkNotAllowDropNode && !mind.checkNotAllowDropNode(meet.nodeObj, dragged.nodeObj)))){
+          let obj = dragged.nodeObj
+          switch (insertLocation) {
+            case 'before':
+              mind.moveNodeBefore(dragged, meet)
+              mind.selectNode(E(obj.id,mind))
+              break
+            case 'after':
+              mind.moveNodeAfter(dragged, meet)
+              mind.selectNode(E(obj.id,mind))
+              break
+            case 'in':
+              mind.moveNode(dragged, meet)
+              mind.OnDragNode && mind.OnDragNode(obj, meet.nodeObj)
+              break
+          }
+        }
+        linksRelateNode = []
+        moveNode= null
+        dragged = null
+        nodesLink = null
+                  
+      }
+
+      interact('TPC').draggable({
+        listeners: {
+          start (event) {
+            document.querySelector('.map-canvas').addEventListener('touchmove', touchmoveMapEvent)
+            panstartFn(event)
+          },
+          move (event) {
+            panmoveFn(event)
+          },
+          end(event){
+            panendFn(event)
+            document.querySelector('.map-canvas').removeEventListener('touchmove', touchmoveMapEvent)
+          }
+        }
+      })
+    }
+  // }
+
+
+
+
   // mind.map.addEventListener('mousemove', e => {
   //   // click trigger mousemove in windows chrome
   //   // the 'true' is a string
@@ -240,441 +387,441 @@ export default function (mind) {
   // }
 
   // zoom and transion on mobile
-  function log(event, currentScale) {
-    var o = document.getElementsByTagName('output')[0];
-    var s = event.scale
-    // var s = "event.scale = " + event.scale +
-    //               " ; currentScale = " + currentScale;
-    o.innerHTML += s + " aa ";
-  }
+  // function log(event, currentScale) {
+  //   var o = document.getElementsByTagName('output')[0];
+  //   var s = event.scale
+  //   // var s = "event.scale = " + event.scale +
+  //   //               " ; currentScale = " + currentScale;
+  //   o.innerHTML += s + " aa ";
+  // }
 
 
-  //ref https://codepen.io/runspired/pen/ZQBGWd
-  var stage = document.querySelector('.map-canvas');
-  // let $stage = jQuery(stage);
+  // //ref https://codepen.io/runspired/pen/ZQBGWd
+  // var stage = document.querySelector('.map-canvas');
+  // // let $stage = jQuery(stage);
 
-  var manager = new Hammer.Manager(stage);
+  // var manager = new Hammer.Manager(stage);
 
-  var Pan = new Hammer.Pan();
-  var Pinch = new Hammer.Pinch();
-  var DoubleTap = new Hammer.Tap({
-    event: 'doubletap',
-    taps: 2
-  });
-  var Press = new Hammer.Press({
-    time: 500
-  });
-  // var Rotate = new Hammer.Rotate();
+  // var Pan = new Hammer.Pan();
+  // var Pinch = new Hammer.Pinch();
+  // var DoubleTap = new Hammer.Tap({
+  //   event: 'doubletap',
+  //   taps: 2
+  // });
+  // var Press = new Hammer.Press({
+  //   time: 500
+  // });
+  // // var Rotate = new Hammer.Rotate();
 
-  Pinch.recognizeWith([Pan]);
+  // Pinch.recognizeWith([Pan]);
 
-  manager.add(Pan);
-  // manager.add(Rotate);
-  manager.add(Pinch);
-  manager.add(DoubleTap);
-  manager.add(Press)
-  // var currentScale = mind.scaleVal || 1;
-  var moveNode = undefined
-  var dragged
-  var insertLocation
-  var meet
-  let linksRelateNode =[]
-  var nodesLink
-  let positionMoveMb = []
-  var currentLeft = 0
-  var currentTop = 0
-  var checkPan = true
-  var deltaX = 0
-  var deltaY = 0
-  let lastX = null;
-  let lastY = null;
-  function panstartFn (e){
-    if(mind.draggable){
-      console.log(mind.draggable,"kkkkkk")
-      moveNode =  getParent(e.target,'T')
-      if(moveNode){
-        dragged = moveNode.children[0]
-        mind.selectNode(dragged)
-        mind.onRedirectPath && mind.onRedirectPath(dragged.nodeObj)
-        dragMoveHelper.clear()
-      }
-      else{
-        positionMoveMb.push({
-          pageX: e.center.x,
-          pageY: e.center.y,
-          time: Date.now()
-        })
-      }
-    }
-  }
+  // manager.add(Pan);
+  // // manager.add(Rotate);
+  // manager.add(Pinch);
+  // manager.add(DoubleTap);
+  // manager.add(Press)
+  // // var currentScale = mind.scaleVal || 1;
+  // var moveNode = undefined
+  // var dragged
+  // var insertLocation
+  // var meet
+  // let linksRelateNode =[]
+  // var nodesLink
+  // let positionMoveMb = []
+  // var currentLeft = 0
+  // var currentTop = 0
+  // var checkPan = true
+  // var deltaX = 0
+  // var deltaY = 0
+  // let lastX = null;
+  // let lastY = null;
+  // function panstartFn (e){
+  //   if(mind.draggable){
+  //     console.log(mind.draggable,"kkkkkk")
+  //     moveNode =  getParent(e.target,'T')
+  //     if(moveNode){
+  //       dragged = moveNode.children[0]
+  //       mind.selectNode(dragged)
+  //       mind.onRedirectPath && mind.onRedirectPath(dragged.nodeObj)
+  //       dragMoveHelper.clear()
+  //     }
+  //     else{
+  //       positionMoveMb.push({
+  //         pageX: e.center.x,
+  //         pageY: e.center.y,
+  //         time: Date.now()
+  //       })
+  //     }
+  //   }
+  // }
 
-  function panmoveFn (e) {
-    if (isMobile()) {
-      nodeDraggable.clearPreview(meet)
-      if(moveNode && moveNode.children[0] 
-        && moveNode.children[0].tagName === 'TPC' 
-        && moveNode.children[0].nodeObj 
-        && (!moveNode.children[0].nodeObj.belongOtherMap || (moveNode.children[0].nodeObj.belongOtherMap 
-        && moveNode.children[0].nodeObj.firstNodeOtherMap))){
-        let curTpc= moveNode.children[0]
-        let curNodeObj = curTpc.nodeObj
-        moveNode.parentElement.style.transform = `translate(${e.deltaX/mind.scaleVal}px,${e.deltaY/mind.scaleVal}px)`
-        moveNode.parentElement.style.zIndex = '100000000'
-        let topMeet  = checkElementFromPoint(e.center.x,e.center.y , moveNode.children[0] )
-        if(!curNodeObj.parent.root){
-          nodesLink =getParent(moveNode,'grp[data-check-grp="firstDeepGrp"').lastChild
-          // nodesLink.style.zIndex = '100000000'
-          moveNode.parentElement.style.position ='relative'
-          for(let i=0; i< nodesLink.children.length; i++){
-            if(nodesLink.children[i].idsOfParentNode.includes(curNodeObj.id)){
-              linksRelateNode.push(nodesLink.children[i])
-              nodesLink.children[i].style.transform = `translate(${e.deltaX/mind.scaleVal}px,${e.deltaY/mind.scaleVal}px)`
-            }
-          }
-        }
-        if(topMeet){
-          if (nodeDraggable.canPreview(topMeet, dragged)){
-            meet = topMeet
-            insertLocation = 'in'
-          }
-          else {
-            let bottomMeet = checkElementFromPoint(e.center.x,e.center.y , moveNode.children[0])
-            if(bottomMeet){
-              if (nodeDraggable.canPreview(bottomMeet, dragged)) {
-                meet = bottomMeet
-                insertLocation = 'in'
-              }
-              else
-                insertLocation = meet = null
-            }
-            else
-              insertLocation = meet = null
-          }
-        }
-        else
-          insertLocation = meet = null
-        if (meet) nodeDraggable.insertPreview(meet, insertLocation)
+  // function panmoveFn (e) {
+  //   if (isMobile()) {
+  //     nodeDraggable.clearPreview(meet)
+  //     if(moveNode && moveNode.children[0] 
+  //       && moveNode.children[0].tagName === 'TPC' 
+  //       && moveNode.children[0].nodeObj 
+  //       && (!moveNode.children[0].nodeObj.belongOtherMap || (moveNode.children[0].nodeObj.belongOtherMap 
+  //       && moveNode.children[0].nodeObj.firstNodeOtherMap))){
+  //       let curTpc= moveNode.children[0]
+  //       let curNodeObj = curTpc.nodeObj
+  //       moveNode.parentElement.style.transform = `translate(${e.deltaX/mind.scaleVal}px,${e.deltaY/mind.scaleVal}px)`
+  //       moveNode.parentElement.style.zIndex = '100000000'
+  //       let topMeet  = checkElementFromPoint(e.center.x,e.center.y , moveNode.children[0] )
+  //       if(!curNodeObj.parent.root){
+  //         nodesLink =getParent(moveNode,'grp[data-check-grp="firstDeepGrp"').lastChild
+  //         // nodesLink.style.zIndex = '100000000'
+  //         moveNode.parentElement.style.position ='relative'
+  //         for(let i=0; i< nodesLink.children.length; i++){
+  //           if(nodesLink.children[i].idsOfParentNode.includes(curNodeObj.id)){
+  //             linksRelateNode.push(nodesLink.children[i])
+  //             nodesLink.children[i].style.transform = `translate(${e.deltaX/mind.scaleVal}px,${e.deltaY/mind.scaleVal}px)`
+  //           }
+  //         }
+  //       }
+  //       if(topMeet){
+  //         if (nodeDraggable.canPreview(topMeet, dragged)){
+  //           meet = topMeet
+  //           insertLocation = 'in'
+  //         }
+  //         else {
+  //           let bottomMeet = checkElementFromPoint(e.center.x,e.center.y , moveNode.children[0])
+  //           if(bottomMeet){
+  //             if (nodeDraggable.canPreview(bottomMeet, dragged)) {
+  //               meet = bottomMeet
+  //               insertLocation = 'in'
+  //             }
+  //             else
+  //               insertLocation = meet = null
+  //           }
+  //           else
+  //             insertLocation = meet = null
+  //         }
+  //       }
+  //       else
+  //         insertLocation = meet = null
+  //       if (meet) nodeDraggable.insertPreview(meet, insertLocation)
 
-        // let topMeet = $d.elementFromPoint(
-        //   e.center.x,
-        //   e.center.y - threshold
-        // )
-        // console.log(topMeet,"jjjjj")
+  //       // let topMeet = $d.elementFromPoint(
+  //       //   e.center.x,
+  //       //   e.center.y - threshold
+  //       // )
+  //       // console.log(topMeet,"jjjjj")
 
-      }
-      else{
+  //     }
+  //     else{
         
-        if (!lastX) {
-          lastX = e.center.x
-          lastY = e.center.y
-          return
-        }
-        deltaX = lastX - e.center.x
-        deltaY = lastY - e.center.y
-        mind.container.scrollTo(
-          mind.container.scrollLeft + deltaX,
-          mind.container.scrollTop + deltaY
-        )
-        lastX = e.center.x
-        lastY = e.center.y
-        // manager.on('panend', function (e) {
-        //   lastX = null
-        //   lastY = null
-        // })
-        positionMoveMb.push({
-          pageX: e.center.x,
-          pageY: e.center.y,
-          time: Date.now()
-        })
+  //       if (!lastX) {
+  //         lastX = e.center.x
+  //         lastY = e.center.y
+  //         return
+  //       }
+  //       deltaX = lastX - e.center.x
+  //       deltaY = lastY - e.center.y
+  //       mind.container.scrollTo(
+  //         mind.container.scrollLeft + deltaX,
+  //         mind.container.scrollTop + deltaY
+  //       )
+  //       lastX = e.center.x
+  //       lastY = e.center.y
+  //       // manager.on('panend', function (e) {
+  //       //   lastX = null
+  //       //   lastY = null
+  //       // })
+  //       positionMoveMb.push({
+  //         pageX: e.center.x,
+  //         pageY: e.center.y,
+  //         time: Date.now()
+  //       })
           
-          // mind.map.style.transform =
-          //   "scale(" +
-          //   mind.scaleVal +
-          //   ") translate(" +
-          //   (currentLeft + e.deltaX / mind.scaleVal) +
-          //   "px," +
-          //   (currentTop + e.deltaY / mind.scaleVal) +
-          //   "px)"
-      }   
-    }
-    else{
-      positionMoveMb.push({
-        pageX: e.center.x,
-        pageY: e.center.y,
-        time: Date.now()
-      })
-      if (!lastX) {
-        lastX = e.center.x
-        lastY = e.center.y
-        return
-      }
-      deltaX = lastX - e.center.x
-      deltaY = lastY - e.center.y
-      mind.container.scrollTo(
-        mind.container.scrollLeft + deltaX,
-        mind.container.scrollTop + deltaY
-      )
-      lastX = e.center.x
-      lastY = e.center.y
-      // mind.map.style.transform =
-      //   "scale(" +
-      //   mind.scaleVal +
-      //   ") translate(" +
-      //   (currentLeft + e.deltaX / mind.scaleVal) +
-      //   "px," +
-      //   (currentTop + e.deltaY / mind.scaleVal) +
-      //   "px)"
-    }
-  }
+  //         // mind.map.style.transform =
+  //         //   "scale(" +
+  //         //   mind.scaleVal +
+  //         //   ") translate(" +
+  //         //   (currentLeft + e.deltaX / mind.scaleVal) +
+  //         //   "px," +
+  //         //   (currentTop + e.deltaY / mind.scaleVal) +
+  //         //   "px)"
+  //     }   
+  //   }
+  //   else{
+  //     positionMoveMb.push({
+  //       pageX: e.center.x,
+  //       pageY: e.center.y,
+  //       time: Date.now()
+  //     })
+  //     if (!lastX) {
+  //       lastX = e.center.x
+  //       lastY = e.center.y
+  //       return
+  //     }
+  //     deltaX = lastX - e.center.x
+  //     deltaY = lastY - e.center.y
+  //     mind.container.scrollTo(
+  //       mind.container.scrollLeft + deltaX,
+  //       mind.container.scrollTop + deltaY
+  //     )
+  //     lastX = e.center.x
+  //     lastY = e.center.y
+  //     // mind.map.style.transform =
+  //     //   "scale(" +
+  //     //   mind.scaleVal +
+  //     //   ") translate(" +
+  //     //   (currentLeft + e.deltaX / mind.scaleVal) +
+  //     //   "px," +
+  //     //   (currentTop + e.deltaY / mind.scaleVal) +
+  //     //   "px)"
+  //   }
+  // }
 
-  function panendFn (e){
-    if(isMobile()){
-      if(dragged && moveNode){
-        nodeDraggable.clearPreview(meet)
-        moveNode.parentElement.style.transform = `unset`
-        moveNode.parentElement.style.zIndex = 'unset'
-        // if(nodesLink){
-        //   // nodesLink.style.zIndex = 'unset'
+  // function panendFn (e){
+  //   if(isMobile()){
+  //     if(dragged && moveNode){
+  //       nodeDraggable.clearPreview(meet)
+  //       moveNode.parentElement.style.transform = `unset`
+  //       moveNode.parentElement.style.zIndex = 'unset'
+  //       // if(nodesLink){
+  //       //   // nodesLink.style.zIndex = 'unset'
           
-        // }
-        if(meet){
-          if(!mind.checkNotAllowDropNode || (mind.checkNotAllowDropNode && !mind.checkNotAllowDropNode(meet.nodeObj, dragged.nodeObj))){
-            if(meet.nodeObj && meet.nodeObj.root){
-              moveNode.parentElement.style.position = 'absolute'
-            }
-            else{
-              moveNode.parentElement.style.top = 'unset'
-              moveNode.parentElement.style.left = 'unset'
-              moveNode.parentElement.removeAttribute('data-check-grp')
-              moveNode.parentElement.style.position = 'unset'
-            }
-          }
+  //       // }
+  //       if(meet){
+  //         if(!mind.checkNotAllowDropNode || (mind.checkNotAllowDropNode && !mind.checkNotAllowDropNode(meet.nodeObj, dragged.nodeObj))){
+  //           if(meet.nodeObj && meet.nodeObj.root){
+  //             moveNode.parentElement.style.position = 'absolute'
+  //           }
+  //           else{
+  //             moveNode.parentElement.style.top = 'unset'
+  //             moveNode.parentElement.style.left = 'unset'
+  //             moveNode.parentElement.removeAttribute('data-check-grp')
+  //             moveNode.parentElement.style.position = 'unset'
+  //           }
+  //         }
           
-        }
-        else{
-          if(dragged.nodeObj.parent.root)
-            moveNode.parentElement.style.position = 'absolute'
-          else
-            moveNode.parentElement.style.position = 'unset'
-        }
+  //       }
+  //       else{
+  //         if(dragged.nodeObj.parent.root)
+  //           moveNode.parentElement.style.position = 'absolute'
+  //         else
+  //           moveNode.parentElement.style.position = 'unset'
+  //       }
         
 
         
-        for(let i=0; i< linksRelateNode.length; i++){
-          linksRelateNode[i].style.transform = 'unset'
-        }
-        if(meet && (!mind.checkNotAllowDropNode || (mind.checkNotAllowDropNode && !mind.checkNotAllowDropNode(meet.nodeObj, dragged.nodeObj)))){
-          let obj = dragged.nodeObj
-          switch (insertLocation) {
-            case 'before':
-              mind.moveNodeBefore(dragged, meet)
-              mind.selectNode(E(obj.id,mind))
-              break
-            case 'after':
-              mind.moveNodeAfter(dragged, meet)
-              mind.selectNode(E(obj.id,mind))
-              break
-            case 'in':
-              mind.moveNode(dragged, meet)
-              mind.OnDragNode && mind.OnDragNode(obj, meet.nodeObj)
-              break
-          }
-        }
-        linksRelateNode = []
-        moveNode= null
-        dragged = null
-        nodesLink = null
+  //       for(let i=0; i< linksRelateNode.length; i++){
+  //         linksRelateNode[i].style.transform = 'unset'
+  //       }
+  //       if(meet && (!mind.checkNotAllowDropNode || (mind.checkNotAllowDropNode && !mind.checkNotAllowDropNode(meet.nodeObj, dragged.nodeObj)))){
+  //         let obj = dragged.nodeObj
+  //         switch (insertLocation) {
+  //           case 'before':
+  //             mind.moveNodeBefore(dragged, meet)
+  //             mind.selectNode(E(obj.id,mind))
+  //             break
+  //           case 'after':
+  //             mind.moveNodeAfter(dragged, meet)
+  //             mind.selectNode(E(obj.id,mind))
+  //             break
+  //           case 'in':
+  //             mind.moveNode(dragged, meet)
+  //             mind.OnDragNode && mind.OnDragNode(obj, meet.nodeObj)
+  //             break
+  //         }
+  //       }
+  //       linksRelateNode = []
+  //       moveNode= null
+  //       dragged = null
+  //       nodesLink = null
 
-      }
-      else{
-        lastX = null
-        lastY = null
-        currentLeft = currentLeft + e.deltaX / mind.scaleVal;
-        currentTop = currentTop + e.deltaY / mind.scaleVal;
-        if(checkPan){
-          let lastPos = {
-            pageX: e.center.x,
-            pageY: e.center.y,
-            time: Date.now()
-          }
-          let i = positionMoveMb.length
-          let now = Date.now();
-          while ( i-- ) {
-            if ( now - positionMoveMb[i].time > 150 ) { break; }
-            lastPos = positionMoveMb[i];
-          }
-          let xOffset = lastPos.pageX - e.center.x
-          let yOffset = lastPos.pageY - e.center.y
-          let timeOffset = ( Date.now() - lastPos.time ) / 12
-          let decelX = ( xOffset / timeOffset )
-          let decelY = ( yOffset / timeOffset ) 
-          if(timeOffset){
-            let timer = Date.now()
-            let myVar = setInterval(momentum, 7)
-            function momentum() {
-              if(Math.abs(decelX) < 0.01)
-                decelX = 0
-              if(Math.abs(decelY) < 0.01)
-                decelY = 0
-              if((decelY === 0 &&  decelX ===0) || Date.now() - timer > 700 ){
-                clearInterval(myVar)
-                return 
-              }
-              else{
-                if(decelX < 0 && decelY > 0){
-                  decelX *= 0.87
-                  decelY *= 0.95
-                }
-                else if(decelX > 0 && decelY < 0){
-                  decelX *= 0.95
-                  decelY *= 0.87
-                }
-                else{
-                  decelX *= 0.95
-                  decelY *= 0.95
-                }
-                mind.container.scrollTo({
-                  left: mind.container.scrollLeft + decelX,
-                  top: mind.container.scrollTop + decelY,
-                  // behavior: 'smooth'
-                })
-              }
-            }
-          }
-        }
-        else{
-          checkPan = true
-        }
-      }
-    }
-    else{
-      lastX = null
-      lastY = null
-      currentLeft = currentLeft + e.deltaX / mind.scaleVal;
-      currentTop = currentTop + e.deltaY / mind.scaleVal;
-      if(checkPan){
-        let lastPos = {
-          pageX: e.center.x,
-          pageY: e.center.y,
-          time: Date.now()
-        }
-        let i = positionMoveMb.length
-        let now = Date.now();
-        while ( i-- ) {
-          if ( now - positionMoveMb[i].time > 150 ) { break; }
-          lastPos = positionMoveMb[i];
-        }
-        let xOffset = lastPos.pageX - e.center.x
-        let yOffset = lastPos.pageY - e.center.y
-        let timeOffset = ( Date.now() - lastPos.time ) / 12
-        let decelX = ( xOffset / timeOffset )
-        let decelY = ( yOffset / timeOffset ) 
-        if(timeOffset){
-          let timer = Date.now()
-          let myVar = setInterval(momentum, 10)
-          function momentum() {
-            console.log(decelY, decelX)
-            if(Math.abs(decelX) < 0.01)
-              decelX = 0
-            if(Math.abs(decelY) < 0.01)
-              decelY = 0
-            if((decelY === 0 &&  decelX ===0) || Date.now() - timer > 700 ){
-              clearInterval(myVar)
-              return 
-            }
-            else{
-              if(decelX < 0 && decelY > 0){
-                decelX *= 0.87
-                decelY *= 0.95
-              }
-              else if(decelX > 0 && decelY < 0){
-                decelX *= 0.95
-                decelY *= 0.87
-              }
-              else{
-                decelX *= 0.95
-                decelY *= 0.95
-              }
-              mind.container.scrollTo({
-                left: mind.container.scrollLeft + decelX,
-                top: mind.container.scrollTop + decelY,
-                // behavior: 'smooth'
-              })
-            }
-          }
-        }
-      }
-      else{
-        checkPan =true
-      }
+  //     }
+  //     else{
+  //       lastX = null
+  //       lastY = null
+  //       currentLeft = currentLeft + e.deltaX / mind.scaleVal;
+  //       currentTop = currentTop + e.deltaY / mind.scaleVal;
+  //       if(checkPan){
+  //         let lastPos = {
+  //           pageX: e.center.x,
+  //           pageY: e.center.y,
+  //           time: Date.now()
+  //         }
+  //         let i = positionMoveMb.length
+  //         let now = Date.now();
+  //         while ( i-- ) {
+  //           if ( now - positionMoveMb[i].time > 150 ) { break; }
+  //           lastPos = positionMoveMb[i];
+  //         }
+  //         let xOffset = lastPos.pageX - e.center.x
+  //         let yOffset = lastPos.pageY - e.center.y
+  //         let timeOffset = ( Date.now() - lastPos.time ) / 12
+  //         let decelX = ( xOffset / timeOffset )
+  //         let decelY = ( yOffset / timeOffset ) 
+  //         if(timeOffset){
+  //           let timer = Date.now()
+  //           let myVar = setInterval(momentum, 7)
+  //           function momentum() {
+  //             if(Math.abs(decelX) < 0.01)
+  //               decelX = 0
+  //             if(Math.abs(decelY) < 0.01)
+  //               decelY = 0
+  //             if((decelY === 0 &&  decelX ===0) || Date.now() - timer > 700 ){
+  //               clearInterval(myVar)
+  //               return 
+  //             }
+  //             else{
+  //               if(decelX < 0 && decelY > 0){
+  //                 decelX *= 0.87
+  //                 decelY *= 0.95
+  //               }
+  //               else if(decelX > 0 && decelY < 0){
+  //                 decelX *= 0.95
+  //                 decelY *= 0.87
+  //               }
+  //               else{
+  //                 decelX *= 0.95
+  //                 decelY *= 0.95
+  //               }
+  //               mind.container.scrollTo({
+  //                 left: mind.container.scrollLeft + decelX,
+  //                 top: mind.container.scrollTop + decelY,
+  //                 // behavior: 'smooth'
+  //               })
+  //             }
+  //           }
+  //         }
+  //       }
+  //       else{
+  //         checkPan = true
+  //       }
+  //     }
+  //   }
+  //   else{
+  //     lastX = null
+  //     lastY = null
+  //     currentLeft = currentLeft + e.deltaX / mind.scaleVal;
+  //     currentTop = currentTop + e.deltaY / mind.scaleVal;
+  //     if(checkPan){
+  //       let lastPos = {
+  //         pageX: e.center.x,
+  //         pageY: e.center.y,
+  //         time: Date.now()
+  //       }
+  //       let i = positionMoveMb.length
+  //       let now = Date.now();
+  //       while ( i-- ) {
+  //         if ( now - positionMoveMb[i].time > 150 ) { break; }
+  //         lastPos = positionMoveMb[i];
+  //       }
+  //       let xOffset = lastPos.pageX - e.center.x
+  //       let yOffset = lastPos.pageY - e.center.y
+  //       let timeOffset = ( Date.now() - lastPos.time ) / 12
+  //       let decelX = ( xOffset / timeOffset )
+  //       let decelY = ( yOffset / timeOffset ) 
+  //       if(timeOffset){
+  //         let timer = Date.now()
+  //         let myVar = setInterval(momentum, 10)
+  //         function momentum() {
+  //           console.log(decelY, decelX)
+  //           if(Math.abs(decelX) < 0.01)
+  //             decelX = 0
+  //           if(Math.abs(decelY) < 0.01)
+  //             decelY = 0
+  //           if((decelY === 0 &&  decelX ===0) || Date.now() - timer > 700 ){
+  //             clearInterval(myVar)
+  //             return 
+  //           }
+  //           else{
+  //             if(decelX < 0 && decelY > 0){
+  //               decelX *= 0.87
+  //               decelY *= 0.95
+  //             }
+  //             else if(decelX > 0 && decelY < 0){
+  //               decelX *= 0.95
+  //               decelY *= 0.87
+  //             }
+  //             else{
+  //               decelX *= 0.95
+  //               decelY *= 0.95
+  //             }
+  //             mind.container.scrollTo({
+  //               left: mind.container.scrollLeft + decelX,
+  //               top: mind.container.scrollTop + decelY,
+  //               // behavior: 'smooth'
+  //             })
+  //           }
+  //         }
+  //       }
+  //     }
+  //     else{
+  //       checkPan =true
+  //     }
       
-    }
-  }
-  manager.on('panstart',function (e) {
-    panstartFn(e)    
-  })
-  manager.on('panmove', function (e) {
-    panmoveFn(e)
-  })
-  manager.on('panend', function (e) {
-    panendFn(e)
-  })
+  //   }
+  // }
+  // manager.on('panstart',function (e) {
+  //   panstartFn(e)    
+  // })
+  // manager.on('panmove', function (e) {
+  //   panmoveFn(e)
+  // })
+  // manager.on('panend', function (e) {
+  //   panendFn(e)
+  // })
 
-  function getRelativeScale(scale) {
-    return scale * mind.scaleVal;
-  }
-  var lastScale = null
-  manager.on("pinchstart", function(e) {
-    lastScale = e.scale
-  })
-  manager.on('pinchmove', function(e) {
-    if(Math.abs(e.scale - lastScale) > 0.012){
-      var scale = getRelativeScale(e.scale);
-      if(scale > 3 || scale < 0.3)
-        return
+  // function getRelativeScale(scale) {
+  //   return scale * mind.scaleVal;
+  // }
+  // var lastScale = null
+  // manager.on("pinchstart", function(e) {
+  //   lastScale = e.scale
+  // })
+  // manager.on('pinchmove', function(e) {
+  //   if(Math.abs(e.scale - lastScale) > 0.012){
+  //     var scale = getRelativeScale(e.scale);
+  //     if(scale > 3 || scale < 0.3)
+  //       return
       
-      mind.map.style.transform =
-        "scale(" +
-        scale +
-        ") translate(" +
-        (e.deltaX/2/scale)+
-        "px," +
-        (e.deltaY/2/scale)+
-        "px)";
-    }
-    lastScale=e.scale
-  })
-  const delay = ms => new Promise(res => setTimeout(res, ms));
-  manager.on('pinchend', function(e) {
-    mind.scaleVal = getRelativeScale(e.scale);
-    checkPan = false
-  });
+  //     mind.map.style.transform =
+  //       "scale(" +
+  //       scale +
+  //       ") translate(" +
+  //       (e.deltaX/2/scale)+
+  //       "px," +
+  //       (e.deltaY/2/scale)+
+  //       "px)";
+  //   }
+  //   lastScale=e.scale
+  // })
+  // const delay = ms => new Promise(res => setTimeout(res, ms));
+  // manager.on('pinchend', function(e) {
+  //   mind.scaleVal = getRelativeScale(e.scale);
+  //   checkPan = false
+  // });
 
-  manager.on('doubletap', doubleClickFn);
+  // manager.on('doubletap', doubleClickFn);
 
 
-  const functionWheelZoom = (e) =>{
-    e.preventDefault()
-    e.stopPropagation()
-    if (e.deltaY < 0) {
-      // scrolling up
-      if (mind.scaleVal > 3) return
-      mind.scaleVal = mind.scaleVal +0.1
-    } else if (e.deltaY > 0) {
-      // scrolling down
-      if (mind.scaleVal < 0.3) return
-      mind.scaleVal = mind.scaleVal - 0.1
-    }
-    mind.map.style.transform =
-      "scale(" +
-      mind.scaleVal 
-      ")"
+  // const functionWheelZoom = (e) =>{
+  //   e.preventDefault()
+  //   e.stopPropagation()
+  //   if (e.deltaY < 0) {
+  //     // scrolling up
+  //     if (mind.scaleVal > 3) return
+  //     mind.scaleVal = mind.scaleVal +0.1
+  //   } else if (e.deltaY > 0) {
+  //     // scrolling down
+  //     if (mind.scaleVal < 0.3) return
+  //     mind.scaleVal = mind.scaleVal - 0.1
+  //   }
+  //   mind.map.style.transform =
+  //     "scale(" +
+  //     mind.scaleVal 
+  //     ")"
     
-  }
+  // }
  
-  mind.map.onwheel = functionWheelZoom
-  if(isMobile() && mind.contextMenu)
-    pressMbileMenu(mind,manager)
+  // mind.map.onwheel = functionWheelZoom
+  // if(isMobile() && mind.contextMenu)
+  //   pressMbileMenu(mind,manager)
 }
 
 
