@@ -72,7 +72,7 @@ export default function (mind, manager) {
     })
     return parent;
   }
-  manager.on('press',function (e) {
+  manager.on('hold',function (e) {
     console.log(e)
     e.preventDefault()
     if(e.target.nodeName === 'ADD')
@@ -83,6 +83,7 @@ export default function (mind, manager) {
     
     let target = getParent(e.target, 'TPC') ? getParent(e.target, 'TPC') : null
     // const nodeTopic =  getParent(target, 'TPC') ? getParent(e.target, 'TPC') : null
+    
     if (target) {
       if (target.parentElement.tagName === 'ROOT') {
         isRoot = true
@@ -125,7 +126,7 @@ export default function (mind, manager) {
         // focus.className = 'disabled'
         // unfocus.className = 'disabled'
       }
-      
+      document.getElementById('abc').innerHTML = ''+ 'ppp'
       if( !mind.isTagging && !(target.nodeObj && target.nodeObj.belongOtherMap && !target.nodeObj.firstNodeOtherMap))
         menuContainer.hidden = false
       if(target.nodeObj.belongOtherMap && target.nodeObj.firstNodeOtherMap){
@@ -134,19 +135,20 @@ export default function (mind, manager) {
       }
       let height = menuUl.offsetHeight
       let width = menuUl.offsetWidth
-      if (height + e.center.y > window.innerHeight) {
+      
+      if (height + e.clientY > window.innerHeight) {
         menuUl.style.top = ''
         menuUl.style.bottom = '0px'
       } else {
         menuUl.style.bottom = ''
-        menuUl.style.top = e.center.y + 15 + 'px'
+        menuUl.style.top = e.clientY + 15 + 'px'
       }
-      if (width + e.center.x > window.innerWidth) {
+      if (width + e.clientX > window.innerWidth) {
         menuUl.style.left = ''
         menuUl.style.right = '0px'
       } else {
         menuUl.style.right = ''
-        menuUl.style.left = e.center.x + 10 + 'px'
+        menuUl.style.left = e.clientX + 10 + 'px'
       }
       if (mind.onRedirectPath) {
         mind.onRedirectPath(target.nodeObj)
