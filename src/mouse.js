@@ -295,7 +295,6 @@ export default function (mind) {
           move (event) {
             var currentScale = event.scale * mind.scaleVal
             if(Math.abs(currentScale - lastScale) > 0.01 && currentScale <=4 && currentScale >=0.3 ){   
-              document.getElementById('abc').innerHTML = startZoomPos.x
               if(currentScale> lastScale)           
               mind.map.style.transform =  "scale(" +
                                           currentScale +
