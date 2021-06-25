@@ -263,7 +263,7 @@ export default function (mind) {
       interact('TPC').draggable({
         listeners: {
           start (event) {
-            document.querySelector('.map-canvas').addEventListener('touchmove', preventDefaultAction)
+            mind.map.addEventListener('touchmove', preventDefaultAction)
             panstartFn(event)
           },
           move (event) {
@@ -271,7 +271,7 @@ export default function (mind) {
           },
           end(event){
             panendFn(event)
-            document.querySelector('.map-canvas').removeEventListener('touchmove', preventDefaultAction)
+            mind.map.removeEventListener('touchmove', preventDefaultAction)
           }
         }
       })
@@ -280,11 +280,10 @@ export default function (mind) {
       //zooming
       let lastScale = 0
       let startZoomPos
-      const scaleEle = document.querySelector('.map-canvas')
-      scaleEle.addEventListener('gesturestart', function(e){
+      mind.map.addEventListener('gesturestart', function(e){
         e.preventDefault()
       });
-      interact(scaleEle).gesturable({
+      interact(mind.map).gesturable({
         listeners: {
           start (event) {
             lastScale = event.scale * mind.scaleVal
@@ -295,11 +294,21 @@ export default function (mind) {
           },
           move (event) {
             var currentScale = event.scale * mind.scaleVal
-            if(Math.abs(currentScale - lastScale) > 0.01 && currentScale <=4 && currentScale >=0.3 ){              
-              scaleEle.style.transform =  "scale(" +
+            if(Math.abs(currentScale - lastScale) > 0.01 && currentScale <=4 && currentScale >=0.3 ){   
+              document.getElementById('abc').innerHTML = startZoomPos.x
+              if(currentScale> lastScale)           
+              mind.map.style.transform =  "scale(" +
                                           currentScale +
                                           ") translate(" +
-                                          ((currentScale - 1) * (startZoomPos.x + event.dx))/2 +
+                                          ((currentScale/lastScale - 1) * (startZoomPos.x/currentScale))/2 +
+                                          "px," +
+                                          0 +
+                                          "px)"
+              else
+              mind.map.style.transform =  "scale(" +
+                                          currentScale +
+                                          ") translate(" +
+                                          -((currentScale/lastScale - 1) * (startZoomPos.x/currentScale))/2 +
                                           "px," +
                                           0 +
                                           "px)"
@@ -426,6 +435,15 @@ export default function (mind) {
     mind.map.onwheel = functionWheelZoom
   }
 }
+
+
+
+
+
+
+
+
+
 
 
 
