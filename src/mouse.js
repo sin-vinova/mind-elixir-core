@@ -317,29 +317,86 @@ export default function (mind) {
   }
   else{
     //drag and move for desktop
+    let positionMoveMb=[]
+    function momentumDesktop(e) {
+      let lastPos = {
+        pageX: e.clientX,
+        pageY: e.clientY,
+        time: Date.now()
+      }
+      let i = positionMoveMb.length
+      let now = Date.now();
+      while ( i-- ) {
+        if ( now - positionMoveMb[i].time > 150 ) { break; }
+        lastPos = positionMoveMb[i];
+      }
+      let xOffset = lastPos.pageX - e.clientX
+      let yOffset = lastPos.pageY - e.clientY
+      let timeOffset = ( Date.now() - lastPos.time ) / 12
+      let decelX = ( xOffset / timeOffset )
+      let decelY = ( yOffset / timeOffset ) 
+      if(timeOffset){
+        let timer = Date.now()
+        let myVar = setInterval(momentum, 7)
+        function momentum() {
+          if(Math.abs(decelX) < 0.01)
+            decelX = 0
+          if(Math.abs(decelY) < 0.01)
+            decelY = 0
+          if((decelY === 0 &&  decelX ===0) || Date.now() - timer > 700 ){
+            clearInterval(myVar)
+            return 
+          }
+          else{
+            if(decelX < 0 && decelY > 0){
+              decelX *= 0.87
+              decelY *= 0.95
+            }
+            else if(decelX > 0 && decelY < 0){
+              decelX *= 0.95
+              decelY *= 0.87
+            }
+            else{
+              decelX *= 0.95
+              decelY *= 0.95
+            }
+            mind.container.scrollTo({
+              left: mind.container.scrollLeft + decelX,
+              top: mind.container.scrollTop + decelY,
+              // behavior: 'smooth'
+            })
+          }
+        }
+      }
+    }
     mind.map.addEventListener('mousemove', e => {
       // click trigger mousemove in windows chrome
       // the 'true' is a string
       if (e.target.contentEditable !== 'true') {
         dragMoveHelper.onMove(e, mind.container)
       }
+      positionMoveMb.push({
+        pageX: e.clientX,
+        pageY: e.clientY,
+        time: Date.now()
+      })
     })
     mind.map.addEventListener('mousedown', e => {
       if (e.target.contentEditable !== 'true') {
         dragMoveHelper.afterMoving = false
         dragMoveHelper.mousedown = true
       }
+      positionMoveMb=[]
     })
     mind.map.addEventListener('mouseleave', e => {
       dragMoveHelper.clear()
+      momentumDesktop(e)
     })
     mind.map.addEventListener('mouseup', e => {
       dragMoveHelper.clear()
+      momentumDesktop(e)
     })
 
-    mind.map.onmousedown = function (e) {
-      isPanning = true
-    }
 
     //zoom desktop
     const functionWheelZoom = (e) =>{
@@ -364,5 +421,11 @@ export default function (mind) {
     mind.map.onwheel = functionWheelZoom
   }
 }
+
+
+
+
+
+
 
 
