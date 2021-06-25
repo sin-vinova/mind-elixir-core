@@ -73,7 +73,6 @@ export default function (mind, manager) {
     return parent;
   }
   manager.on('hold',function (e) {
-    console.log(e)
     e.preventDefault()
     if(e.target.nodeName === 'ADD')
       return
@@ -126,7 +125,6 @@ export default function (mind, manager) {
         // focus.className = 'disabled'
         // unfocus.className = 'disabled'
       }
-      document.getElementById('abc').innerHTML = ''+ 'ppp'
       if( !mind.isTagging && !(target.nodeObj && target.nodeObj.belongOtherMap && !target.nodeObj.firstNodeOtherMap))
         menuContainer.hidden = false
       if(target.nodeObj.belongOtherMap && target.nodeObj.firstNodeOtherMap){

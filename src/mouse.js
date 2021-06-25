@@ -127,7 +127,7 @@ export default function (mind) {
   /**
    * drag, move, zoom, scroll zoom
    */
-  // if(isMobile()){
+  if(isMobile()){
     // drag and move for mobile
     if(mind.draggable){
       const position = { x: 0, y: 0 }
@@ -276,9 +276,7 @@ export default function (mind) {
         }
       })
       .on('doubletap',doubleClickFn)
-      if(mind.contextMenu){
-        pressMbileMenu(mind,interact('TPC'))
-      }
+      
       //zooming
       let lastScale = 0
       let startZoomPos
@@ -317,10 +315,13 @@ export default function (mind) {
           }
         }
       })
+      if(mind.contextMenu){
+        pressMbileMenu(mind,interact('TPC'))
+      }
     }
 
-  // }
-  // else{
+  }
+  else{
     //drag and move for desktop
     let positionMoveMb=[]
     function momentumDesktop(e) {
@@ -420,7 +421,7 @@ export default function (mind) {
     }
    
     mind.map.onwheel = functionWheelZoom
-  // }
+  }
 }
 
 
