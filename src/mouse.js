@@ -127,7 +127,7 @@ export default function (mind) {
   /**
    * drag, move, zoom, scroll zoom
    */
-  if(isMobile()){
+  // if(isMobile()){
     // drag and move for mobile
     if(mind.draggable){
       const position = { x: 0, y: 0 }
@@ -281,6 +281,7 @@ export default function (mind) {
       }
       //zooming
       let lastScale = 0
+      let startZoomPos
       const scaleEle = document.querySelector('.map-canvas')
       scaleEle.addEventListener('gesturestart', function(e){
         e.preventDefault()
@@ -289,6 +290,10 @@ export default function (mind) {
         listeners: {
           start (event) {
             lastScale = event.scale * mind.scaleVal
+            startZoomPos = {
+              x: event.client.x,
+              y: event.client.y
+            }
           },
           move (event) {
             var currentScale = event.scale * mind.scaleVal
@@ -296,9 +301,9 @@ export default function (mind) {
               scaleEle.style.transform =  "scale(" +
                                           currentScale +
                                           ") translate(" +
-                                          ((event.dx/currentScale)/2) +
+                                          ((currentScale - 1) * (startZoomPos.x + event.dx))/2 +
                                           "px," +
-                                          ((event.dy/currentScale)/2) +
+                                          0 +
                                           "px)"
               lastScale = currentScale
               
@@ -314,8 +319,8 @@ export default function (mind) {
       })
     }
 
-  }
-  else{
+  // }
+  // else{
     //drag and move for desktop
     let positionMoveMb=[]
     function momentumDesktop(e) {
@@ -388,10 +393,6 @@ export default function (mind) {
       }
       positionMoveMb=[]
     })
-    mind.map.addEventListener('mouseleave', e => {
-      dragMoveHelper.clear()
-      momentumDesktop(e)
-    })
     mind.map.addEventListener('mouseup', e => {
       dragMoveHelper.clear()
       momentumDesktop(e)
@@ -419,8 +420,23 @@ export default function (mind) {
     }
    
     mind.map.onwheel = functionWheelZoom
-  }
+  // }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
