@@ -45,11 +45,6 @@ export default {
         // belongOtherMap:true,
         // firstNodeOtherMap: true,
         // background: '#E21818',
-        style: {
-          color: '',
-          background: '#E21818',
-          fontSize: '40px',
-        }, 
     
       }
       
