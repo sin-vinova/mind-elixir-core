@@ -398,6 +398,9 @@ export default function (mind) {
       dragMoveHelper.clear()
       momentumDesktop(e)
     })
+    mind.map.addEventListener('mouseleave', e => {
+      dragMoveHelper.clear()
+    })
 
 
     //zoom desktop
