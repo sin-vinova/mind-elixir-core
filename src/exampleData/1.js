@@ -22,10 +22,14 @@ export default {
           {
             topic: 'What is Minde Elixir #gggg',
             id: 'bd4313fbac4028kk4b',
+            belongOtherMap:true,
+            firstNodeOtherMap: true,
             children: [
               {
                 topic: 'What is Minde Elixir #gggg',
                 id: 'bd4313fssbac4028kk4b',
+                belongOtherMap:true,
+                firstNodeOtherMap: false,
               }
             ]
           },

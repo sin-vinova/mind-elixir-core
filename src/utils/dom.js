@@ -5,7 +5,9 @@ import logo from '../assets/icon/ic-logo.png'
 import iconAgree from '../assets/icon/ic-agree.svg'
 import iconNotAgree from '../assets/icon/ic-not-agree.svg'
 import defaultUser from '../assets/icon/defaultUser.svg'
-
+import {
+  isMobile,
+} from '../utils/index'
 // DOM manipulation
 let $d = document
 const hashtagForrmat = (string,className='tag',activeTag) => {
@@ -152,7 +154,7 @@ export let createTopic = function (nodeObj, isTagging, first) {
         topic.appendChild(createPersonalInfo(nodeObj))
         topic.appendChild(createFollowNum(nodeObj))
       }
-      else{
+      if(nodeObj.firstNodeOtherMap && !isMobile()){
         topic.draggable = false
       }
     }
@@ -614,7 +616,7 @@ export function layout() {
   this.root.innerHTML = ''
   this.box.innerHTML = ''
   let tpc = createTopic(this.nodeData,this.isTagging,this.box)
-  tpc.draggable = false
+  tpc.draggable = isMobile()
   this.root.appendChild(tpc)
   
   let primaryNodes = this.nodeData.children
