@@ -128,6 +128,7 @@ export default function (mind) {
    * drag, move, zoom, scroll zoom
    */
   if(isMobile()){
+    mind.eventMove = interact('TPC')
     // drag and move for mobile
     if(mind.draggable){
       const position = { x: 0, y: 0 }
@@ -206,7 +207,6 @@ export default function (mind) {
       }
 
       function panendFn (e){
-        console.log(e)
         nodeDraggable.clearPreview(meet)
         if(moveNode){
           moveNode.parentElement.style.transform = `translate(0px, 0px)`
@@ -259,8 +259,8 @@ export default function (mind) {
         nodesLink = null        
       }
 
-      //drag, dbtap,long press
-      interact('TPC').draggable({
+      //drag move node event on mobile
+      mind.eventMove.draggable({
         listeners: {
           start (event) {
             mind.map.addEventListener('touchmove', preventDefaultAction)
@@ -275,59 +275,60 @@ export default function (mind) {
           }
         }
       })
-      .on('doubletap',doubleClickFn)
-      
-      //zooming
-      let lastScale = 0
-      let startZoomPos
-      mind.map.addEventListener('gesturestart', function(e){
-        e.preventDefault()
-      });
-      interact(mind.map).gesturable({
-        listeners: {
-          start (event) {
-            lastScale = event.scale * mind.scaleVal
-            startZoomPos = {
-              x: event.client.x,
-              y: event.client.y
-            }
-          },
-          move (event) {
-            var currentScale = event.scale * mind.scaleVal
-            if(Math.abs(currentScale - lastScale) > 0.01 && currentScale <=4 && currentScale >=0.3 ){   
-              if(currentScale> lastScale)           
-              mind.map.style.transform =  "scale(" +
-                                          currentScale +
-                                          ") translate(" +
-                                          ((currentScale/lastScale - 1) * (startZoomPos.x/currentScale))/2 +
-                                          "px," +
-                                          0 +
-                                          "px)"
-              else
-              mind.map.style.transform =  "scale(" +
-                                          currentScale +
-                                          ") translate(" +
-                                          -((currentScale/lastScale - 1) * (startZoomPos.x/currentScale))/2 +
-                                          "px," +
-                                          0 +
-                                          "px)"
-              lastScale = currentScale
-              
-            }
-              
-            // }
-            
-          },
-          end (event) {
-            mind.scaleVal = lastScale  
-          }
-        }
-      })
-      if(mind.contextMenu){
-        pressMbileMenu(mind,interact('TPC'))
-      }
     }
-
+    //dbtap node for editable
+    if(mind.editable)
+      mind.eventMove.on('doubletap',doubleClickFn)
+    // long hold node for display context menu
+    if(mind.contextMenu){
+      pressMbileMenu(mind,mind.eventMove)
+    }
+    //zooming
+    let lastScale = 0
+    let startZoomPos
+    mind.map.addEventListener('gesturestart', function(e){
+      e.preventDefault()
+    });
+    interact(mind.map).gesturable({
+      listeners: {
+        start (event) {
+          lastScale = event.scale * mind.scaleVal
+          startZoomPos = {
+            x: event.client.x,
+            y: event.client.y
+          }
+        },
+        move (event) {
+          var currentScale = event.scale * mind.scaleVal
+          if(Math.abs(currentScale - lastScale) > 0.01 && currentScale <=4 && currentScale >=0.3 ){   
+            if(currentScale> lastScale)           
+            mind.map.style.transform =  "scale(" +
+                                        currentScale +
+                                        ") translate(" +
+                                        ((currentScale/lastScale - 1) * (startZoomPos.x/currentScale))/2 +
+                                        "px," +
+                                        0 +
+                                        "px)"
+            else
+            mind.map.style.transform =  "scale(" +
+                                        currentScale +
+                                        ") translate(" +
+                                        -((currentScale/lastScale - 1) * (startZoomPos.x/currentScale))/2 +
+                                        "px," +
+                                        0 +
+                                        "px)"
+            lastScale = currentScale
+            
+          }
+            
+          // }
+          
+        },
+        end (event) {
+          mind.scaleVal = lastScale  
+        }
+      }
+    })
   }
   else{
     //drag and move for desktop
@@ -430,7 +431,6 @@ export default function (mind) {
         ")"
       
     }
-   
     mind.map.onwheel = functionWheelZoom
   }
 }
