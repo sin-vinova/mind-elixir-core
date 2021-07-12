@@ -419,11 +419,11 @@ export default function (mind) {
       if (e.deltaY < 0) {
         // scrolling up
         if (mind.scaleVal > 3) return
-        mind.scaleVal = mind.scaleVal +0.1
+        mind.scaleVal = mind.scaleVal +0.03
       } else if (e.deltaY > 0) {
         // scrolling down
         if (mind.scaleVal < 0.3) return
-        mind.scaleVal = mind.scaleVal - 0.1
+        mind.scaleVal = mind.scaleVal - 0.03
       }
       mind.map.style.transform =
         "scale(" +
