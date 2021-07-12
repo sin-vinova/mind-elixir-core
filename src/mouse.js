@@ -2,6 +2,7 @@ import { dragMoveHelper, isMobile,throttle } from './utils/index'
 import * as nodeDraggable from "./plugin/nodeDraggable";
 import pressMbileMenu from './plugin/pressMobileMenu'
 import interact from 'interactjs'
+import $ from 'jquery';
 
 
 function getParent(el,query) {
@@ -332,46 +333,43 @@ export default function (mind) {
   }
   else{
     //drag and move for desktop
-    let positionMoveMb=[]
+    let positionMoveMb = []
     function momentumDesktop(e) {
       let lastPos = {
         pageX: e.clientX,
         pageY: e.clientY,
-        time: Date.now()
+        time: Date.now(),
       }
       let i = positionMoveMb.length
-      let now = Date.now();
-      while ( i-- ) {
-        if ( now - positionMoveMb[i].time > 150 ) { break; }
-        lastPos = positionMoveMb[i];
+      let now = Date.now()
+      while (i--) {
+        if (now - positionMoveMb[i].time > 150) {
+          break
+        }
+        lastPos = positionMoveMb[i]
       }
       let xOffset = lastPos.pageX - e.clientX
       let yOffset = lastPos.pageY - e.clientY
-      let timeOffset = ( Date.now() - lastPos.time ) / 12
-      let decelX = ( xOffset / timeOffset )
-      let decelY = ( yOffset / timeOffset ) 
-      if(timeOffset){
+      let timeOffset = (Date.now() - lastPos.time) / 12
+      let decelX = xOffset / timeOffset
+      let decelY = yOffset / timeOffset
+      if (timeOffset) {
         let timer = Date.now()
         let myVar = setInterval(momentum, 7)
         function momentum() {
-          if(Math.abs(decelX) < 0.01)
-            decelX = 0
-          if(Math.abs(decelY) < 0.01)
-            decelY = 0
-          if((decelY === 0 &&  decelX ===0) || Date.now() - timer > 700 ){
+          if (Math.abs(decelX) < 0.01) decelX = 0
+          if (Math.abs(decelY) < 0.01) decelY = 0
+          if ((decelY === 0 && decelX === 0) || Date.now() - timer > 700) {
             clearInterval(myVar)
-            return 
-          }
-          else{
-            if(decelX < 0 && decelY > 0){
+            return
+          } else {
+            if (decelX < 0 && decelY > 0) {
               decelX *= 0.87
               decelY *= 0.95
-            }
-            else if(decelX > 0 && decelY < 0){
+            } else if (decelX > 0 && decelY < 0) {
               decelX *= 0.95
               decelY *= 0.87
-            }
-            else{
+            } else {
               decelX *= 0.95
               decelY *= 0.95
             }
@@ -393,7 +391,7 @@ export default function (mind) {
       positionMoveMb.push({
         pageX: e.clientX,
         pageY: e.clientY,
-        time: Date.now()
+        time: Date.now(),
       })
     })
     mind.map.addEventListener('mousedown', e => {
@@ -401,7 +399,7 @@ export default function (mind) {
         dragMoveHelper.afterMoving = false
         dragMoveHelper.mousedown = true
       }
-      positionMoveMb=[]
+      positionMoveMb = []
     })
     mind.map.addEventListener('mouseup', e => {
       dragMoveHelper.clear()
@@ -431,38 +429,118 @@ export default function (mind) {
         ")"
       
     }
-    mind.map.onwheel = functionWheelZoom
+    // mind.map.onwheel = functionWheelZoom
+
+    console.log('mind.map', mind.map)
+
+    $(document).ready(function () {
+      var scroll_zoom = new ScrollZoom($('.map-container'), 4, 0.05)
+    })
+
+    function ScrollZoom(container, max_scale, factor) {
+      let target = container.children().first()
+      let size = { w: 20000, h: 20000 }
+      let pos = { x: 0, y: 0 }
+      let zoom_target = { x: 0, y: 0 }
+      let zoom_point = { x: 0, y: 0 }
+      let scale = 1
+      let zoomIntensity = 0.2
+      target.css('transform-origin', '0 0')
+      target.on('mousewheel DOMMouseScroll', scrolled)
+
+      function scrolled(e) {
+
+        var root = container.children().first().children().first()
+        // var offset = container.offset()
+        var offset = container.children().first().offset()
+
+        zoom_point.x = e.pageX - (-root[0].offsetLeft)
+        zoom_point.y = e.pageY - (-root[0].offsetTop)
+        // zoom_point.x = e.pageX - offset.left
+        // zoom_point.y = e.pageY - offset.top
+
+
+        e.preventDefault()
+        var delta = e.delta || e.originalEvent.wheelDelta
+        if (delta === undefined) {
+          //we are on firefox
+          delta = e.originalEvent.detail
+        }
+        delta = Math.max(-1, Math.min(1, delta)) // cap the delta to [-1,1] for cross browser consistency
+        
+        // determine the point on where the slide is zoomed in
+        zoom_target.x = (zoom_point.x - pos.x) / scale
+        zoom_target.y = (zoom_point.y - pos.y) / scale
+
+        // apply zoom
+        scale += delta * factor * scale
+
+        // prevent scale
+        console.log('min(scale)', Math.min(max_scale, scale))
+        scale = Math.max(1, Math.min(max_scale, scale))
+
+        // calculate x and y based on zoom
+        pos.x = -zoom_target.x * scale + zoom_point.x
+        pos.y = -zoom_target.y * scale + zoom_point.y
+
+        // console.log('scale', scale, pos)
+        
+        // if (scale > max_scale) {
+        //   scale = max_scale
+        // }
+        // if (scale < 0.5) {
+        //   scale = 0.5
+        // }
+
+        // if (pos.x < 6000) {
+        //   pos.x = -size.w * (scale - 1)
+        // }
+        // if (pos.y < 6000) {
+        //   pos.y = -size.h * (scale - 1)
+        // }
+
+        // const wheel = e.deltaY < 0 ? 1 : -1;
+
+        // // Compute zoom factor.
+        // const zoom = Math.exp(wheel * factor);
+        
+
+        // pos.x -= zoom_target.x/(scale*zoom) - zoom_target.x/scale;
+        // pos.y -= zoom_target.y/(scale*zoom) - zoom_target.y/scale;
+        // scale *= zoom;
+
+        // console.log('scale', scale, pos)
+
+        // pos.x = -pos.x
+        // pos.y = -pos.y
+    
+
+        // Make sure the slide stays in its container area when zooming out
+        if (pos.x > 0) pos.x = 0
+        if (pos.x + size.w * scale < size.w) pos.x = -size.w * (scale - 1)
+        if (pos.y > 0) pos.y = 0
+        if (pos.y + size.h * scale < size.h) pos.y = -size.h * (scale - 1)
+
+        // console.log('transform', pos)
+
+        update()
+        
+      }
+
+      function update() {
+        target.css(
+          'transform',
+          'translate(' +
+            pos.x +
+            'px,' +
+            pos.y +
+            'px) scale(' +
+            scale +
+            ',' +
+            scale +
+            ')'
+        )
+      }
+    }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
