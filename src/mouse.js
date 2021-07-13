@@ -138,6 +138,9 @@ export default function (mind) {
       let insertLocation
       let linksRelateNode =[]
       let nodesLink
+      let offsetTpcMove
+      let tpcRoot
+      let left 
 
       function preventDefaultAction (e){
         e.preventDefault()
@@ -154,7 +157,17 @@ export default function (mind) {
           dragged = moveNode.children[0]
           dragMoveHelper.clear()  
         }
-
+        const sizeEl =  e.target.getBoundingClientRect()
+        const sizeElRoot = mind.root.children[0].getBoundingClientRect()
+        offsetTpcMove = {
+          centerX:  sizeEl.x + sizeEl.width/2  - e.client.x,
+          centerY:  sizeEl.y + sizeEl.height/2 - e.client.x,
+        }
+        left = sizeEl.x - sizeElRoot.x > 0 ? false : true
+        tpcRoot = {
+          centerX:  sizeElRoot.x + sizeElRoot.width/2,
+          centerY:  sizeElRoot.y + sizeElRoot.height/2,
+        }
       }
 
       function panmoveFn (e) {
@@ -236,21 +249,42 @@ export default function (mind) {
             moveNode.parentElement.style.position = 'unset'
         }
         
-        if(meet && (!mind.checkNotAllowDropNode || (mind.checkNotAllowDropNode && !mind.checkNotAllowDropNode(meet.nodeObj, dragged.nodeObj)))){
-          let obj = dragged.nodeObj
-          switch (insertLocation) {
-            case 'before':
-              mind.moveNodeBefore(dragged, meet)
-              mind.selectNode(E(obj.id,mind))
-              break
-            case 'after':
-              mind.moveNodeAfter(dragged, meet)
-              mind.selectNode(E(obj.id,mind))
-              break
-            case 'in':
-              mind.moveNode(dragged, meet)
-              mind.OnDragNode && mind.OnDragNode(obj, meet.nodeObj)
-              break
+        if(meet ){
+          if((!mind.checkNotAllowDropNode || (mind.checkNotAllowDropNode && !mind.checkNotAllowDropNode(meet.nodeObj, dragged.nodeObj)))){
+            let obj = dragged.nodeObj
+            switch (insertLocation) {
+              case 'before':
+                mind.moveNodeBefore(dragged, meet)
+                mind.selectNode(E(obj.id,mind))
+                break
+              case 'after':
+                mind.moveNodeAfter(dragged, meet)
+                mind.selectNode(E(obj.id,mind))
+                break
+              case 'in':
+                mind.moveNode(dragged, meet)
+                mind.OnDragNode && mind.OnDragNode(obj, meet.nodeObj)
+                break
+            }
+          }
+        }
+        else if(offsetTpcMove && tpcRoot){
+          if(left){
+            if(offsetTpcMove.centerX + e.client.x > tpcRoot.centerX){
+              // dragged.nodeObj = {...dragged.nodeObj, direction: 1}
+              dragged.nodeObj.direction = 1
+              moveNode.parentElement.style.position = 'absolute'
+              mind.moveNode(dragged, mind.root.children[0])
+            }
+              
+          }
+          else{
+            if(offsetTpcMove.centerX + e.client.x < tpcRoot.centerX){
+              // dragged.nodeObj.direction = 0
+              dragged.nodeObj.direction = 0
+              moveNode.parentElement.style.position = 'absolute'
+              mind.moveNode(dragged, mind.root.children[0])
+            }
           }
         }
         linksRelateNode = []
