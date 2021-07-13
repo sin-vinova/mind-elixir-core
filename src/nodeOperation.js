@@ -565,8 +565,6 @@ export let setNodeTopic = function (tpc, topic) {
 
 // Judge L or R
 export function processPrimaryNode(primaryNode, obj) {
-  console.log("cccc")
-
   if (this.direction === LEFT) {
     primaryNode.className = 'lhs'
   } else if (this.direction === RIGHT || this.direction === RIGHT_TREE) {
@@ -574,13 +572,19 @@ export function processPrimaryNode(primaryNode, obj) {
   } else if (this.direction === SIDE) {
     let l = $d.querySelectorAll('.lhs').length
     let r = $d.querySelectorAll('.rhs').length
-    if (l <= r) {
-      primaryNode.className = 'lhs'
-      obj.direction = LEFT
-    } else {
-      primaryNode.className = 'rhs'
-      obj.direction = RIGHT
+    if(obj.direction === undefined){
+      if (l <= r) {
+        // primaryNode.className = 'lhs'
+        obj.direction = LEFT
+      } else {
+        // primaryNode.className = 'rhs'
+        obj.direction = RIGHT
+      }
     }
+    if(obj.direction === LEFT)
+      primaryNode.className = 'lhs'
+    else
+      primaryNode.className = 'rhs'
   }
   primaryNode.dataset.checkGrp = 'firstDeepGrp'
 }
