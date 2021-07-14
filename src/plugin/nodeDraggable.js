@@ -60,9 +60,6 @@ export default function (mind) {
   var dragged
   var insertLocation
   let threshold = 12
-  let offsetTpcMove
-  let tpcRoot
-  let left 
   /* events fired on the draggable target */
   mind.map.addEventListener(
     'drag',
@@ -101,10 +98,7 @@ export default function (mind) {
           insertLocation = meet = null
         }
       }
-      if (meet) 
-        insertPreview(meet, insertLocation)
-      else
-        console.log(mind.root.getBoundingClientRect())
+      if (meet) insertPreview(meet, insertLocation)
     }, 100)
   )
 
@@ -115,60 +109,29 @@ export default function (mind) {
     mind.selectNode(dragged)
     mind.onRedirectPath && mind.onRedirectPath(dragged.nodeObj)
     dragMoveHelper.clear()
-    const sizeEl =  event.target.getBoundingClientRect()
-    const sizeElRoot = mind.root.children[0].getBoundingClientRect()
-    offsetTpcMove = {
-      centerX:  sizeEl.x + sizeEl.width/2  - event.clientX,
-      centerY:  sizeEl.y + sizeEl.height/2 - event.clientY,
-    }
-    left = sizeEl.x - sizeElRoot.x > 0 ? false : true
-    tpcRoot = {
-      centerX:  sizeElRoot.x + sizeElRoot.width/2,
-      centerY:  sizeElRoot.y + sizeElRoot.height/2,
-    }
+    
   })
 
   mind.map.addEventListener('dragend', async function (event) {
     // reset the transparency
     event.target.style.opacity = ''
     clearPreview(meet)
-    if(meet){
-      if((!mind.checkNotAllowDropNode || (mind.checkNotAllowDropNode && !mind.checkNotAllowDropNode(meet.nodeObj, dragged.nodeObj))))
-      {
-        let obj = dragged.nodeObj
-        switch (insertLocation) {
-          case 'before':
-            mind.moveNodeBefore(dragged, meet)
-            mind.selectNode(E(obj.id,mind))
-            break
-          case 'after':
-            mind.moveNodeAfter(dragged, meet)
-            mind.selectNode(E(obj.id,mind))
-            break
-          case 'in':
-            mind.moveNode(dragged, meet)
-            mind.OnDragNode && mind.OnDragNode(obj, meet.nodeObj)
-            break
-        }
+    if(meet && (!mind.checkNotAllowDropNode || (mind.checkNotAllowDropNode && !mind.checkNotAllowDropNode(meet.nodeObj, dragged.nodeObj)))){
+      let obj = dragged.nodeObj
+      switch (insertLocation) {
+        case 'before':
+          mind.moveNodeBefore(dragged, meet)
+          mind.selectNode(E(obj.id,mind))
+          break
+        case 'after':
+          mind.moveNodeAfter(dragged, meet)
+          mind.selectNode(E(obj.id,mind))
+          break
+        case 'in':
+          mind.moveNode(dragged, meet)
+          mind.OnDragNode && mind.OnDragNode(obj, meet.nodeObj)
+          break
       }
-    }
-    else if(offsetTpcMove && tpcRoot){
-      if(left){
-        if(offsetTpcMove.centerX + event.clientX > tpcRoot.centerX){
-          // dragged.nodeObj = {...dragged.nodeObj, direction: 1}
-          dragged.nodeObj.direction = 1
-          mind.moveNode(dragged, mind.root.children[0])
-        }
-          
-      }
-      else{
-        if(offsetTpcMove.centerX + event.clientX < tpcRoot.centerX){
-          // dragged.nodeObj.direction = 0
-          dragged.nodeObj.direction = 0
-          mind.moveNode(dragged, mind.root.children[0])
-        }
-      }
-
     }
     dragged.parentNode.parentNode.style.opacity = 1
     dragged = null
